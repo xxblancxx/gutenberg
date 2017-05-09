@@ -91,4 +91,10 @@ namespace GutenbergTests
     {
         public string Title { get; set; }
     }
+
+    public class Geolocation
+    {
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+    }
 }

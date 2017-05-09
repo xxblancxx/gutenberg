@@ -9,6 +9,7 @@ namespace GutenbergTests
         [TestMethod]
         public void TestMethod1()
         {
+            Assert.AreEqual("This is weaird", "damn true");
         }
     }
 }

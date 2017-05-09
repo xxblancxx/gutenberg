@@ -79,6 +79,7 @@ namespace GutenbergTests
         [TestMethod]
         public void GetCitiesInTitleMysql()
         {
+            // Setup
             var expectedCities = new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
                                                   new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
                                                   new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}};
@@ -87,6 +88,8 @@ namespace GutenbergTests
             mock.Setup(o => o.Cities()).Returns(new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
                                                                  new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
                                                                  new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}});
+
+            // Test
             ConnectionFacade facade = new ConnectionFacade();
             var cities = facade.GetCitiesInTitleMysql(mock.Object);
             for (int i = 0; i < expectedCities.Count; i++)
@@ -107,6 +110,7 @@ namespace GutenbergTests
         [TestMethod]
         public void GetCitiesInTitleMongoDB()
         {
+            // Setup
             var expectedCities = new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
                                                   new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
                                                   new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}};
@@ -115,6 +119,8 @@ namespace GutenbergTests
             mock.Setup(o => o.Cities()).Returns(new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
                                                                  new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
                                                                  new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}});
+
+            // Test
             ConnectionFacade facade = new ConnectionFacade();
             var cities = facade.GetCitiesInTitleMongoDB(mock.Object);
             for (int i = 0; i < expectedCities.Count; i++)

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gutenberg", "Gutenberg\Gute
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GutenbergTests", "GutenbergTests\GutenbergTests.csproj", "{218888D5-894A-43CD-9041-53FBBE395849}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookExtractor", "BookExtractor\BookExtractor.csproj", "{2D3D9A95-92E1-4597-BD97-4AF06B63ECAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{218888D5-894A-43CD-9041-53FBBE395849}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{218888D5-894A-43CD-9041-53FBBE395849}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{218888D5-894A-43CD-9041-53FBBE395849}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D3D9A95-92E1-4597-BD97-4AF06B63ECAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D3D9A95-92E1-4597-BD97-4AF06B63ECAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D3D9A95-92E1-4597-BD97-4AF06B63ECAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D3D9A95-92E1-4597-BD97-4AF06B63ECAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

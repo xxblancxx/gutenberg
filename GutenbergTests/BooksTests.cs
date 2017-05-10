@@ -11,7 +11,6 @@ namespace GutenbergTests
         /// <summary>
         /// Test for method that gets a list of all the books that mentions the input city - mysql db
         /// </summary>
-        /// <param name="city"></param>
         /// <precondition>A city name is input</precondition>
         /// <action>mysql database is called through facade layer</action>
         /// <postcondition>A list of books is given</postcondition>
@@ -42,7 +41,6 @@ namespace GutenbergTests
         /// <summary>
         /// Test for method that gets a list of all the books that mentions the input city - MongoDB db
         /// </summary>
-        /// <param name="city"></param>
         /// <precondition>A city name is input</precondition>
         /// <action>MongoDB database is called through facade layer</action>
         /// <postcondition>A list of books is given</postcondition>
@@ -72,7 +70,6 @@ namespace GutenbergTests
         /// <summary>
         /// Test for method that gets a list of all cities mentioned within a book title - Mysql
         /// </summary>
-        /// <param name="city"></param>
         /// <precondition>A book title is input</precondition>
         /// <action>Mysql database is called through facade layer</action>
         /// <postcondition>A list of cities is given, containing geolocations</postcondition>
@@ -103,7 +100,6 @@ namespace GutenbergTests
         /// <summary>
         /// Test for method that gets a list of all cities mentioned within a book title - MongoDB
         /// </summary>
-        /// <param name="city"></param>
         /// <precondition>A book title is input</precondition>
         /// <action>MongoDB database is called through facade layer</action>
         /// <postcondition>A list of cities is given, containing geolocations</postcondition>
@@ -130,6 +126,126 @@ namespace GutenbergTests
                 Assert.AreEqual(expectedCities[i].Longitude, cities[i].Longitude);
             }
         }
+
+        /// <summary>
+        /// Test for method that gets a list of all cities mentioned within an author's collection of books - Mysql
+        /// </summary>
+        /// <precondition>An author name is input</precondition>
+        /// <action>MongoDB database is called through facade layer</action>
+        /// <postcondition>A list of cities is given, containing geolocations</postcondition>
+        [TestMethod]
+        public void GetCitiesWithAuthorMysql()
+        {
+            // Setup
+            var expectedCities = new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
+                                                  new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
+                                                  new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}};
+
+            Mock<IDependance> mock = new Mock<IDependance>();
+            mock.Setup(o => o.Cities()).Returns(new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
+                                                                 new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
+                                                                 new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}});
+
+            // Test
+            ConnectionFacade facade = new ConnectionFacade();
+            var cities = facade.GetCitiesWithAuthorMysql(mock.Object);
+            for (int i = 0; i < expectedCities.Count; i++)
+            {
+                Assert.AreEqual(expectedCities[i].Name, cities[i].Name);
+                Assert.AreEqual(expectedCities[i].Latitude, cities[i].Latitude);
+                Assert.AreEqual(expectedCities[i].Longitude, cities[i].Longitude);
+            }
+        }
+
+        /// <summary>
+        /// Test for method that gets a list of all cities mentioned within an author's collection of books - MongoDB
+        /// </summary>
+        /// <precondition>An author name is input</precondition>
+        /// <action>MongoDB database is called through facade layer</action>
+        /// <postcondition>A list of cities is given, containing geolocations</postcondition>
+        [TestMethod]
+        public void GetCitiesWithAuthorMongoDB()
+        {
+            // Setup
+            var expectedCities = new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
+                                                  new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
+                                                  new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}};
+
+            Mock<IDependance> mock = new Mock<IDependance>();
+            mock.Setup(o => o.Cities()).Returns(new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
+                                                                 new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
+                                                                 new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}});
+
+            // Test
+            ConnectionFacade facade = new ConnectionFacade();
+            var cities = facade.GetCitiesWithAuthorMongoDB(mock.Object);
+            for (int i = 0; i < expectedCities.Count; i++)
+            {
+                Assert.AreEqual(expectedCities[i].Name, cities[i].Name);
+                Assert.AreEqual(expectedCities[i].Latitude, cities[i].Latitude);
+                Assert.AreEqual(expectedCities[i].Longitude, cities[i].Longitude);
+            }
+        }
+
+        /// <summary>
+        /// Test for method that gets a list of all cities mentioned mentioned in books within the local area - Mysql
+        /// </summary>
+        /// <precondition>A latitude and longtitude is input</precondition>
+        /// <action>MongoDB database is called through facade layer</action>
+        /// <postcondition>A list of cities is given, containing geolocations</postcondition>
+        [TestMethod]
+        public void GetCitiesInBooksNearbyMysql()
+        {
+            // Setup
+            var expectedCities = new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
+                                                  new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
+                                                  new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}};
+
+            Mock<IDependance> mock = new Mock<IDependance>();
+            mock.Setup(o => o.Cities()).Returns(new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
+                                                                 new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
+                                                                 new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}});
+
+            // Test
+            ConnectionFacade facade = new ConnectionFacade();
+            var cities = facade.GetCitiesWithCoordinatesMysql(mock.Object);
+            for (int i = 0; i < expectedCities.Count; i++)
+            {
+                Assert.AreEqual(expectedCities[i].Name, cities[i].Name);
+                Assert.AreEqual(expectedCities[i].Latitude, cities[i].Latitude);
+                Assert.AreEqual(expectedCities[i].Longitude, cities[i].Longitude);
+            }
+        }
+
+        /// <summary>
+        /// Test for method that gets a list of all cities mentioned mentioned in books within the local area - MongoDB
+        /// </summary>
+        /// <precondition>An latitude and longtitude is input</precondition>
+        /// <action>MongoDB database is called through facade layer</action>
+        /// <postcondition>A list of cities is given, containing geolocations</postcondition>
+        [TestMethod]
+        public void GetCitiesInBooksNearbyMongoDB()
+        {
+            // Setup
+            var expectedCities = new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
+                                                  new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
+                                                  new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}};
+
+            Mock<IDependance> mock = new Mock<IDependance>();
+            mock.Setup(o => o.Cities()).Returns(new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
+                                                                 new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
+                                                                 new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}});
+
+            // Test
+            ConnectionFacade facade = new ConnectionFacade();
+            var cities = facade.GetCitiesWithCoordinatesMongoDB(mock.Object);
+            for (int i = 0; i < expectedCities.Count; i++)
+            {
+                Assert.AreEqual(expectedCities[i].Name, cities[i].Name);
+                Assert.AreEqual(expectedCities[i].Latitude, cities[i].Latitude);
+                Assert.AreEqual(expectedCities[i].Longitude, cities[i].Longitude);
+            }
+        }
     }
 
     public class ConnectionFacade
@@ -147,6 +263,22 @@ namespace GutenbergTests
             return objectThatITalkTo.Cities();
         }
         public virtual List<City> GetCitiesInTitleMongoDB(IDependance objectThatITalkTo)
+        {
+            return objectThatITalkTo.Cities();
+        }
+        public virtual List<City> GetCitiesWithAuthorMysql(IDependance objectThatITalkTo)
+        {
+            return objectThatITalkTo.Cities();
+        }
+        public virtual List<City> GetCitiesWithAuthorMongoDB(IDependance objectThatITalkTo)
+        {
+            return objectThatITalkTo.Cities();
+        }
+        public virtual List<City> GetCitiesWithCoordinatesMysql(IDependance objectThatITalkTo)
+        {
+            return objectThatITalkTo.Cities();
+        }
+        public virtual List<City> GetCitiesWithCoordinatesMongoDB(IDependance objectThatITalkTo)
         {
             return objectThatITalkTo.Cities();
         }

@@ -188,62 +188,60 @@ namespace GutenbergTests
         }
 
         /// <summary>
-        /// Test for method that gets a list of all cities mentioned mentioned in books within the local area - Mysql
+        /// Test for method that gets a list of all books with mentioned cities in the local area - Mysql
         /// </summary>
         /// <precondition>A latitude and longtitude is input</precondition>
         /// <action>MongoDB database is called through facade layer</action>
         /// <postcondition>A list of cities is given, containing geolocations</postcondition>
         [TestMethod]
-        public void GetCitiesInBooksNearbyMysql()
+        public void GetBooksMentionedInAreaMysql()
         {
             // Setup
-            var expectedCities = new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
-                                                  new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
-                                                  new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}};
+            var expectedBooks = new List<Book> { new Book {Title="Den Lille Havfrue"},
+                                                new Book {Title = "Den Grimme Ælling"},
+                                                new Book {Title="Tommelise"}};
 
             Mock<IDependance> mock = new Mock<IDependance>();
-            mock.Setup(o => o.Cities()).Returns(new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
-                                                                 new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
-                                                                 new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}});
+            mock.Setup(o => o.Books()).Returns(new List<Book> { new Book {Title="Den Lille Havfrue"},
+                                                new Book {Title = "Den Grimme Ælling"},
+                                                new Book {Title="Tommelise"}});
 
             // Test
             ConnectionFacade facade = new ConnectionFacade();
-            var cities = facade.GetCitiesWithCoordinatesMysql(mock.Object);
-            for (int i = 0; i < expectedCities.Count; i++)
+            //Test MongoDB through facade
+            var books = facade.GetBooksOfNearbyCoordinatesMysql(mock.Object);
+            for (int i = 0; i < expectedBooks.Count; i++)
             {
-                Assert.AreEqual(expectedCities[i].Name, cities[i].Name);
-                Assert.AreEqual(expectedCities[i].Latitude, cities[i].Latitude);
-                Assert.AreEqual(expectedCities[i].Longitude, cities[i].Longitude);
+                Assert.AreEqual(expectedBooks[i].Title, books[i].Title);
             }
         }
 
         /// <summary>
-        /// Test for method that gets a list of all cities mentioned mentioned in books within the local area - MongoDB
+        /// Test for method that gets a list of all books with mentioned cities in the local area - MongoDB
         /// </summary>
         /// <precondition>An latitude and longtitude is input</precondition>
         /// <action>MongoDB database is called through facade layer</action>
         /// <postcondition>A list of cities is given, containing geolocations</postcondition>
         [TestMethod]
-        public void GetCitiesInBooksNearbyMongoDB()
+        public void GetBooksMentionedInAreaMongoDB()
         {
             // Setup
-            var expectedCities = new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
-                                                  new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
-                                                  new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}};
+            var expectedBooks = new List<Book> { new Book {Title="Den Lille Havfrue"},
+                                                new Book {Title = "Den Grimme Ælling"},
+                                                new Book {Title="Tommelise"}};
 
             Mock<IDependance> mock = new Mock<IDependance>();
-            mock.Setup(o => o.Cities()).Returns(new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
-                                                                 new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
-                                                                 new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}});
+            mock.Setup(o => o.Books()).Returns(new List<Book> { new Book {Title="Den Lille Havfrue"},
+                                                new Book {Title = "Den Grimme Ælling"},
+                                                new Book {Title="Tommelise"}});
 
             // Test
             ConnectionFacade facade = new ConnectionFacade();
-            var cities = facade.GetCitiesWithCoordinatesMongoDB(mock.Object);
-            for (int i = 0; i < expectedCities.Count; i++)
+            //Test MongoDB through facade
+            var books = facade.GetBooksOfNearbyCoordinatesMongoDB(mock.Object);
+            for (int i = 0; i < expectedBooks.Count; i++)
             {
-                Assert.AreEqual(expectedCities[i].Name, cities[i].Name);
-                Assert.AreEqual(expectedCities[i].Latitude, cities[i].Latitude);
-                Assert.AreEqual(expectedCities[i].Longitude, cities[i].Longitude);
+                Assert.AreEqual(expectedBooks[i].Title, books[i].Title);
             }
         }
     }
@@ -274,13 +272,13 @@ namespace GutenbergTests
         {
             return objectThatITalkTo.Cities();
         }
-        public virtual List<City> GetCitiesWithCoordinatesMysql(IDependance objectThatITalkTo)
+        public virtual List<Book> GetBooksOfNearbyCoordinatesMysql(IDependance objectThatITalkTo)
         {
-            return objectThatITalkTo.Cities();
+            return objectThatITalkTo.Books();
         }
-        public virtual List<City> GetCitiesWithCoordinatesMongoDB(IDependance objectThatITalkTo)
+        public virtual List<Book> GetBooksOfNearbyCoordinatesMongoDB(IDependance objectThatITalkTo)
         {
-            return objectThatITalkTo.Cities();
+            return objectThatITalkTo.Books();
         }
     }
 

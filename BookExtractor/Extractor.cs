@@ -9,7 +9,7 @@ namespace BookExtractor
 {
     class Extractor
     {
-
+        private int _bookNo;
         public List<Book> ExtractedBooks { get; set; }
         public List<Author> ExtractedAuthors { get; set; }
         public List<City> AllCities { get; set; }
@@ -27,15 +27,18 @@ namespace BookExtractor
 
         public void CheckBooks()
         {
+            _bookNo = 1;
             for (int i = 0; i < allBookFiles.Length; i++)
             {
                 ExtractBookAuthorAndCitiesFromFile(allBookFiles[i]);
+                _bookNo++;
             }
         }
 
         private void ExtractBookAuthorAndCitiesFromFile(string pathToFIle)
         {
-
+            Console.WriteLine("Book number: " + _bookNo);
+            Console.WriteLine((int)(((double)_bookNo/ (double)allBookFiles.Count())*100) + "% done");
             //try
             //{   // Open the text file using a stream reader.
             using (StreamReader sr = new StreamReader(pathToFIle))
@@ -54,7 +57,7 @@ namespace BookExtractor
                         string title = line.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
                         book = new Book(title);
                         //ExtractedBooks.Add(book);
-                        Console.WriteLine("Title is: " + book.book_title);
+                        //Console.WriteLine("Title is: " + book.book_title);
                     }
                     else if (line.Contains("Author:"))
                     {
@@ -69,7 +72,7 @@ namespace BookExtractor
                             Author author = new Author(name);
                             book.Authors.Add(author);
                             //ExtractedAuthors.Add(author);
-                            Console.WriteLine("Author is: " + author.author_name);
+                          //  Console.WriteLine("Author is: " + author.author_name);
                         }
                         else
                         {
@@ -80,7 +83,7 @@ namespace BookExtractor
                                 Author author = new Author(name.Trim());
                                 book.Authors.Add(author);
                                 // ExtractedAuthors.Add(new Author(name));
-                                Console.WriteLine("Author is: " + name);
+                                //Console.WriteLine("Author is: " + name);
                             }
                         }
                         line = sr.ReadToEnd();
@@ -88,14 +91,23 @@ namespace BookExtractor
 
                 }
                 //Cities
+                Parallel.ForEach(AllCities, (city) =>
+                     {
+                         if (/*city.AlternativeNames.ConvertAll(d => " " + d).Any(line.Contains) || */line.Contains(" " + city.Name + " ") || line.Contains(" " + city.Name + ",") || line.Contains(" " + city.Name + "."))
+                         {
+                             book.Cities.Add(city);
+                             //Console.WriteLine("         Added city " + city.Name);
+                         }
+                     });
 
-                foreach (var city in AllCities)
-                {
-                    if (city.AlternativeNames.ConvertAll(d => d.ToLower()).Any(line.ToLower().Contains) || line.ToLower().Contains(city.Name.ToLower()))
-                    {
-                        book.Cities.Add(city);
-                    }
-                }
+                //foreach (var city in AllCities)
+                //{   
+                //        if (/*city.AlternativeNames.ConvertAll(d => " " + d).Any(line.Contains) || */line.Contains(" " + city.Name + " ") || line.Contains(" " + city.Name + ",") || line.Contains(" " + city.Name + "."))
+                //        {
+                //            book.Cities.Add(city);
+                //            Console.WriteLine("         Added city " + city.Name);
+                //        }
+                //}
                 if (book.book_title == "ERROR IN TITLE")
                 {
                     throw new NullReferenceException("Book wasn't initialized with title");
@@ -119,10 +131,11 @@ namespace BookExtractor
         public void GetAllCities()
         {
             //Dummy Data
-            AllCities.Add(new City { city_id = 1, Name = "Copenhagen", AlternativeNames = new List<string> { "København", "KBH", "Havnen", "CPH" } });
-            AllCities.Add(new City { city_id = 2, Name = "Amsterdam", AlternativeNames = new List<string> { "Amsterdammer", "A'dammer" } });
-            AllCities.Add(new City { city_id = 3, Name = "Berlin", AlternativeNames = new List<string> { "Berliner" } });
-
+            //AllCities.Add(new City { city_id = 1, Name = "Copenhagen", AlternativeNames = new List<string> { "København", "KBH", "Havnen", "CPH" } });
+            //AllCities.Add(new City { city_id = 2, Name = "Amsterdam", AlternativeNames = new List<string> { "Amsterdammer", "A'dammer" } });
+            //AllCities.Add(new City { city_id = 3, Name = "Berlin", AlternativeNames = new List<string> { "Berliner" } });
+            var dbcontext = new ConnectionHandler();
+            AllCities = dbcontext.GetAllCities();
         }
     }
 }

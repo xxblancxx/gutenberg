@@ -20,20 +20,10 @@ namespace BookExtractor
 
         }
 
-        public City(int id, string name, string commaseparatedAltNames)
+        public City(int id, string name)
         {
             Name = name;
             city_id = id;
-            AlternativeNames = new List<string>();
-
-            if (commaseparatedAltNames != null)
-            {
-                string[] split = commaseparatedAltNames.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var altname in split)
-                {
-                    AlternativeNames.Add(altname);
-                }
-            }
         }
     }
 }

@@ -8,6 +8,7 @@ namespace BookExtractor
 {
     class Book
     {
+        public int book_id { get; set; }
         public string book_title { get; set; }
         public List<Author> Authors { get; set; }
         public List<City> Cities { get; set; }

@@ -12,6 +12,7 @@ namespace BookExtractor
         {
             var ex = new Extractor();
             ex.CheckBooks();
+            ex.InsertBooks();
         }
     }
 }

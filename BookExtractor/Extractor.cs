@@ -9,6 +9,9 @@ namespace BookExtractor
 {
     class Extractor
     {
+        //Path to folder containing books
+        private readonly string filepath = @"D:\EksamenGutenberg\subset_books";
+
         private int _bookNo;
         public List<Book> ExtractedBooks { get; set; }
         public List<Author> ExtractedAuthors { get; set; }
@@ -18,11 +21,11 @@ namespace BookExtractor
 
         public Extractor()
         {
-            allBookFiles = Directory.GetFiles(@"D:\EksamenGutenberg\subset_books", "*.txt", SearchOption.AllDirectories);
+            allBookFiles = Directory.GetFiles(filepath, "*.txt", SearchOption.AllDirectories);
             ExtractedAuthors = new List<Author>();
             ExtractedBooks = new List<Book>();
             AllCities = new List<City>();
-            GetAllCities(); // Dummy - method needs to get from DB
+            GetAllCities(); 
         }
 
         public void CheckBooks()
@@ -33,12 +36,21 @@ namespace BookExtractor
                 ExtractBookAuthorAndCitiesFromFile(allBookFiles[i]);
                 _bookNo++;
             }
+            for (int i = 0; i < ExtractedAuthors.Count(); i++)
+            {
+                ExtractedAuthors[i].author_id = (i + 1);
+            }
+            for (int i = 0; i < ExtractedBooks.Count(); i++)
+            {
+                ExtractedBooks[i].book_id = (i + 1);
+            }
         }
 
         private void ExtractBookAuthorAndCitiesFromFile(string pathToFIle)
         {
-            Console.WriteLine("Book number: " + _bookNo);
-            Console.WriteLine((int)(((double)_bookNo/ (double)allBookFiles.Count())*100) + "% done");
+            Console.Write("\r" + (int)(((double)_bookNo / (double)allBookFiles.Count()) * 100) + "% done    ");
+            Console.Write("Book number: " + _bookNo + "                          ");
+           
             //try
             //{   // Open the text file using a stream reader.
             using (StreamReader sr = new StreamReader(pathToFIle))
@@ -48,7 +60,6 @@ namespace BookExtractor
                 // Read the stream to a string, and write the string to the console.
                 while (!sr.EndOfStream)
                 {
-
                     line = sr.ReadLine();
                     // Stuff goes in here
                     if (line.Contains("Title:"))
@@ -57,7 +68,7 @@ namespace BookExtractor
                         string title = line.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
                         book = new Book(title);
                         //ExtractedBooks.Add(book);
-                        //Console.WriteLine("Title is: " + book.book_title);
+                        //Console.Write("Title is: " + book.book_title);
                     }
                     else if (line.Contains("Author:"))
                     {
@@ -69,10 +80,8 @@ namespace BookExtractor
                         {
 
                             string name = line.Split(authorSeparator, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
-                            Author author = new Author(name);
-                            book.Authors.Add(author);
-                            //ExtractedAuthors.Add(author);
-                          //  Console.WriteLine("Author is: " + author.author_name);
+                            book.Authors.Add(CreateAuthor(name));
+
                         }
                         else
                         {
@@ -81,9 +90,7 @@ namespace BookExtractor
                             foreach (var name in names)
                             {
                                 Author author = new Author(name.Trim());
-                                book.Authors.Add(author);
-                                // ExtractedAuthors.Add(new Author(name));
-                                //Console.WriteLine("Author is: " + name);
+                                book.Authors.Add(CreateAuthor(name));
                             }
                         }
                         line = sr.ReadToEnd();
@@ -96,7 +103,7 @@ namespace BookExtractor
                          if (/*city.AlternativeNames.ConvertAll(d => " " + d).Any(line.Contains) || */line.Contains(" " + city.Name + " ") || line.Contains(" " + city.Name + ",") || line.Contains(" " + city.Name + "."))
                          {
                              book.Cities.Add(city);
-                             //Console.WriteLine("         Added city " + city.Name);
+                             //Console.Write("         Added city " + city.Name);
                          }
                      });
 
@@ -105,7 +112,7 @@ namespace BookExtractor
                 //        if (/*city.AlternativeNames.ConvertAll(d => " " + d).Any(line.Contains) || */line.Contains(" " + city.Name + " ") || line.Contains(" " + city.Name + ",") || line.Contains(" " + city.Name + "."))
                 //        {
                 //            book.Cities.Add(city);
-                //            Console.WriteLine("         Added city " + city.Name);
+                //            Console.Write("         Added city " + city.Name);
                 //        }
                 //}
                 if (book.book_title == "ERROR IN TITLE")
@@ -123,11 +130,39 @@ namespace BookExtractor
             //}
             //catch (Exception e)
             //{
-            //    Console.WriteLine("The file could not be read:");
-            //    Console.WriteLine(e.Message);
+            //    Console.Write("The file could not be read:");
+            //    Console.Write(e.Message);
             //}
         }
 
+        public void InsertBooks()
+        {
+
+            var dbcontext = new ConnectionHandler();
+            dbcontext.InsertBooksAndAuthors(ExtractedBooks, ExtractedAuthors);
+
+        }
+        public Author CreateAuthor(string name)
+        {
+            List<Author> existingAuthor = ExtractedAuthors.Where(a => a.author_name == name).ToList();
+            if (existingAuthor.Count() == 0)
+            { // Author isn't used 
+                Author author = new Author(name);
+                ExtractedAuthors.Add(author);
+                return author;
+                //ExtractedAuthors.Add(author);
+                //  Console.Write("Author is: " + author.author_name);
+            }
+            else if (existingAuthor.Count() == 1)
+            {
+                Author author = existingAuthor[0];
+                return author;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("Not 0 or 1 authors matching name?");
+            }
+        }
         public void GetAllCities()
         {
             //Dummy Data

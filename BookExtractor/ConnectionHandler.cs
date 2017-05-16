@@ -10,7 +10,7 @@ namespace BookExtractor
 {
     class ConnectionHandler
     {
-        private readonly string connstring = string.Format("Server=192.168.0.111; database={0}; UID=root; password=sushi4life", "gutenberg");
+        private readonly string connstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life", "gutenberg");
 
 
         public void CleanUpBeforeInsert()

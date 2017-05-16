@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace BookExtractor
     class Extractor
     {
         //Path to folder containing books
-        private readonly string filepath = @"D:\EksamenGutenberg\subset_books";
+        private readonly string filepath = Assembly.GetExecutingAssembly().Location.ToString().Replace("BookExtractor.exe", "") + "books";//@"D:\EksamenGutenberg\subset_books";
 
         private int _bookNo;
         public List<Book> ExtractedBooks { get; set; }
@@ -25,7 +26,7 @@ namespace BookExtractor
             ExtractedAuthors = new List<Author>();
             ExtractedBooks = new List<Book>();
             AllCities = new List<City>();
-            GetAllCities(); 
+            GetAllCities();
         }
 
         public void CheckBooks()
@@ -50,7 +51,7 @@ namespace BookExtractor
         {
             Console.Write("\r" + (int)(((double)_bookNo / (double)allBookFiles.Count()) * 100) + "% done    ");
             Console.Write("Book number: " + _bookNo + "                          ");
-           
+
             //try
             //{   // Open the text file using a stream reader.
             using (StreamReader sr = new StreamReader(pathToFIle))

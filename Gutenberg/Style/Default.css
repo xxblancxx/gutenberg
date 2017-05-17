@@ -8,6 +8,15 @@
     display:inline-block;
 }
 
-.BookCitiesImage {
+.ImagePlaceholder {
     height: 100px;
+    display: none;
+}
+
+.Coordinate {
+    width: 100px;
+}
+
+.NewMethod {
+    margin-top: 10px;
 }

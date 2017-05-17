@@ -44,7 +44,7 @@
             <asp:Button runat="server" OnClick="CitiesByGeolocation" Text="Send"></asp:Button>
         </div>
         <div id="MapContainer" runat="server">
-            <asp:Image CssClass="Map" runat="server"></asp:Image>
+            <asp:Image id="img" CssClass="img" runat="server" image=""></asp:Image>
         </div>
     </div>
     </form>

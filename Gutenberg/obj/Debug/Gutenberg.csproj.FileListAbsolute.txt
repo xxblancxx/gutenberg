@@ -141,3 +141,4 @@ C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\
 C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\Gutenberg\obj\Debug\Gutenberg.csprojResolveAssemblyReference.cache
 C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\Gutenberg\obj\Debug\Gutenberg.dll
 C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\Gutenberg\obj\Debug\Gutenberg.pdb
+C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\Gutenberg\bin\MySql.Data.dll

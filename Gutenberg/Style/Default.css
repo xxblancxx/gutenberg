@@ -8,7 +8,11 @@
     display:inline-block;
 }
 
-.ImagePlaceholder {
+#MapContainer {
+    margin-top: 10px;
+}
+
+.Map {
     height: 100px;
     display: none;
 }
@@ -20,3 +24,4 @@
 .NewMethod {
     margin-top: 10px;
 }
+

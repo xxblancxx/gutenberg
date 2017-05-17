@@ -16,39 +16,25 @@
             <asp:TextBox runat="server" placeholder="City name"></asp:TextBox>
             <asp:Button runat="server" OnClick="ListBooks" Text="Send"></asp:Button>
         </div>
-        <div id="BookTable">
+        <div id="BookTable" runat="server">
             <asp:Table BackColor="White" BorderColor="Black" BorderWidth="1" ForeColor="Black" GridLines="Both" BorderStyle="Solid" runat="server">
                 <asp:TableHeaderRow HorizontalAlign="Left" runat="server">
                     <asp:TableHeaderCell runat="server">Title</asp:TableHeaderCell>
                     <asp:TableHeaderCell runat="server">Author</asp:TableHeaderCell>
                 </asp:TableHeaderRow>
-                <asp:TableRow runat="server">
-                    <asp:TableCell runat="server">How to fart in secrecy</asp:TableCell>
-                    <asp:TableCell runat="server">Sir Augustus the second</asp:TableCell>
-                </asp:TableRow>
-                <asp:TableRow runat="server">
-                    <asp:TableCell runat="server">How to fart in secrecy</asp:TableCell>
-                    <asp:TableCell runat="server">Sir Augustus the second</asp:TableCell>
-                </asp:TableRow>
             </asp:Table>
         </div>
         <!-- Plot cities mentioned in book unto a map -->
-        <div>
+        <div class="NewMethod">
             <a><b>Plot cities mentioned in book:</b></a><br/>
             <asp:TextBox runat="server" placeholder="Book title"></asp:TextBox>
             <asp:Button runat="server" OnClick="CitiesInBook" Text="Send"></asp:Button>
-        </div>
-        <div class="NewMethod">
-            <asp:Image CssClass="ImagePlaceholder" runat="server"></asp:Image>
         </div>
         <!-- Plot cities from all books written by author -->
         <div class="NewMethod">
             <a><b>Plot cities by author:</b></a><br/>
             <asp:TextBox runat="server" placeholder="Author"></asp:TextBox>
             <asp:Button runat="server" OnClick="CitiesByAuthor" Text="Send"></asp:Button>
-        </div>
-        <div>
-            <asp:Image CssClass="ImagePlaceholder" runat="server"></asp:Image>
         </div>
         <!-- Plot cities mentioned in books in vicinity of the given geolocation  -->
         <div class="NewMethod">
@@ -57,8 +43,8 @@
             <asp:TextBox CssClass="Coordinate" runat="server" placeholder="Latitude"></asp:TextBox>
             <asp:Button runat="server" OnClick="CitiesByGeolocation" Text="Send"></asp:Button>
         </div>
-        <div>
-            <asp:Image CssClass="ImagePlaceholder" runat="server"></asp:Image>
+        <div id="MapContainer" runat="server">
+            <asp:Image CssClass="Map" runat="server"></asp:Image>
         </div>
     </div>
     </form>

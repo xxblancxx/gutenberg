@@ -1,0 +1,13 @@
+﻿#BookTable {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    overflow: auto; 
+    height: auto;
+    max-height: 200px; 
+    max-width: 955px; 
+    display:inline-block;
+}
+
+.BookCitiesImage {
+    height: 100px;
+}

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BookExtractor
@@ -99,23 +100,28 @@ namespace BookExtractor
 
                 }
                 //Cities
-                Parallel.ForEach(AllCities, (city) =>
+                List<string> capWords = Regex.Matches(line, "((?:[A-Z][a-z]+ ?)+)").Cast<Match>().Select(match => match.Value).Distinct().ToList();
+
+                //Parallel.ForEach(AllCities, (city) =>
+                //     {
+                //         if (capWords.Any(city.Name.Contains))
+                //         {
+                //             book.Cities.Add(city);
+                //         }
+                //     });
+                Parallel.ForEach(capWords, (word) =>
                      {
-                         if (/*city.AlternativeNames.ConvertAll(d => " " + d).Any(line.Contains) || */line.Contains(" " + city.Name + " ") || line.Contains(" " + city.Name + ",") || line.Contains(" " + city.Name + "."))
+                         var matches = AllCities.Where(c => c.Name == word).Distinct();
+                         if (matches.Count() > 0)
                          {
-                             book.Cities.Add(city);
-                             //Console.Write("         Added city " + city.Name);
+                             foreach (var city in matches)
+                             {
+                                 book.Cities.Add(city);
+                             }
                          }
                      });
 
-                //foreach (var city in AllCities)
-                //{   
-                //        if (/*city.AlternativeNames.ConvertAll(d => " " + d).Any(line.Contains) || */line.Contains(" " + city.Name + " ") || line.Contains(" " + city.Name + ",") || line.Contains(" " + city.Name + "."))
-                //        {
-                //            book.Cities.Add(city);
-                //            Console.Write("         Added city " + city.Name);
-                //        }
-                //}
+
                 if (book.book_title == "ERROR IN TITLE")
                 {
                     throw new NullReferenceException("Book wasn't initialized with title");

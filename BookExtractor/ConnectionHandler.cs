@@ -31,7 +31,7 @@ namespace BookExtractor
             using (var connection = new MySqlConnection(connstring))
             {
                 connection.Open();
-                string query = "SELECT city_id, city_name FROM city";
+                string query = "SELECT city_id, city_asciiname FROM city";
                 var cmdReader = new MySqlCommand(query, connection);
                 var reader = cmdReader.ExecuteReader();
 

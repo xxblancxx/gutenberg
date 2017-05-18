@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
+using Gutenberg;
 
 namespace GutenbergTests
 {
@@ -9,7 +10,7 @@ namespace GutenbergTests
     public class BooksTests
     {
         /// <summary>
-        /// Test for method that gets a list of all the books that mentions the input city - mysql db
+        /// Test for method that gets a list of all the books and their authors, which mentions the input city - mysql db
         /// </summary>
         /// <precondition>A city name is input</precondition>
         /// <action>mysql database is called through facade layer</action>
@@ -17,23 +18,44 @@ namespace GutenbergTests
         [TestMethod]
         public void GetBooksContainingCityMysql()
         {
-            //Setup of mock
-            var expectedBooks = new List<Book> {new Book {Title="Den Lille Havfrue"},
-                                                new Book {Title = "Den Grimme Ælling"},
-                                                new Book {Title="Tommelise"}};
+            ////Setup of mock
+            //var expectedBooks = new List<Book> {new Book {Title="Den Lille Havfrue"},
+            //                                    new Book {Title = "Den Grimme Ælling"},
+            //                                    new Book {Title="Tommelise"}};
 
-            Mock<IDependance> mock = new Mock<IDependance>();
-            mock.Setup(o => o.Books()).Returns(new List<Book> { new Book {Title="Den Lille Havfrue"},
-                                                new Book {Title = "Den Grimme Ælling"},
-                                                new Book {Title="Tommelise"}});
+            //Mock<IDependance> mock = new Mock<IDependance>();
+            //mock.Setup(o => o.Books()).Returns(new List<Book> { new Book {Title="Den Lille Havfrue"},
+            //                                    new Book {Title = "Den Grimme Ælling"},
+            //                                    new Book {Title="Tommelise"}});
+
+
+            //No longer mock data: but 700 book testing subset.
+            var expectedBooks = new List<Gutenberg.Model.Book>();
+            var book1 = new Gutenberg.Model.Book(638, "Modern India");
+            book1.Authors.Add(new Gutenberg.Model.Author(400, "William Eleroy Curtis"));
+
+            var book2 = new Gutenberg.Model.Book(141, "Sketches of the East Africa Campaign");
+            book2.Authors.Add(new Gutenberg.Model.Author(108, "Robert Valentine Dolbey"));
+
+            var book3 = new Gutenberg.Model.Book(4, "The Warriors");
+            book3.Authors.Add(new Gutenberg.Model.Author(4, "Lindsay, Anna Robertson Brown"));
+
+            var book4 = new Gutenberg.Model.Book(457, "The World of Waters");
+            book4.Authors.Add(new Gutenberg.Model.Author(297, "Mrs. David Osborne"));
+
+            var book5 = new Gutenberg.Model.Book(476, "Van Bibber and Others");
+            book5.Authors.Add(new Gutenberg.Model.Author(313, "Richard Harding Davis"));
 
             //Test
-            ConnectionFacade facade = new ConnectionFacade();
+            Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             //Test Mysql through facade
-            var books = facade.GetBooksWithCityMysql(mock.Object);
+            var books = facade.GetBooksWithCityMysql("Zanzibar");
             for (int i = 0; i < expectedBooks.Count; i++)
             {
+                Assert.AreEqual(expectedBooks[i].Id, books[i].Id);
                 Assert.AreEqual(expectedBooks[i].Title, books[i].Title);
+                Assert.AreEqual(expectedBooks[i].Authors[0].Id, books[i].Authors[0].Id);
+                Assert.AreEqual(expectedBooks[i].Authors[0].Name, books[i].Authors[0].Name);
             }
         }
 
@@ -76,21 +98,27 @@ namespace GutenbergTests
         [TestMethod]
         public void GetCitiesInTitleMysql()
         {
-            // Setup
-            var expectedCities = new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
-                                                  new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
-                                                  new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}};
+            // Setup mock
+            //var expectedCities = new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
+            //                                      new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
+            //                                      new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}};
 
-            Mock<IDependance> mock = new Mock<IDependance>();
-            mock.Setup(o => o.Cities()).Returns(new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
-                                                                 new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
-                                                                 new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}});
+            //Mock<IDependance> mock = new Mock<IDependance>();
+            //mock.Setup(o => o.Cities()).Returns(new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
+            //                                                     new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
+            //                                                     new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}});
+
+            // Setup expected data from 700 book subset.
+            var expectedCities = new List<Gutenberg.Model.City>();
+            var city1 = new Gutenberg.Model.City(5861897, "Fairbanks", 64.8377800, -147.7163900);
+            var city2 = new Gutenberg.Model.City(5780993, "Salt Lake City", 40.7607800, -111.8910500);
 
             // Test
-            ConnectionFacade facade = new ConnectionFacade();
-            var cities = facade.GetCitiesInTitleMysql(mock.Object);
+            Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
+            var cities = facade.GetCitiesInTitleMysql("Jingle Bells");
             for (int i = 0; i < expectedCities.Count; i++)
             {
+                Assert.AreEqual(expectedCities[i].Id, cities[i].Id);
                 Assert.AreEqual(expectedCities[i].Name, cities[i].Name);
                 Assert.AreEqual(expectedCities[i].Latitude, cities[i].Latitude);
                 Assert.AreEqual(expectedCities[i].Longitude, cities[i].Longitude);

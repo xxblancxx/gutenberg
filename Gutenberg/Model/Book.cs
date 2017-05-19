@@ -9,11 +9,12 @@ namespace Gutenberg.Model
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        List<Author> Authors { get; set; }
+        public List<Author> Authors { get; set; }
         public Book(int id, string title)
         {
             Id = id;
             Title = title;
+            Authors = new List<Author>();
         }
     }
 }

@@ -32,6 +32,7 @@ namespace BookExtractor
 
         public void CheckBooks()
         {
+            Console.WriteLine(" Reading books");
             _bookNo = 1;
             for (int i = 0; i < allBookFiles.Length; i++)
             {
@@ -102,13 +103,7 @@ namespace BookExtractor
                 //Cities
                 List<string> capWords = Regex.Matches(line, "((?:[A-Z][a-z]+ ?)+)").Cast<Match>().Select(match => match.Value).Distinct().ToList();
 
-                //Parallel.ForEach(AllCities, (city) =>
-                //     {
-                //         if (capWords.Any(city.Name.Contains))
-                //         {
-                //             book.Cities.Add(city);
-                //         }
-                //     });
+
                 Parallel.ForEach(capWords, (word) =>
                      {
                          var matches = AllCities.Where(c => c.Name == word).Distinct();
@@ -120,6 +115,7 @@ namespace BookExtractor
                              }
                          }
                      });
+                
 
 
                 if (book.book_title == "ERROR IN TITLE")
@@ -146,7 +142,11 @@ namespace BookExtractor
         {
 
             var dbcontext = new ConnectionHandler();
-            dbcontext.InsertBooksAndAuthors(ExtractedBooks, ExtractedAuthors);
+            bool success = dbcontext.InsertBooksAndAuthors(ExtractedBooks, ExtractedAuthors);
+            if (!success)
+            {
+                Console.WriteLine("ERROR!!! Some of the inserts affected 0 rows!!?");
+            }
 
         }
         public Author CreateAuthor(string name)

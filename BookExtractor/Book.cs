@@ -11,13 +11,13 @@ namespace BookExtractor
         public int book_id { get; set; }
         public string book_title { get; set; }
         public List<Author> Authors { get; set; }
-        public List<City> Cities { get; set; }
+        public SynchronizedCollection<City> Cities { get; set; }
         // public int book_id { get; set; }
         public Book(string title)
         {
             book_title = title;
             Authors = new List<Author>();
-            Cities = new List<City>();
+            Cities = new SynchronizedCollection<City>();
         }
 
     }

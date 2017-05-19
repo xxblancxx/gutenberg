@@ -19,7 +19,7 @@ namespace BookExtractor
             using (var connection = new MySqlConnection(connstring))
             {
                 connection.Open();
-                string query = "truncate gutenberg.author; truncate gutenberg.book; truncate gutenberg.book_author;";
+                string query = "truncate gutenberg.author; truncate gutenberg.book; truncate gutenberg.book_author; truncate gutenberg.book_city;";
                 var cmd = new MySqlCommand(query, connection);
                 cmd.ExecuteNonQuery();
             }
@@ -31,7 +31,7 @@ namespace BookExtractor
             using (var connection = new MySqlConnection(connstring))
             {
                 connection.Open();
-                string query = "SELECT city_id, city_name FROM city";
+                string query = "SELECT city_id, city_asciiname FROM city";
                 var cmdReader = new MySqlCommand(query, connection);
                 var reader = cmdReader.ExecuteReader();
 
@@ -54,66 +54,111 @@ namespace BookExtractor
             using (var connection = new MySqlConnection(connstring))
             {
                 connection.Open();
-            
-                Console.WriteLine("Inserting Books");
+
+                Console.WriteLine("\n Inserting Books");
+                MySqlCommand comm = connection.CreateCommand();
+                string commandTxt = "";
+                for (int i = 0; i < books.Count(); i++)
+                {
+                    commandTxt += "INSERT INTO `gutenberg`.`book`(`book_id`,`book_title`)VALUES(?id" + i + ",?title" + i + "); ";
+                }
+                comm.CommandText = commandTxt;
+                for (int i = 0; i < books.Count(); i++)
+                {
+                    comm.Parameters.AddWithValue("?id" + i, books[i].book_id);
+                    comm.Parameters.AddWithValue("?title" + i, books[i].book_title);
+                }
+                int affectedRows = comm.ExecuteNonQuery();
+                if (affectedRows <= 0)
+                {
+                    succesflag = false;
+                }
+                Console.WriteLine("\n Inserting Authors");
+                comm = connection.CreateCommand();
+                commandTxt = "";
+                for (int i = 0; i < authors.Count(); i++)
+                {
+                    commandTxt += "INSERT INTO `gutenberg`.`author`(`author_id`,`author_name`)VALUES(?id" + i + ",?name" + i + "); ";
+                }
+                comm.CommandText = commandTxt;
+                for (int i = 0; i < authors.Count(); i++)
+                {
+                    comm.Parameters.AddWithValue("?id" + i, authors[i].author_id);
+                    comm.Parameters.AddWithValue("?name" + i, authors[i].author_name);
+                }
+                affectedRows = comm.ExecuteNonQuery();
+                if (affectedRows <= 0)
+                {
+                    succesflag = false;
+                }
+
                 int tmpNo = 1;
-                foreach (var book in books)
-                {
-                    Console.Write("\r" + (int)(((double)tmpNo / (double)books.Count()) * 100) + "% done    ");
-                    Console.Write("Author number: " + tmpNo + "                          ");
-
-                    MySqlCommand comm = connection.CreateCommand();
-                    comm.CommandText = "INSERT INTO `gutenberg`.`book`(`book_id`,`book_title`)VALUES(?id,?title); ";
-                    comm.Parameters.AddWithValue("?id", book.book_id);
-                    comm.Parameters.AddWithValue("?title", book.book_title);
-                    int affectedRows = comm.ExecuteNonQuery();
-                    if (affectedRows <= 0)
-                    {
-                        succesflag = false;
-                        break;
-                    }
-                }
-                tmpNo = 1;
-                Console.WriteLine("Inserting Authors");
-                foreach (var author in authors)
-                {
-                    Console.Write("\r" + (int)(((double)tmpNo / (double)authors.Count()) * 100) + "% done    ");
-                    Console.Write("Book number: " + tmpNo + "                          ");
-
-                    MySqlCommand comm = connection.CreateCommand();
-                    comm.CommandText = "INSERT INTO `gutenberg`.`author`(`author_id`,`author_name`)VALUES(?id,?name); ";
-                    comm.Parameters.AddWithValue("?id", author.author_id);
-                    comm.Parameters.AddWithValue("?name", author.author_name);
-                    int affectedRows = comm.ExecuteNonQuery();
-                    if (affectedRows <= 0)
-                    {
-                        succesflag = false;
-                        break;
-                    }
-                }
-
                 if (succesflag)
                 { // if nothing has failed so far, insert relations in junction table book_author
-                    Console.WriteLine("Inserting Junction book_author");
-                    tmpNo = 1;
+                    Console.WriteLine("\n Inserting Junction book_author");
+
                     foreach (var book in books)
                     {
                         Console.Write("\r" + (int)(((double)tmpNo / (double)books.Count()) * 100) + "% done    ");
                         Console.Write("Book number: " + tmpNo + "                          ");
 
-                        foreach (var author in book.Authors)
+                        comm = connection.CreateCommand();
+                        commandTxt = "";
+                        if (book.Authors.Count > 0)
                         {
-                            MySqlCommand comm = connection.CreateCommand();
-                            comm.CommandText = "INSERT INTO `gutenberg`.`book_author`(`fk_book_id`,`fk_author_id`)VALUES(?book,?author);";
-                            comm.Parameters.AddWithValue("?book", book.book_id);
-                            comm.Parameters.AddWithValue("?author", author.author_id);
-                            int affectedRows = comm.ExecuteNonQuery();
+                            for (int i = 0; i < book.Authors.Count(); i++)
+                            {
+                                commandTxt += "INSERT INTO `gutenberg`.`book_author`(`fk_book_id`,`fk_author_id`)VALUES(?book" + i + ",?author" + i + "); ";
+                            }
+                            comm.CommandText = commandTxt;
+                            for (int i = 0; i < book.Authors.Count(); i++)
+                            {
+                                comm.Parameters.AddWithValue("?book" + i, book.book_id);
+                                comm.Parameters.AddWithValue("?author" + i, book.Authors[i].author_id);
+                            }
+                            affectedRows = comm.ExecuteNonQuery();
                             if (affectedRows <= 0)
                             {
                                 succesflag = false;
-                                break;
+
                             }
                         }
+                        tmpNo++;
+                    }
+
+                }
+                tmpNo = 1;
+                if (succesflag)
+                {
+                    Console.WriteLine("\n Inserting Junction book_city");
+
+                    foreach (var book in books)
+                    {
+                        Console.Write("\r" + (int)(((double)tmpNo / (double)books.Count()) * 100) + "% done    ");
+                        Console.Write("Book number: " + tmpNo + "                          ");
+                        if (book.Cities.Count() > 0)
+                        {
+                            comm = connection.CreateCommand();
+                            commandTxt = "";
+                            //Console.Write("\r" + (int)(((double)tmpNo / (double)books.Count()) * 100) + "% done    ");
+                            //Console.Write("Book number: " + tmpNo + "                          ");
+                            for (int i = 0; i < book.Cities.Count(); i++)
+                            {
+                                commandTxt += "INSERT INTO `gutenberg`.`book_city`(`fk_book_id`,`fk_city_id`)VALUES(?book" + i + ",?city" + i + "); ";
+                            }
+                            comm.CommandText = commandTxt;
+                            for (int i = 0; i < book.Cities.Count(); i++)
+                            {
+                                comm.Parameters.AddWithValue("?book" + i, book.book_id);
+                                comm.Parameters.AddWithValue("?city" + i, book.Cities[i].city_id);
+                            }
+                            affectedRows = comm.ExecuteNonQuery();
+                            if (affectedRows <= 0)
+                            {
+                                succesflag = false;
+                            }
+                        }
+                        tmpNo++;
                     }
                 }
             }

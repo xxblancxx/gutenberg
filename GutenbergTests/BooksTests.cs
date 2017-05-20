@@ -225,22 +225,45 @@ namespace GutenbergTests
         public void GetBooksMentionedInAreaMysql()
         {
             // Setup
-            var expectedBooks = new List<Book> { new Book {Title="Den Lille Havfrue"},
-                                                new Book {Title = "Den Grimme Ælling"},
-                                                new Book {Title="Tommelise"}};
+            //var expectedBooks = new List<Book> { new Book {Title="Den Lille Havfrue"},
+            //                                    new Book {Title = "Den Grimme Ælling"},
+            //                                    new Book {Title="Tommelise"}};
 
-            Mock<IDependance> mock = new Mock<IDependance>();
-            mock.Setup(o => o.Books()).Returns(new List<Book> { new Book {Title="Den Lille Havfrue"},
-                                                new Book {Title = "Den Grimme Ælling"},
-                                                new Book {Title="Tommelise"}});
+            //Mock<IDependance> mock = new Mock<IDependance>();
+            //mock.Setup(o => o.Books()).Returns(new List<Book> { new Book {Title="Den Lille Havfrue"},
+            //                                    new Book {Title = "Den Grimme Ælling"},
+            //                                    new Book {Title="Tommelise"}});
+
+            //No longer mock data: but 700 book testing subset.
+            var expectedBooks = new List<Gutenberg.Model.Book>();
+            var book1 = new Gutenberg.Model.Book(104, "Turkey: A Past and a Future");
+            book1.Authors.Add(new Gutenberg.Model.Author(79, "Arnold Joseph Toynbee"));
+
+            var book2 = new Gutenberg.Model.Book(110, "The Great Events by Famous Historians, Volume 5");
+            book2.Authors.Add(new Gutenberg.Model.Author(14, "Various"));
+
+            var book3 = new Gutenberg.Model.Book(261, "A General History and Collection of Voyages and Travels, Vol. 1");
+            book3.Authors.Add(new Gutenberg.Model.Author(178, "Robert Kerr"));
+
+            var book4 = new Gutenberg.Model.Book(282, "Beacon Lights of History, Volume XIV");
+            book4.Authors.Add(new Gutenberg.Model.Author(147, "John Lord"));
+
+            var book5 = new Gutenberg.Model.Book(390, "The Lands of the Saracen");
+            book5.Authors.Add(new Gutenberg.Model.Author(257, "Bayard Taylor"));
+
+            var book6 = new Gutenberg.Model.Book(491, "A Woman's Journey Round the World");
+            book6.Authors.Add(new Gutenberg.Model.Author(323, "Ida Pfeiffer"));
 
             // Test
-            ConnectionFacade facade = new ConnectionFacade();
-            //Test MongoDB through facade
-            var books = facade.GetBooksOfNearbyCoordinatesMysql(mock.Object);
+            Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
+            //Test Mysql through facade
+            var books = facade.GetBooksMentionedInAreaMysql(36, 43);
             for (int i = 0; i < expectedBooks.Count; i++)
             {
+                Assert.AreEqual(expectedBooks[i].Id, books[i].Id);
                 Assert.AreEqual(expectedBooks[i].Title, books[i].Title);
+                Assert.AreEqual(expectedBooks[i].Authors[0].Id, books[i].Authors[0].Id);
+                Assert.AreEqual(expectedBooks[i].Authors[0].Name, books[i].Authors[0].Name);
             }
         }
 
@@ -271,6 +294,18 @@ namespace GutenbergTests
             {
                 Assert.AreEqual(expectedBooks[i].Title, books[i].Title);
             }
+        }
+
+        /// <summary>
+        /// Test for method that gets an image from the google static map API - MongoDB
+        /// </summary>
+        /// <precondition>Latitude and longitude for cities to plot on the map</precondition>
+        /// <action>Google static map API is called</action>
+        /// <postcondition>An image with geolocations is returned</postcondition>
+        [TestMethod]
+        public void GetStaticMap()
+        {
+
         }
     }
 

@@ -59,3 +59,4 @@ C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\
 C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\GutenbergTests\obj\Debug\GutenbergTests.dll
 C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\GutenbergTests\obj\Debug\GutenbergTests.pdb
 D:\Projects\Gutenberg\gutenberg\GutenbergTests\bin\Debug\MySql.Data.dll
+C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\GutenbergTests\bin\Debug\MySql.Data.dll

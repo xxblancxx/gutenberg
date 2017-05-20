@@ -61,5 +61,63 @@ namespace Gutenberg.Common
             }
             return cities;
         }
+
+        public List<City> GetCitiesWithAuthorMysql(string author)
+        {
+            var cities = new List<City>();
+            using (var connection = new MySqlConnection(connstring))
+            {
+                //connection.Open();
+                //string query = @"query";
+                //MySqlCommand comm = connection.CreateCommand();
+                //comm.CommandText = query;
+                //comm.Parameters.AddWithValue("?author", author);
+
+                //var reader = comm.ExecuteReader();
+                //while (reader.Read())
+                //{
+                //    cities.Add(new City(Int32.Parse(reader.GetString(0)), reader.GetString(1), Double.Parse(reader.GetString(2)), Double.Parse(reader.GetString(3))));
+                //}
+            }
+            return cities;
+        }
+
+        public List<Book> GetBooksMentionedInAreaMysql(double latitude, double longitude)
+        {
+            var books = new List<Book>();
+            using (var connection = new MySqlConnection(connstring))
+            {
+                double lat1, lat2, long1, long2;
+
+                lat1 = latitude + 0.5;
+                lat2 = latitude - 0.5;
+            
+                long1 = longitude + 0.5;
+                long2 = longitude - 0.5;
+                
+                connection.Open();
+                string query = @"Select DISTINCT book.book_id, book.book_title, author.author_id, author.author_name from book
+                INNER JOIN book_city ON book.book_id = book_city.fk_book_id
+                INNER JOIN city ON book_city.fk_city_id = city.city_id
+                INNER JOIN book_author ON book.book_id = book_author.fk_book_id
+                INNER JOIN author ON author.author_id = book_author.fk_author_id
+                WHERE city_latitude < ?lat1 AND city_latitude > ?lat2 AND city_longitude < ?long1 AND city_longitude > ?long2";
+                MySqlCommand comm = connection.CreateCommand();
+                comm.CommandText = query;
+                comm.Parameters.AddWithValue("?lat1", lat1);
+                comm.Parameters.AddWithValue("?lat2", lat2);
+                comm.Parameters.AddWithValue("?long1", long1);
+                comm.Parameters.AddWithValue("?long2", long2);
+
+                var reader = comm.ExecuteReader();
+                while (reader.Read())
+                {
+                    Book book = new Book(Int32.Parse(reader.GetString(0)), reader.GetString(1));
+                    book.Authors.Add(new Author(Int32.Parse(reader.GetString(2)), reader.GetString(3)));
+                    books.Add(book);
+                }
+            }
+            return books;
+        }
     }
 }

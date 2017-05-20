@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 
 namespace Gutenberg.Common
@@ -128,6 +129,39 @@ namespace Gutenberg.Common
             }
             return books;
         }
-    
+
+
+        private string marker = "&markers=size:tiny|color:";
+        private string markerSize = "|";
+        private string space = "%7C";
+        //private string coor = "40.702147,-74.015794";
+
+
+        public byte[] GetStaticMap(List<City> cityList)
+        {
+
+            Array colorOptions = "black,brown,green,purple,yellow,blue,orange,red".Split(',').ToArray(); ;
+            Random randomGen = new Random();
+
+            string citieslist = "";
+            foreach (var city in cityList)
+            {
+                int randomNumber = randomGen.Next(0, colorOptions.Length);
+                citieslist += marker + colorOptions.GetValue(randomNumber) + space + city.Latitude +","+ city.Longitude;
+            }
+
+            string linkStart = "https://maps.googleapis.com/maps/api/staticmap?maptype=terrain&zoom=1&size=1280x1280&scale=2";
+            string linkEnd = "&key=AIzaSyAkjegOKY4oRKzYi7N9hI5nwrtTpz8hRRg";
+
+            string imageLink = linkStart + citieslist + linkEnd;
+
+            using (WebClient wc = new WebClient())
+            {
+                // "img" is the image control in the webforms GUI
+                var byteArray = wc.DownloadData(imageLink);
+                return byteArray;
+            }
+        }
+
     }
 }

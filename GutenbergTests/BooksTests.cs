@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using Gutenberg;
-using System.Drawing.Imaging;
 using System.Drawing;
 using System.Net;
 using System.IO;
@@ -313,13 +312,16 @@ namespace GutenbergTests
         [TestMethod]
         public void GetStaticMap()
         {
-            
+            var expectedCities = new List<Gutenberg.Model.City>();
+            var city1 = new Gutenberg.Model.City(5861897, "Fairbanks", 64.8377800, -147.7163900);
+            var city2 = new Gutenberg.Model.City(5780993, "Salt Lake City", 40.7607800, -111.8910500);
+
             Mock<IDependance> mock = new Mock<IDependance>();
             mock.Setup(m => m.imageBytes()).Returns(new byte[123456789]);
 
             // Test
-            ConnectionFacade facade = new ConnectionFacade();
-            var imageByteArray = facade.GetStaticMap(mock.Object);
+            Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
+            var imageByteArray = facade.GetStaticMap(expectedCities);
             Assert.AreEqual(typeof(byte[]),imageByteArray.GetType());
             if (imageByteArray==null || imageByteArray.Length<=1)
             {

@@ -26,7 +26,7 @@ namespace Gutenberg
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            mapLink();
+            //mapLink();
             //Hide the Grid for listing
             bookList = BookTable;
             bookList.Style.Add("display", "none");
@@ -36,7 +36,8 @@ namespace Gutenberg
 
         protected void showMap(object sender, EventArgs e)
         {
-            mapLink();
+            //mapLink();
+            
         }
 
 

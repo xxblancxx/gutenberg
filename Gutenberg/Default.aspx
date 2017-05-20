@@ -46,7 +46,7 @@
         <div id="MapContainer" runat="server">
             <asp:Button runat="server" OnClick="showMap" Text="Show Map"/></br>
             <textarea id="TextArea1" heigh="500px" width="500xp" runat="server"></textarea></br>
-            <asp:Image id="img" CssClass="img" runat="server"/>
+            <asp:Image id="img" runat="server"/>
         </div>
     </div>
     </form>

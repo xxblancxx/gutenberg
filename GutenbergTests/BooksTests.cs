@@ -309,9 +309,13 @@ namespace GutenbergTests
         [TestMethod]
         public void GetStaticMap()
         {
-
+            //TODO; 
+            // Write unit test for result of Google Static Map with input cities.
         }
     }
+
+
+
 
     public class ConnectionFacade
     {

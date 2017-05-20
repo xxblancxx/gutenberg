@@ -67,17 +67,26 @@ namespace Gutenberg.Common
             var cities = new List<City>();
             using (var connection = new MySqlConnection(connstring))
             {
-                //connection.Open();
-                //string query = @"query";
-                //MySqlCommand comm = connection.CreateCommand();
-                //comm.CommandText = query;
-                //comm.Parameters.AddWithValue("?author", author);
+                connection.Open();
+                string query = @"SELECT city_id, city_asciiname, city_latitude, city_longitude FROM gutenberg.city where city_id in
+                                (
+		                                SELECT min(city_id) FROM city 
+		                                INNER JOIN book_city ON city.city_id = fk_city_id
+		                                INNER JOIN book ON book_city.fk_book_id = book_id
+		                                INNER JOIN book_author ON book.book_id = book_author.fk_book_id
+		                                INNER JOIN author ON book_author.fk_author_id = author_id
+		                                WHERE author_name = ?author GROUP BY city_asciiname
+                                );
+                                ";
+                MySqlCommand comm = connection.CreateCommand();
+                comm.CommandText = query;
+                comm.Parameters.AddWithValue("?author", author);
 
-                //var reader = comm.ExecuteReader();
-                //while (reader.Read())
-                //{
-                //    cities.Add(new City(Int32.Parse(reader.GetString(0)), reader.GetString(1), Double.Parse(reader.GetString(2)), Double.Parse(reader.GetString(3))));
-                //}
+                var reader = comm.ExecuteReader();
+                while (reader.Read())
+                {
+                    cities.Add(new City(Int32.Parse(reader.GetString(0)), reader.GetString(1), Double.Parse(reader.GetString(2)), Double.Parse(reader.GetString(3))));
+                }
             }
             return cities;
         }
@@ -119,5 +128,6 @@ namespace Gutenberg.Common
             }
             return books;
         }
+    
     }
 }

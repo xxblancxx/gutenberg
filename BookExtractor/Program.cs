@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,8 +25,11 @@ namespace BookExtractor
             timer.Stop();
             Console.WriteLine();
             Console.WriteLine("Done!");
-            Console.WriteLine("Finished after " + timer.Elapsed.Minutes + " Min. " + timer.Elapsed.Seconds +" Sec.");
+            Console.WriteLine("Finished after " + timer.Elapsed.Minutes + " Min. " + timer.Elapsed.Seconds + " Sec.");
             Console.Read();
+
+
         }
+       
     }
 }

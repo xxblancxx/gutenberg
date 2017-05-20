@@ -165,18 +165,22 @@ namespace GutenbergTests
         public void GetCitiesWithAuthorMysql()
         {
             // Setup
-            var expectedCities = new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
-                                                  new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
-                                                  new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}};
+            //var expectedCities = new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
+            //                                      new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
+            //                                      new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}};
 
-            Mock<IDependance> mock = new Mock<IDependance>();
-            mock.Setup(o => o.Cities()).Returns(new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
-                                                                 new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
-                                                                 new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}});
+            //Mock<IDependance> mock = new Mock<IDependance>();
+            //mock.Setup(o => o.Cities()).Returns(new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
+            //                                                     new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
+            //                                                     new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}});
+
+            var expectedCities = new List<Gutenberg.Model.City>();
+            var city1 = new Gutenberg.Model.City(5861897, "Fairbanks", 64.8377800, -147.7163900);
+            var city2 = new Gutenberg.Model.City(5780993, "Salt Lake City", 40.7607800, -111.8910500);
 
             // Test
-            ConnectionFacade facade = new ConnectionFacade();
-            var cities = facade.GetCitiesWithAuthorMysql(mock.Object);
+            Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
+            var cities = facade.GetCitiesWithAuthorMysql("Helen Bannerman");
             for (int i = 0; i < expectedCities.Count; i++)
             {
                 Assert.AreEqual(expectedCities[i].Name, cities[i].Name);

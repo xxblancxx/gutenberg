@@ -53,8 +53,8 @@ namespace Gutenberg
             cities.Add("71.6900200, 128.8646700");
             //cities.Add("34.0734000, 47.9725000");
 
-            LongLatit LongLatit = new LongLatit();
-            TextArea1.Value += "LongLat " + LongLatit.GetCities()+" ------- " ;
+            //LongLatit LongLatit = new LongLatit();
+            //TextArea1.Value += "LongLat " + LongLatit.GetCities()+" ------- " ;
 
             double maxLongitude = cities.Max(c => c.First());
 
@@ -64,7 +64,7 @@ namespace Gutenberg
 
             double minLatitude = cities.Min(c => c.Last());
 
-            TextArea1.Value += "Max Values Long " + maxLongitude + ", Latit " + maxLatitude + " -- Min values Long " + minLongitude + ", Latit " + minLatitude; 
+            //TextArea1.Value += "Max Values Long " + maxLongitude + ", Latit " + maxLatitude + " -- Min values Long " + minLongitude + ", Latit " + minLatitude; 
 
             // 0  < 20 =  zoom 5
             // 20 < 34 =  zoom 4

@@ -5,3 +5,6 @@ D:\Projects\Gutenberg\gutenberg\BookExtractor\obj\Debug\BookExtractor.exe
 D:\Projects\Gutenberg\gutenberg\BookExtractor\obj\Debug\BookExtractor.pdb
 D:\Projects\Gutenberg\gutenberg\BookExtractor\bin\Debug\MySql.Data.dll
 D:\Projects\Gutenberg\gutenberg\BookExtractor\obj\Debug\BookExtractor.csprojResolveAssemblyReference.cache
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\bin\Debug\BookExtractor.exe.config
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\obj\Debug\BookExtractor.exe
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\obj\Debug\BookExtractor.pdb

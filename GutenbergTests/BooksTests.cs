@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using Gutenberg;
-using System.Drawing.Imaging;
 using System.Drawing;
 using System.Net;
 using System.IO;

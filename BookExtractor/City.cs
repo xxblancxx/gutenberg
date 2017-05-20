@@ -20,10 +20,12 @@ namespace BookExtractor
 
         }
 
-        public City(int id, string name)
+        public City(int id, string name, double latitude, double longitude)
         {
             Name = name;
             city_id = id;
+            Latitude = latitude;
+            Longitude = longitude;
         }
     }
 }

@@ -13,7 +13,21 @@ namespace BookExtractor
 
         public Author(string name)
         {
-            author_name = name;
+            if (name.Contains(','))
+            {
+                var split = name.Split(',');
+                string rname = split[1] + " " + split[0];
+                author_name = rname.Trim();
+            }
+            else
+            {
+                author_name = name.Trim();
+            }
+        }
+
+        public override string ToString()
+        {
+            return author_name;
         }
     }
 }

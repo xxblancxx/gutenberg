@@ -77,9 +77,10 @@ namespace BookExtractor
                     {
 
 
+
                         string[] separator = new string[] { " and ", " And ", "&" };
                         string[] authorSeparator = new string[] { "Author:" };
-                        if (!separator.Any(line.Contains))
+                        if (!separator.Any(line.Contains) && line.Split(',').Length <= 2)
                         {
 
                             string name = line.Split(authorSeparator, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
@@ -88,6 +89,7 @@ namespace BookExtractor
                         }
                         else
                         {
+                            separator = new string[] { " and ", " And ", "&","," };
                             string[] names = line.Split(authorSeparator, StringSplitOptions.RemoveEmptyEntries)[0].Split(separator, StringSplitOptions.RemoveEmptyEntries);
 
                             foreach (var name in names)
@@ -115,7 +117,7 @@ namespace BookExtractor
                              }
                          }
                      });
-                
+
 
 
                 if (book.book_title == "ERROR IN TITLE")
@@ -142,11 +144,13 @@ namespace BookExtractor
         {
 
             var dbcontext = new ConnectionHandler();
-            bool success = dbcontext.InsertBooksAndAuthors(ExtractedBooks, ExtractedAuthors);
+            bool success = dbcontext.MysqlInsertBooksAndAuthors(ExtractedBooks, ExtractedAuthors);
             if (!success)
             {
-                Console.WriteLine("ERROR!!! Some of the inserts affected 0 rows!!?");
+                Console.WriteLine("Mysql: ERROR!!! Some of the inserts affected 0 rows!!?");
             }
+            dbcontext.MongoDBInsertBooksAndAuthors(ExtractedBooks, ExtractedAuthors);
+
 
         }
         public Author CreateAuthor(string name)

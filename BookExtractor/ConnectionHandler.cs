@@ -5,18 +5,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace BookExtractor
 {
     class ConnectionHandler
     {
-        private readonly string connstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life", "gutenberg");
-
+        private readonly string mysqlconnstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life", "gutenberg");
+        private readonly string mongoconnstring = "mongodb://root:sushi4life@159.203.164.55:27017/";
 
         public void CleanUpBeforeInsert()
         { // deletes all rows in book, author and junction table. all AutoIncrementals are reset
 
-            using (var connection = new MySqlConnection(connstring))
+            using (var connection = new MySqlConnection(mysqlconnstring))
             {
                 connection.Open();
                 string query = "truncate gutenberg.author; truncate gutenberg.book; truncate gutenberg.book_author; truncate gutenberg.book_city;";
@@ -28,10 +30,10 @@ namespace BookExtractor
         public List<City> GetAllCities()
         {
             List<City> cities = new List<City>();
-            using (var connection = new MySqlConnection(connstring))
+            using (var connection = new MySqlConnection(mysqlconnstring))
             {
                 connection.Open();
-                string query = "SELECT city_id, city_asciiname FROM city";
+                string query = "SELECT city_id, city_asciiname, city_latitude, city_longitude FROM city";
                 var cmdReader = new MySqlCommand(query, connection);
                 var reader = cmdReader.ExecuteReader();
 
@@ -39,19 +41,21 @@ namespace BookExtractor
                 {
                     int cityid = Int32.Parse(reader.GetString(0));
                     string cityName = reader.GetString(1);
+                    double lat = double.Parse(reader.GetString(2));
+                    double lon = double.Parse(reader.GetString(3));
                     // string cityAltNamesCSV = reader.GetString(2);
-                    cities.Add(new City(cityid, cityName));
+                    cities.Add(new City(cityid, cityName, lat, lon));
                 }
             }
 
             return cities;
         }
 
-        public bool InsertBooksAndAuthors(List<Book> books, List<Author> authors)
+        public bool MysqlInsertBooksAndAuthors(List<Book> books, List<Author> authors)
         {
             CleanUpBeforeInsert();
             bool succesflag = true;
-            using (var connection = new MySqlConnection(connstring))
+            using (var connection = new MySqlConnection(mysqlconnstring))
             {
                 connection.Open();
 
@@ -163,6 +167,64 @@ namespace BookExtractor
                 }
             }
             return succesflag;
+        }
+
+        public void MongoDBInsertBooksAndAuthors(List<Book> books, List<Author> authors)
+        {
+           // bool successflag = true;
+            var mauthors = new List<MongoAuthor>();
+            var client = new MongoClient(mongoconnstring);
+            var database = client.GetDatabase("gutenberg");
+
+            //Reset collection. Our attempt at mongo'ing a truncate
+            database.DropCollection("authors");
+            foreach (var author in authors)
+            {
+                var mauthor = new MongoAuthor(author.author_name);
+                foreach (var book in books)
+                {
+                    if (book.Authors.Any(a => a.author_name == author.author_name))
+                    {
+                        mauthor.Books.Add(book);
+                    }
+                }
+                mauthors.Add(mauthor);
+            }
+            SynchronizedCollection<BsonDocument> authorDocuments = new SynchronizedCollection<BsonDocument>();
+
+            Parallel.ForEach(mauthors, (author) =>
+            {
+                BsonArray bookDocuments = new BsonArray(author.Books.Count());
+                foreach (var book in author.Books)
+                {
+                    BsonArray cityDocuments = new BsonArray(book.Cities.Count());
+                    foreach (var city in book.Cities)
+                    {
+                        var citydocument = new BsonDocument
+                        {
+                            { "name" , city.Name },
+                            {"latitude" , city.Latitude },
+                            {"longitude" , city.Longitude }
+                        };
+                        cityDocuments.Add(citydocument);
+                    }
+                    var bookdocument = new BsonDocument
+                        {
+                            { "title" , book.book_title },
+                            {"cities" , cityDocuments }
+                        };
+                    bookDocuments.Add(bookdocument);
+                }
+                var document = new BsonDocument
+                {
+                    {"name",author.author_name },
+                    {"books", bookDocuments }
+                };
+                authorDocuments.Add(document);
+            });
+            var collection = database.GetCollection<BsonDocument>("authors");
+            collection.InsertMany(authorDocuments); 
+            //return successflag;
         }
     }
 }

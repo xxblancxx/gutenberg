@@ -73,22 +73,42 @@ namespace GutenbergTests
         public void GetBooksContainingCityMongoDB()
         {
             //Setup of mock
-            var expectedBooks = new List<Book> {new Book {Title="Den Lille Havfrue"},
-                                                new Book {Title = "Den Grimme Ælling"},
-                                                new Book {Title="Tommelise"}};
+            //var expectedBooks = new List<Book> {new Book {Title="Den Lille Havfrue"},
+            //                                    new Book {Title = "Den Grimme Ælling"},
+            //                                    new Book {Title="Tommelise"}};
 
-            Mock<IDependance> mock = new Mock<IDependance>();
-            mock.Setup(o => o.Books()).Returns(new List<Book> { new Book {Title="Den Lille Havfrue"},
-                                                new Book {Title = "Den Grimme Ælling"},
-                                                new Book {Title="Tommelise"}});
+            //Mock<IDependance> mock = new Mock<IDependance>();
+            //mock.Setup(o => o.Books()).Returns(new List<Book> { new Book {Title="Den Lille Havfrue"},
+            //                                    new Book {Title = "Den Grimme Ælling"},
+            //                                    new Book {Title="Tommelise"}});
+
+            //No longer mock data: but 700 book testing subset.
+            var expectedBooks = new List<Gutenberg.Model.Book>();
+            var book1 = new Gutenberg.Model.Book(0, "Modern India");
+            book1.Authors.Add(new Gutenberg.Model.Author(0, "William Eleroy Curtis"));
+
+            var book2 = new Gutenberg.Model.Book(0, "Sketches of the East Africa Campaign");
+            book2.Authors.Add(new Gutenberg.Model.Author(0, "Robert Valentine Dolbey"));
+
+            var book3 = new Gutenberg.Model.Book(0, "The Warriors");
+            book3.Authors.Add(new Gutenberg.Model.Author(0, "Lindsay, Anna Robertson Brown"));
+
+            var book4 = new Gutenberg.Model.Book(0, "The World of Waters");
+            book4.Authors.Add(new Gutenberg.Model.Author(0, "Mrs. David Osborne"));
+
+            var book5 = new Gutenberg.Model.Book(0, "Van Bibber and Others");
+            book5.Authors.Add(new Gutenberg.Model.Author(0, "Richard Harding Davis"));
 
             //Test
-            ConnectionFacade facade = new ConnectionFacade();
+            Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             //Test MongoDB through facade
-            var books = facade.GetBooksWithCityMongoDB(mock.Object);
+            var books = facade.GetBooksContainingCityMongoDB("Zanzibar");
             for (int i = 0; i < expectedBooks.Count; i++)
             {
+                Assert.AreEqual(expectedBooks[i].Id, books[i].Id);
                 Assert.AreEqual(expectedBooks[i].Title, books[i].Title);
+                Assert.AreEqual(expectedBooks[i].Authors[0].Id, books[i].Authors[0].Id);
+                Assert.AreEqual(expectedBooks[i].Authors[0].Name, books[i].Authors[0].Name);
             }
         }
 

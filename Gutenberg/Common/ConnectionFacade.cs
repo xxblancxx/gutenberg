@@ -5,12 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Gutenberg.Common
 {
     public class ConnectionFacade
     {
         private readonly string connstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life", "gutenberg");
+        private readonly string mongoconnstring = "mongodb://root:sushi4life@159.203.164.55:27017/";
 
         public List<Book> GetBooksWithCityMysql(string city)
         {
@@ -37,6 +40,35 @@ namespace Gutenberg.Common
                     books.Add(book);
                 }
             }
+            return books;
+        }
+
+        public List<Book> GetBooksContainingCityMongoDB(string cityname)
+        {
+            var client = new MongoClient(mongoconnstring);
+            var database = client.GetDatabase("gutenberg");
+
+            var collection = database.GetCollection<BsonDocument>("authors");
+            var filter = Builders<BsonDocument>.Filter.Eq("books.cities.name", cityname);
+            var res = collection.Find(filter).ToList();
+
+            //Unable to get deserializer to work, so foreach instead.
+            //Also not sure what we'll do about missing Id's??
+            List<Book> books = new List<Book>();
+            foreach (var author in res)
+            {
+                foreach (var book in author["books"].AsBsonArray)
+                {
+                    Book newBook = new Book(0, book["title"].AsString);
+                    foreach (var city in book["cities"].AsBsonArray)
+                    {
+                        City newCity = new City(0, city["name"].AsString, city["latitude"].AsDouble, city["longitude"].AsDouble); 
+                        newBook.Cities.Add(newCity);
+                    }
+                    books.Add(newBook);
+                }
+            }
+
             return books;
         }
 

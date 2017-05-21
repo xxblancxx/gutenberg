@@ -33,17 +33,41 @@ namespace Gutenberg.Common
                 comm.Parameters.AddWithValue("?city", city);
 
                 var reader = comm.ExecuteReader();
-                while (reader.Read())
+                while (reader.Read()) 
                 {
                     Book book = new Book(Int32.Parse(reader.GetString(0)), reader.GetString(1));
                     book.Authors.Add(new Author(Int32.Parse(reader.GetString(2)), reader.GetString(3)));
                     books.Add(book);
                 }
             }
+            // OBS: Might have several objects of same book, if multiple authors.
+            // This solves that
+            var collapse = books.GroupBy(c => c.Title).Where(g => g.Skip(1).Any()).SelectMany(c => c).ToList();
+            List<Book> deleteObjects = new List<Book>();
+            int firstOfItsNameIndex = 0;
+            for (int i = 0; i < collapse.Count(); i++)
+            {
+                if (i != 0)
+                {
+                    if (collapse[(i - 1)].Title != collapse[i].Title)
+                    { // its the first occurance of this title
+                        firstOfItsNameIndex = i;
+                    }
+                    else
+                    { // it's the same as previous title
+                        books[firstOfItsNameIndex].Authors.Add(books[i].Authors[0]);
+                        deleteObjects.Add(books[i]);
+                    }
+                }
+            }
+            foreach (var delete in deleteObjects)
+            {
+                books.Remove(delete);
+            }
             return books;
         }
 
-        public List<Book> GetBooksContainingCityMongoDB(string cityname)
+        public List<Book> GetBooksWithCityMongoDB(string cityname)
         {
             var client = new MongoClient(mongoconnstring);
             var database = client.GetDatabase("gutenberg");
@@ -52,22 +76,36 @@ namespace Gutenberg.Common
             var filter = Builders<BsonDocument>.Filter.Eq("books.cities.name", cityname);
             var res = collection.Find(filter).ToList();
 
-            //Unable to get deserializer to work, so foreach instead.
-            //Also not sure what we'll do about missing Id's??
+
             List<Book> books = new List<Book>();
             foreach (var author in res)
             {
                 foreach (var book in author["books"].AsBsonArray)
                 {
-                    Book newBook = new Book(0, book["title"].AsString);
-                    foreach (var city in book["cities"].AsBsonArray)
+                    // Only add book if it isn't already in book list.
+                    if (!books.Any(b => b.Title == book["title"].AsString))
                     {
-                        City newCity = new City(0, city["name"].AsString, city["latitude"].AsDouble, city["longitude"].AsDouble); 
-                        newBook.Cities.Add(newCity);
+                        Book newBook = new Book(0, book["title"].AsString);
+                        foreach (var city in book["cities"].AsBsonArray)
+                        {
+                            City newCity = new City(0, city["name"].AsString, city["latitude"].AsDouble, city["longitude"].AsDouble);
+                            newBook.Cities.Add(newCity);
+                        }
+                        books.Add(newBook);
                     }
-                    books.Add(newBook);
                 }
             }
+            foreach (var author in res)
+            {
+                foreach (var book in books)
+                {
+                    if (author["books"].AsBsonArray.Any(b => b["title"].AsString == book.Title))
+                    {
+                        book.Authors.Add(new Author(0, author["name"].AsString));
+                    }
+                }
+            }
+
 
             return books;
         }
@@ -133,10 +171,10 @@ namespace Gutenberg.Common
 
                 lat1 = latitude + 0.5;
                 lat2 = latitude - 0.5;
-            
+
                 long1 = longitude + 0.5;
                 long2 = longitude - 0.5;
-                
+
                 connection.Open();
                 string query = @"Select DISTINCT book.book_id, book.book_title, author.author_id, author.author_name from book
                 INNER JOIN book_city ON book.book_id = book_city.fk_book_id
@@ -152,12 +190,36 @@ namespace Gutenberg.Common
                 comm.Parameters.AddWithValue("?long2", long2);
 
                 var reader = comm.ExecuteReader();
-                while (reader.Read())
+                while (reader.Read()) 
                 {
                     Book book = new Book(Int32.Parse(reader.GetString(0)), reader.GetString(1));
                     book.Authors.Add(new Author(Int32.Parse(reader.GetString(2)), reader.GetString(3)));
                     books.Add(book);
                 }
+            }
+            // OBS: Might have several objects of same book, if multiple authors.
+            // This solves that
+            var collapse = books.GroupBy(c => c.Title).Where(g => g.Skip(1).Any()).SelectMany(c => c).ToList();
+            List<Book> deleteObjects = new List<Book>();
+            int firstOfItsNameIndex = 0;
+            for (int i = 0; i < collapse.Count(); i++)
+            {
+                if (i != 0)
+                {
+                    if (collapse[(i - 1)].Title != collapse[i].Title)
+                    { // its the first occurance of this title
+                        firstOfItsNameIndex = i;
+                    }
+                    else
+                    { // it's the same as previous title
+                        books[firstOfItsNameIndex].Authors.Add(books[i].Authors[0]);
+                        deleteObjects.Add(books[i]);
+                    }
+                }
+            }
+            foreach (var delete in deleteObjects)
+            {
+                books.Remove(delete);
             }
             return books;
         }
@@ -179,7 +241,7 @@ namespace Gutenberg.Common
             foreach (var city in cityList)
             {
                 int randomNumber = randomGen.Next(0, colorOptions.Length);
-                citieslist += marker + colorOptions.GetValue(randomNumber) + space + city.Latitude +","+ city.Longitude;
+                citieslist += marker + colorOptions.GetValue(randomNumber) + space + city.Latitude + "," + city.Longitude;
             }
 
             string linkStart = "https://maps.googleapis.com/maps/api/staticmap?maptype=terrain&zoom=1&size=1280x1280&scale=2";

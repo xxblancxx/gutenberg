@@ -89,7 +89,7 @@ namespace GutenbergTests
 
             var book2 = new Gutenberg.Model.Book(0, "Sketches of the East Africa Campaign");
             book2.Authors.Add(new Gutenberg.Model.Author(0, "Robert Valentine Dolbey"));
-
+            
             var book3 = new Gutenberg.Model.Book(0, "The Warriors");
             book3.Authors.Add(new Gutenberg.Model.Author(0, "Lindsay, Anna Robertson Brown"));
 
@@ -102,7 +102,7 @@ namespace GutenbergTests
             //Test
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             //Test MongoDB through facade
-            var books = facade.GetBooksContainingCityMongoDB("Zanzibar");
+            var books = facade.GetBooksWithCityMongoDB("Zanzibar");
             for (int i = 0; i < expectedBooks.Count; i++)
             {
                 Assert.AreEqual(expectedBooks[i].Id, books[i].Id);

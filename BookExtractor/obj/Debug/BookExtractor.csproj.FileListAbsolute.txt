@@ -19,3 +19,17 @@ D:\Projects\Gutenberg\gutenberg\BookExtractor\bin\Debug\System.Runtime.InteropSe
 D:\Projects\Gutenberg\gutenberg\BookExtractor\bin\Debug\MongoDB.Bson.xml
 D:\Projects\Gutenberg\gutenberg\BookExtractor\bin\Debug\MongoDB.Driver.xml
 D:\Projects\Gutenberg\gutenberg\BookExtractor\bin\Debug\MongoDB.Driver.Core.xml
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\bin\Debug\BookExtractor.exe.config
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\obj\Debug\BookExtractor.exe
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\obj\Debug\BookExtractor.pdb
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\bin\Debug\BookExtractor.exe
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\bin\Debug\BookExtractor.pdb
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\bin\Debug\MongoDB.Bson.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\bin\Debug\MongoDB.Driver.Core.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\bin\Debug\MongoDB.Driver.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\bin\Debug\MySql.Data.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\bin\Debug\MongoDB.Bson.xml
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\bin\Debug\MongoDB.Driver.xml
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\bin\Debug\MongoDB.Driver.Core.xml
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\obj\Debug\BookExtractor.csprojResolveAssemblyReference.cache

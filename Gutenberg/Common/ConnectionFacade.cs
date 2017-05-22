@@ -277,26 +277,26 @@ namespace Gutenberg.Common
         }
 
 
-        private string marker = "&markers=size:tiny|color:";
-        private string markerSize = "|";
+        private string marker = "";
         private string space = "%7C";
-        //private string coor = "40.702147,-74.015794";
 
 
         public byte[] GetStaticMap(List<City> cityList)
         {
-
-            Array colorOptions = "black,brown,green,purple,yellow,blue,orange,red".Split(',').ToArray(); ;
-            Random randomGen = new Random();
+            cityList.Add(new City(123123, "casper", 4.7358300, 45.2036100));
+            cityList.Add(new City(123123, "casper", 1.0833300, 42.5833300));
+            cityList.Add(new City(123123, "casper", 33.4205600, 43.3077800));
+            cityList.Add(new City(123123, "casper", -54.8000000, -68.3000000));
+            cityList.Add(new City(123123, "casper", 78.2233400, 15.6468900));
+            cityList.Add(new City(123123, "casper", 71.6900200, 128.8646700));
 
             string citieslist = "";
             foreach (var city in cityList)
             {
-                int randomNumber = randomGen.Next(0, colorOptions.Length);
-                citieslist += marker + colorOptions.GetValue(randomNumber) + space + city.Latitude + "," + city.Longitude;
+                citieslist += "|"+ city.Latitude + "," + city.Longitude;
             }
 
-            string linkStart = "https://maps.googleapis.com/maps/api/staticmap?maptype=terrain&zoom=1&size=1280x1280&scale=2";
+            string linkStart = "https://maps.googleapis.com/maps/api/staticmap?maptype=terrain&zoom=1&size=1280x1280&scale=2&markers=size:tiny|";
             string linkEnd = "&key=AIzaSyAkjegOKY4oRKzYi7N9hI5nwrtTpz8hRRg";
 
             string imageLink = linkStart + citieslist + linkEnd;

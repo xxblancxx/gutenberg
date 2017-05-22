@@ -67,3 +67,43 @@ D:\Projects\Gutenberg\gutenberg\GutenbergTests\bin\Debug\System.Runtime.InteropS
 D:\Projects\Gutenberg\gutenberg\GutenbergTests\bin\Debug\MongoDB.Driver.xml
 D:\Projects\Gutenberg\gutenberg\GutenbergTests\bin\Debug\MongoDB.Bson.xml
 D:\Projects\Gutenberg\gutenberg\GutenbergTests\bin\Debug\MongoDB.Driver.Core.xml
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\ApplicationInsights.config
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\roslyn\csc.exe
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\roslyn\System.Collections.Immutable.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\roslyn\System.Reflection.Metadata.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\roslyn\vbc.exe
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\roslyn\VBCSCompiler.exe
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\roslyn\VBCSCompiler.exe.config
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\GutenbergTests.dll.config
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\GutenbergTests.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\GutenbergTests.pdb
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\Castle.Core.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\Gutenberg.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\Moq.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\System.Web.Optimization.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\Microsoft.AspNet.FriendlyUrls.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\MySql.Data.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\MongoDB.Driver.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\MongoDB.Bson.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\MongoDB.Driver.Core.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\Microsoft.Web.Infrastructure.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\Gutenberg.pdb
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\Castle.Core.xml
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\Moq.xml
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\System.Web.Optimization.xml
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\Microsoft.AspNet.FriendlyUrls.xml
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\MongoDB.Driver.xml
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\MongoDB.Bson.xml
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\bin\Debug\MongoDB.Driver.Core.xml
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\obj\Debug\GutenbergTests.csprojResolveAssemblyReference.cache
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\obj\Debug\GutenbergTests.dll
+C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\obj\Debug\GutenbergTests.pdb

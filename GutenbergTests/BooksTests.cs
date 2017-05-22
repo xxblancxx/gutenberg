@@ -53,6 +53,7 @@ namespace GutenbergTests
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             //Test Mysql through facade
             var books = facade.GetBooksWithCityMysql("Zanzibar");
+            Assert.AreNotEqual(0, books.Count);
             for (int i = 0; i < expectedBooks.Count; i++)
             {
                 Assert.AreEqual(expectedBooks[i].Id, books[i].Id);
@@ -103,6 +104,7 @@ namespace GutenbergTests
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             //Test MongoDB through facade
             var books = facade.GetBooksWithCityMongoDB("Zanzibar");
+            Assert.AreNotEqual(0, books.Count);
             for (int i = 0; i < expectedBooks.Count; i++)
             {
                 Assert.AreEqual(expectedBooks[i].Id, books[i].Id);
@@ -139,6 +141,7 @@ namespace GutenbergTests
             // Test
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             var cities = facade.GetCitiesInTitleMysql("Jingle Bells");
+            Assert.AreNotEqual(0, cities.Count);
             for (int i = 0; i < expectedCities.Count; i++)
             {
                 Assert.AreEqual(expectedCities[i].Id, cities[i].Id);
@@ -174,6 +177,7 @@ namespace GutenbergTests
             // Test
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             var cities = facade.GetCitiesInTitleMongoDB("Jingle Bells");
+            Assert.AreNotEqual(0, cities.Count);
             for (int i = 0; i < expectedCities.Count; i++)
             {
                 Assert.AreEqual(expectedCities[i].Name, cities[i].Name);
@@ -208,6 +212,7 @@ namespace GutenbergTests
             // Test
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             var cities = facade.GetCitiesWithAuthorMysql("Helen Bannerman");
+            Assert.AreNotEqual(0, cities.Count);
             for (int i = 0; i < expectedCities.Count; i++)
             {
                 Assert.AreEqual(expectedCities[i].Name, cities[i].Name);
@@ -238,6 +243,7 @@ namespace GutenbergTests
             // Test
             ConnectionFacade facade = new ConnectionFacade();
             var cities = facade.GetCitiesWithAuthorMongoDB(mock.Object);
+            Assert.AreNotEqual(0, cities.Count);
             for (int i = 0; i < expectedCities.Count; i++)
             {
                 Assert.AreEqual(expectedCities[i].Name, cities[i].Name);
@@ -289,6 +295,7 @@ namespace GutenbergTests
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             //Test Mysql through facade
             var books = facade.GetBooksMentionedInAreaMysql(36, 43);
+            Assert.AreNotEqual(0, books.Count);
             for (int i = 0; i < expectedBooks.Count; i++)
             {
                 Assert.AreEqual(expectedBooks[i].Id, books[i].Id);
@@ -341,6 +348,7 @@ namespace GutenbergTests
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             //Test Mysql through facade
             var books = facade.GetBooksMentionedInAreaMongoDB(36, 43);
+            Assert.AreNotEqual(0,books.Count);
             for (int i = 0; i < expectedBooks.Count; i++)
             {
                 Assert.AreEqual(expectedBooks[i].Title, books[i].Title);

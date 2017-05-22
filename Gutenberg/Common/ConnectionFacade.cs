@@ -251,7 +251,7 @@ namespace Gutenberg.Common
 
             using (WebClient wc = new WebClient())
             {
-                // "img" is the image control in the webforms GUI
+               
                 var byteArray = wc.DownloadData(imageLink);
                 return byteArray;
             }

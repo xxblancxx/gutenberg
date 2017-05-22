@@ -122,7 +122,7 @@ namespace Gutenberg.Common
             return books;
         }
 
-        
+
         public List<City> GetCitiesInTitleMysql(string title)
         {
             var cities = new List<City>();
@@ -164,7 +164,7 @@ namespace Gutenberg.Common
                     {
                         foreach (var city in book["cities"].AsBsonArray)
                         {
-                            cities.Add(new City(0,city["name"].AsString,city["latitude"].AsDouble,city["longitude"].AsDouble));
+                            cities.Add(new City(0, city["name"].AsString, city["latitude"].AsDouble, city["longitude"].AsDouble));
                         }
                     }
                 }
@@ -286,37 +286,34 @@ namespace Gutenberg.Common
         }
 
 
-        public string GetStaticMap(List<City> cityList)
+        public byte[] GetStaticMap(List<City> cityList)
         {
-            // latitude,longitude - bredde, længde
-            // 0  < 20 =  zoom 5
-            // 20 < 34 =  zoom 4
-            // 34 < 50 =  Zoom 3
-            // 50 < 180 = zoom 2
-            cityList.Add(new City(123123, "casper", 4.7358300, 45.2036100));
-            cityList.Add(new City(123123, "casper", 1.0833300, 42.5833300));
-            cityList.Add(new City(123123, "casper", 33.4205600, 43.3077800));
-            cityList.Add(new City(123123, "casper", -54.8000000, -68.3000000));
-            cityList.Add(new City(123123, "casper", 78.2233400, 15.6468900));
-            cityList.Add(new City(123123, "casper", 71.6900200, 128.8646700));
-
-            string citieslist = "";
-            foreach (var city in cityList)
+            // Google limits to ~8000 characters in request
+            int maxlength = 500; // Anything above 500 and google makes trouble
+            if (cityList.Count > maxlength)
             {
-                citieslist += "|"+ city.Latitude + "," + city.Longitude;
+                cityList = cityList.GetRange(0, maxlength);
             }
 
-            string linkStart = "https://maps.googleapis.com/maps/api/staticmap?maptype=terrain&zoom=1&size=1280x1280&scale=2&markers=size:tiny|";
+            string citieslist = "";
+
+            foreach (var city in cityList)
+            {
+                //citieslist += "|"+ city.Latitude + "," + city.Longitude;
+                citieslist += "|" + Math.Round(city.Latitude, 2).ToString().Replace(',','.') + "," + Math.Round(city.Longitude,2).ToString().Replace(',', '.');
+            }
+
+            string linkStart = "https://maps.googleapis.com/maps/api/staticmap?maptype=terrain&zoom=1&size=1280x1280&scale=2&markers=size:tiny";
             string linkEnd = "&key=AIzaSyAkjegOKY4oRKzYi7N9hI5nwrtTpz8hRRg";
 
             string imageLink = linkStart + citieslist + linkEnd;
-            return imageLink;
-            //using (WebClient wc = new WebClient())
-            //{
 
-            //    var byteArray = wc.DownloadData(imageLink);
-            //    return byteArray;
-            //}
+            using (WebClient wc = new WebClient())
+            {
+
+                var byteArray = wc.DownloadData(imageLink);
+                return byteArray;
+            }
         }
 
     }

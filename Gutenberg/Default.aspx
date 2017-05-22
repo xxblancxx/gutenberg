@@ -27,8 +27,8 @@
         <!-- Plot cities mentioned in book unto a map -->
         <div class="NewMethod">
             <a><b>Plot cities mentioned in book:</b></a><br/>
-            <asp:TextBox runat="server" placeholder="Book title"></asp:TextBox>
-            <asp:Button runat="server" OnClick="CitiesInBook" Text="Send"></asp:Button>
+            <asp:TextBox ID="mentionedInBookTextbox" runat="server" placeholder="Book title"></asp:TextBox>
+            <asp:Button runat="server" OnClick="CitiesInBookMysql" Text="Mysql"></asp:Button>
         </div>
         <!-- Plot cities from all books written by author -->
         <div class="NewMethod">
@@ -43,10 +43,8 @@
             <asp:TextBox CssClass="Coordinate" runat="server" placeholder="Latitude"></asp:TextBox>
             <asp:Button runat="server" OnClick="CitiesByGeolocation" Text="Send"></asp:Button>
         </div>
-        <div id="MapContainer" runat="server">
-            <asp:Button runat="server" OnClick="showMap" Text="Show Map"/></br>
-            <textarea id="TextArea1" heigh="500px" width="500xp" runat="server"></textarea></br>
-            <asp:Image id="img" runat="server"/>
+        <div id="MapContainer" runat="server" style=" overflow: hidden">
+            <img id="img" runat="server" alt=""/>
         </div>
     </div>
     </form>

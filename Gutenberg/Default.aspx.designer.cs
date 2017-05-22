@@ -31,6 +31,15 @@ namespace Gutenberg {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl BookTable;
         
         /// <summary>
+        /// mentionedInBookTextbox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox mentionedInBookTextbox;
+        
+        /// <summary>
         /// MapContainer control.
         /// </summary>
         /// <remarks>
@@ -46,6 +55,6 @@ namespace Gutenberg {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image img;
+        protected global::System.Web.UI.HtmlControls.HtmlImage img;
     }
 }

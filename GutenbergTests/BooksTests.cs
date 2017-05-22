@@ -304,19 +304,39 @@ namespace GutenbergTests
         public void GetBooksMentionedInAreaMongoDB()
         {
             // Setup
-            var expectedBooks = new List<Book> { new Book {Title="Den Lille Havfrue"},
-                                                new Book {Title = "Den Grimme Ælling"},
-                                                new Book {Title="Tommelise"}};
+            //var expectedBooks = new List<Book> { new Book {Title="Den Lille Havfrue"},
+            //                                    new Book {Title = "Den Grimme Ælling"},
+            //                                    new Book {Title="Tommelise"}};
 
-            Mock<IDependance> mock = new Mock<IDependance>();
-            mock.Setup(o => o.Books()).Returns(new List<Book> { new Book {Title="Den Lille Havfrue"},
-                                                new Book {Title = "Den Grimme Ælling"},
-                                                new Book {Title="Tommelise"}});
+            //Mock<IDependance> mock = new Mock<IDependance>();
+            //mock.Setup(o => o.Books()).Returns(new List<Book> { new Book {Title="Den Lille Havfrue"},
+            //                                    new Book {Title = "Den Grimme Ælling"},
+            //                                    new Book {Title="Tommelise"}});
 
-            // Test
-            ConnectionFacade facade = new ConnectionFacade();
-            //Test MongoDB through facade
-            var books = facade.GetBooksOfNearbyCoordinatesMongoDB(mock.Object);
+            //No longer mock data: but 700 book testing subset.
+            var expectedBooks = new List<Gutenberg.Model.Book>();
+            var book1 = new Gutenberg.Model.Book(104, "Turkey: A Past and a Future");
+            book1.Authors.Add(new Gutenberg.Model.Author(79, "Arnold Joseph Toynbee"));
+
+            var book2 = new Gutenberg.Model.Book(110, "The Great Events by Famous Historians, Volume 5");
+            book2.Authors.Add(new Gutenberg.Model.Author(14, "Various"));
+
+            var book3 = new Gutenberg.Model.Book(261, "A General History and Collection of Voyages and Travels, Vol. 1");
+            book3.Authors.Add(new Gutenberg.Model.Author(178, "Robert Kerr"));
+
+            var book4 = new Gutenberg.Model.Book(282, "Beacon Lights of History, Volume XIV");
+            book4.Authors.Add(new Gutenberg.Model.Author(147, "John Lord"));
+
+            var book5 = new Gutenberg.Model.Book(390, "The Lands of the Saracen");
+            book5.Authors.Add(new Gutenberg.Model.Author(257, "Bayard Taylor"));
+
+            var book6 = new Gutenberg.Model.Book(491, "A Woman's Journey Round the World");
+            book6.Authors.Add(new Gutenberg.Model.Author(323, "Ida Pfeiffer"));
+
+            //Test
+            Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
+            //Test Mysql through facade
+            var books = facade.GetBooksMentionedInAreaMongoDB(36, 43);
             for (int i = 0; i < expectedBooks.Count; i++)
             {
                 Assert.AreEqual(expectedBooks[i].Title, books[i].Title);

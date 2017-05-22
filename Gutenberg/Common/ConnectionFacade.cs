@@ -224,6 +224,30 @@ namespace Gutenberg.Common
             return books;
         }
 
+        public List<Book> GetBooksMentionedInAreaMongoDB(double latitude, double longitude)
+        {
+            double lat1, lat2, long1, long2;
+
+            lat1 = latitude + 0.5;
+            lat2 = latitude - 0.5;
+
+            long1 = longitude + 0.5;
+            long2 = longitude - 0.5;
+
+            var client = new MongoClient(mongoconnstring);
+            var database = client.GetDatabase("gutenberg");
+
+            var collection = database.GetCollection<BsonDocument>("authors");
+            var builder = Builders<BsonDocument>.Filter;
+            var filter = builder.Lte("books.cities.latitude", lat1) & builder.Gte("books.cities.latitude", lat2) 
+                         & builder.Lte("books.cities.longitude", long1) & builder.Gte("books.cities.longitude", long2);
+            var res = collection.Find(filter).ToList();
+
+            List<Book> books = new List<Book>();
+
+            return null;
+        }
+
 
         private string marker = "&markers=size:tiny|color:";
         private string markerSize = "|";

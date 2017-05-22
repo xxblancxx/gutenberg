@@ -24,8 +24,8 @@ namespace BookExtractor
 
         private static string mongodatabase;
         private static string mysqldatabase;
-        private readonly string mysqlconnstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life", mysqldatabase);
-        private readonly string mongoconnstring = "mongodb://root:sushi4life@159.203.164.55:27017/";
+        private string mysqlconnstring;
+        private string mongoconnstring = "mongodb://root:sushi4life@159.203.164.55:27017/";
 
 
         public ConnectionHandler(bool isTest)
@@ -40,6 +40,7 @@ namespace BookExtractor
                 mongodatabase = productionmongodatabase;
                 mysqldatabase = productionmysqldatabase;
             }
+            mysqlconnstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life", mysqldatabase);
         }
 
         public void CleanUpBeforeInsert()
@@ -91,7 +92,7 @@ namespace BookExtractor
                 string commandTxt = "";
                 for (int i = 0; i < books.Count(); i++)
                 {
-                    commandTxt += "INSERT INTO `"+mysqldatabase+"`.`book`(`book_id`,`book_title`)VALUES(?id" + i + ",?title" + i + "); ";
+                    commandTxt += "INSERT INTO `" + mysqldatabase + "`.`book`(`book_id`,`book_title`)VALUES(?id" + i + ",?title" + i + "); ";
                 }
                 comm.CommandText = commandTxt;
                 for (int i = 0; i < books.Count(); i++)
@@ -109,7 +110,7 @@ namespace BookExtractor
                 commandTxt = "";
                 for (int i = 0; i < authors.Count(); i++)
                 {
-                    commandTxt += "INSERT INTO `"+mysqldatabase+"`.`author`(`author_id`,`author_name`)VALUES(?id" + i + ",?name" + i + "); ";
+                    commandTxt += "INSERT INTO `" + mysqldatabase + "`.`author`(`author_id`,`author_name`)VALUES(?id" + i + ",?name" + i + "); ";
                 }
                 comm.CommandText = commandTxt;
                 for (int i = 0; i < authors.Count(); i++)
@@ -139,7 +140,7 @@ namespace BookExtractor
                         {
                             for (int i = 0; i < book.Authors.Count(); i++)
                             {
-                                commandTxt += "INSERT INTO `"+mysqldatabase+"`.`book_author`(`fk_book_id`,`fk_author_id`)VALUES(?book" + i + ",?author" + i + "); ";
+                                commandTxt += "INSERT INTO `" + mysqldatabase + "`.`book_author`(`fk_book_id`,`fk_author_id`)VALUES(?book" + i + ",?author" + i + "); ";
                             }
                             comm.CommandText = commandTxt;
                             for (int i = 0; i < book.Authors.Count(); i++)
@@ -175,7 +176,7 @@ namespace BookExtractor
                             //Console.Write("Book number: " + tmpNo + "                          ");
                             for (int i = 0; i < book.Cities.Count(); i++)
                             {
-                                commandTxt += "INSERT INTO `"+mysqldatabase+"`.`book_city`(`fk_book_id`,`fk_city_id`)VALUES(?book" + i + ",?city" + i + "); ";
+                                commandTxt += "INSERT INTO `" + mysqldatabase + "`.`book_city`(`fk_book_id`,`fk_city_id`)VALUES(?book" + i + ",?city" + i + "); ";
                             }
                             comm.CommandText = commandTxt;
                             for (int i = 0; i < book.Cities.Count(); i++)

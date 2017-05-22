@@ -201,6 +201,35 @@ namespace Gutenberg.Common
             return cities;
         }
 
+
+        public List<City> GetCitiesWithAuthorMongoDB(string author)
+        {
+            List<City> cities = new List<City>();
+            var client = new MongoClient(mongoconnstring);
+            var database = client.GetDatabase(mongodatabase);
+
+            var collection = database.GetCollection<BsonDocument>("authors");
+            var filter = Builders<BsonDocument>.Filter.Eq("name", author);
+            var res = collection.Find(filter).ToList();
+
+            foreach (var authordoc in res)
+            {
+                foreach (var book in authordoc["books"].AsBsonArray)
+                {
+                    foreach (var city in book["cities"].AsBsonArray)
+                    {
+                        // If no entries in cities with same name and lat/long
+                        if (!(cities.Any(c => c.Name == city["name"].AsString && c.Longitude == city["longitude"].AsDouble && c.Latitude == city["latitude"].AsDouble)))
+                        {
+                            cities.Add(new City(0, city["name"].AsString, city["latitude"].AsDouble, city["longitude"].AsDouble));
+                        }
+                    }
+                }
+            }
+
+            return cities;
+        }
+
         public List<Book> GetBooksMentionedInAreaMysql(double latitude, double longitude)
         {
             var books = new List<Book>();
@@ -300,7 +329,7 @@ namespace Gutenberg.Common
             foreach (var city in cityList)
             {
                 //citieslist += "|"+ city.Latitude + "," + city.Longitude;
-                citieslist += "|" + Math.Round(city.Latitude, 2).ToString().Replace(',','.') + "," + Math.Round(city.Longitude,2).ToString().Replace(',', '.');
+                citieslist += "|" + Math.Round(city.Latitude, 2).ToString().Replace(',', '.') + "," + Math.Round(city.Longitude, 2).ToString().Replace(',', '.');
             }
 
             string linkStart = "https://maps.googleapis.com/maps/api/staticmap?maptype=terrain&zoom=1&size=1280x1280&scale=2&markers=size:tiny";

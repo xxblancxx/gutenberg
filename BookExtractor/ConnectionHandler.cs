@@ -232,7 +232,8 @@ namespace BookExtractor
                         {
                             { "name" , city.Name },
                             {"latitude" , city.Latitude },
-                            {"longitude" , city.Longitude }
+                            {"longitude" , city.Longitude },
+                            {"location", new BsonDocument { { "type", "Point" }, {"coordinates",new BsonArray {city.Longitude,city.Latitude} }, { "index", "2dsphere"}  } }
                         };
                         cityDocuments.Add(citydocument);
                     }
@@ -252,6 +253,7 @@ namespace BookExtractor
             });
             var collection = database.GetCollection<BsonDocument>("authors");
             collection.InsertMany(authorDocuments);
+            collection.Indexes.CreateOne(new BsonDocument { { "books.cities.location", "2dsphere" } });
             //return successflag;
         }
     }

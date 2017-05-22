@@ -158,18 +158,22 @@ namespace GutenbergTests
         public void GetCitiesInTitleMongoDB()
         {
             // Setup
-            var expectedCities = new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
-                                                  new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
-                                                  new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}};
+            //var expectedCities = new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
+            //                                      new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
+            //                                      new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}};
 
-            Mock<IDependance> mock = new Mock<IDependance>();
-            mock.Setup(o => o.Cities()).Returns(new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
-                                                                 new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
-                                                                 new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}});
+            //Mock<IDependance> mock = new Mock<IDependance>();
+            //mock.Setup(o => o.Cities()).Returns(new List<City> { new City {Name="København",Latitude=1.1234,Longitude=4.1234},
+            //                                                     new City {Name="Odense",Latitude=2.1234,Longitude=5.1234},
+            //                                                     new City {Name="Roskilde",Latitude=3.1234,Longitude=6.1234}});
+
+            var expectedCities = new List<Gutenberg.Model.City>();
+            var city1 = new Gutenberg.Model.City(5861897, "Fairbanks", 64.8377800, -147.7163900);
+            var city2 = new Gutenberg.Model.City(5780993, "Salt Lake City", 40.7607800, -111.8910500);
 
             // Test
-            ConnectionFacade facade = new ConnectionFacade();
-            var cities = facade.GetCitiesInTitleMongoDB(mock.Object);
+            Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
+            var cities = facade.GetCitiesInTitleMongoDB("Jingle Bells");
             for (int i = 0; i < expectedCities.Count; i++)
             {
                 Assert.AreEqual(expectedCities[i].Name, cities[i].Name);
@@ -304,19 +308,39 @@ namespace GutenbergTests
         public void GetBooksMentionedInAreaMongoDB()
         {
             // Setup
-            var expectedBooks = new List<Book> { new Book {Title="Den Lille Havfrue"},
-                                                new Book {Title = "Den Grimme Ælling"},
-                                                new Book {Title="Tommelise"}};
+            //var expectedBooks = new List<Book> { new Book {Title="Den Lille Havfrue"},
+            //                                    new Book {Title = "Den Grimme Ælling"},
+            //                                    new Book {Title="Tommelise"}};
 
-            Mock<IDependance> mock = new Mock<IDependance>();
-            mock.Setup(o => o.Books()).Returns(new List<Book> { new Book {Title="Den Lille Havfrue"},
-                                                new Book {Title = "Den Grimme Ælling"},
-                                                new Book {Title="Tommelise"}});
+            //Mock<IDependance> mock = new Mock<IDependance>();
+            //mock.Setup(o => o.Books()).Returns(new List<Book> { new Book {Title="Den Lille Havfrue"},
+            //                                    new Book {Title = "Den Grimme Ælling"},
+            //                                    new Book {Title="Tommelise"}});
 
-            // Test
-            ConnectionFacade facade = new ConnectionFacade();
-            //Test MongoDB through facade
-            var books = facade.GetBooksOfNearbyCoordinatesMongoDB(mock.Object);
+            //No longer mock data: but 700 book testing subset.
+            var expectedBooks = new List<Gutenberg.Model.Book>();
+            var book1 = new Gutenberg.Model.Book(104, "Turkey: A Past and a Future");
+            book1.Authors.Add(new Gutenberg.Model.Author(79, "Arnold Joseph Toynbee"));
+
+            var book2 = new Gutenberg.Model.Book(110, "The Great Events by Famous Historians, Volume 5");
+            book2.Authors.Add(new Gutenberg.Model.Author(14, "Various"));
+
+            var book3 = new Gutenberg.Model.Book(261, "A General History and Collection of Voyages and Travels, Vol. 1");
+            book3.Authors.Add(new Gutenberg.Model.Author(178, "Robert Kerr"));
+
+            var book4 = new Gutenberg.Model.Book(282, "Beacon Lights of History, Volume XIV");
+            book4.Authors.Add(new Gutenberg.Model.Author(147, "John Lord"));
+
+            var book5 = new Gutenberg.Model.Book(390, "The Lands of the Saracen");
+            book5.Authors.Add(new Gutenberg.Model.Author(257, "Bayard Taylor"));
+
+            var book6 = new Gutenberg.Model.Book(491, "A Woman's Journey Round the World");
+            book6.Authors.Add(new Gutenberg.Model.Author(323, "Ida Pfeiffer"));
+
+            //Test
+            Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
+            //Test Mysql through facade
+            var books = facade.GetBooksMentionedInAreaMongoDB(36, 43);
             for (int i = 0; i < expectedBooks.Count; i++)
             {
                 Assert.AreEqual(expectedBooks[i].Title, books[i].Title);

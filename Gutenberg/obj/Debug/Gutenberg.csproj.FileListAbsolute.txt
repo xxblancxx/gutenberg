@@ -193,3 +193,10 @@ C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\Gutenberg\bin\Sy
 C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\Gutenberg\bin\Antlr3.Runtime.pdb
 C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\Gutenberg\bin\Newtonsoft.Json.xml
 C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\Gutenberg\bin\Microsoft.AspNet.FriendlyUrls.xml
+D:\Projects\Gutenberg\gutenberg\Gutenberg\bin\MongoDB.Bson.dll
+D:\Projects\Gutenberg\gutenberg\Gutenberg\bin\MongoDB.Driver.Core.dll
+D:\Projects\Gutenberg\gutenberg\Gutenberg\bin\MongoDB.Driver.dll
+D:\Projects\Gutenberg\gutenberg\Gutenberg\bin\System.Runtime.InteropServices.RuntimeInformation.dll
+D:\Projects\Gutenberg\gutenberg\Gutenberg\bin\MongoDB.Bson.xml
+D:\Projects\Gutenberg\gutenberg\Gutenberg\bin\MongoDB.Driver.xml
+D:\Projects\Gutenberg\gutenberg\Gutenberg\bin\MongoDB.Driver.Core.xml

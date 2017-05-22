@@ -33,7 +33,7 @@ namespace Gutenberg.Common
                 comm.Parameters.AddWithValue("?city", city);
 
                 var reader = comm.ExecuteReader();
-                while (reader.Read()) 
+                while (reader.Read())
                 {
                     Book book = new Book(Int32.Parse(reader.GetString(0)), reader.GetString(1));
                     book.Authors.Add(new Author(Int32.Parse(reader.GetString(2)), reader.GetString(3)));
@@ -110,6 +110,7 @@ namespace Gutenberg.Common
             return books;
         }
 
+        
         public List<City> GetCitiesInTitleMysql(string title)
         {
             var cities = new List<City>();
@@ -128,6 +129,32 @@ namespace Gutenberg.Common
                 while (reader.Read())
                 {
                     cities.Add(new City(Int32.Parse(reader.GetString(0)), reader.GetString(1), Double.Parse(reader.GetString(2)), Double.Parse(reader.GetString(3))));
+                }
+            }
+            return cities;
+        }
+
+        public List<City> GetCitiesInTitleMongoDB(string title)
+        {
+            List<City> cities = new List<City>();
+            var client = new MongoClient(mongoconnstring);
+            var database = client.GetDatabase("gutenberg");
+
+            var collection = database.GetCollection<BsonDocument>("authors");
+            var filter = Builders<BsonDocument>.Filter.Eq("books.title", title);
+            var res = collection.Find(filter).ToList();
+
+            foreach (var authorDoc in res)
+            {
+                foreach (var book in authorDoc["books"].AsBsonArray)
+                {
+                    if (book["title"].AsString == title)
+                    {
+                        foreach (var city in book["cities"].AsBsonArray)
+                        {
+                            cities.Add(new City(0,city["name"].AsString,city["latitude"].AsDouble,city["longitude"].AsDouble));
+                        }
+                    }
                 }
             }
             return cities;
@@ -190,7 +217,7 @@ namespace Gutenberg.Common
                 comm.Parameters.AddWithValue("?long2", long2);
 
                 var reader = comm.ExecuteReader();
-                while (reader.Read()) 
+                while (reader.Read())
                 {
                     Book book = new Book(Int32.Parse(reader.GetString(0)), reader.GetString(1));
                     book.Authors.Add(new Author(Int32.Parse(reader.GetString(2)), reader.GetString(3)));
@@ -224,6 +251,28 @@ namespace Gutenberg.Common
             return books;
         }
 
+        public List<Book> GetBooksMentionedInAreaMongoDB(double latitude, double longitude)
+        {
+            double lat1, lat2, long1, long2;
+
+            lat1 = latitude + 0.5;
+            lat2 = latitude - 0.5;
+
+            long1 = longitude + 0.5;
+            long2 = longitude - 0.5;
+
+            var client = new MongoClient(mongoconnstring);
+            var database = client.GetDatabase("gutenberg");
+
+            var collection = database.GetCollection<BsonDocument>("authors");
+            // USE GEOSPATIAL TUTORIAL AS REFERENCE
+            //https://docs.mongodb.com/manual/tutorial/geospatial-tutorial/
+
+            List<Book> books = new List<Book>();
+
+            return null;
+        }
+
 
         private string marker = "&markers=size:tiny|color:";
         private string markerSize = "|";
@@ -251,7 +300,7 @@ namespace Gutenberg.Common
 
             using (WebClient wc = new WebClient())
             {
-               
+
                 var byteArray = wc.DownloadData(imageLink);
                 return byteArray;
             }

@@ -60,3 +60,10 @@ C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\
 C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\GutenbergTests\obj\Debug\GutenbergTests.pdb
 D:\Projects\Gutenberg\gutenberg\GutenbergTests\bin\Debug\MySql.Data.dll
 C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\GutenbergTests\bin\Debug\MySql.Data.dll
+D:\Projects\Gutenberg\gutenberg\GutenbergTests\bin\Debug\MongoDB.Driver.dll
+D:\Projects\Gutenberg\gutenberg\GutenbergTests\bin\Debug\MongoDB.Bson.dll
+D:\Projects\Gutenberg\gutenberg\GutenbergTests\bin\Debug\MongoDB.Driver.Core.dll
+D:\Projects\Gutenberg\gutenberg\GutenbergTests\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
+D:\Projects\Gutenberg\gutenberg\GutenbergTests\bin\Debug\MongoDB.Driver.xml
+D:\Projects\Gutenberg\gutenberg\GutenbergTests\bin\Debug\MongoDB.Bson.xml
+D:\Projects\Gutenberg\gutenberg\GutenbergTests\bin\Debug\MongoDB.Driver.Core.xml

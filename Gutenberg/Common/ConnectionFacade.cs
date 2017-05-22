@@ -12,13 +12,22 @@ namespace Gutenberg.Common
 {
     public class ConnectionFacade
     {
-        private readonly string connstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life", "gutenberg");
+        // ----------------- Production Database  Setup ------------------------------
+        //private readonly static string mongodatabase = "gutenberg";
+        //private readonly static string mysqldatabase = "gutenberg";
+
+        // ---------------------- Test Database Setup -------------------------------------
+        private readonly static string mongodatabase = "gutenbergtest";
+        private readonly static string mysqldatabase = "gutenbergtest";
+
+
+        private readonly string mysqlconnstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life", mysqldatabase);
         private readonly string mongoconnstring = "mongodb://root:sushi4life@159.203.164.55:27017/";
 
         public List<Book> GetBooksWithCityMysql(string city)
         {
             var books = new List<Book>();
-            using (var connection = new MySqlConnection(connstring))
+            using (var connection = new MySqlConnection(mysqlconnstring))
             {
                 connection.Open();
                 string query = @"SELECT DISTINCT  book.book_id, book.book_title, author.author_id, author.author_name FROM city
@@ -70,7 +79,7 @@ namespace Gutenberg.Common
         public List<Book> GetBooksWithCityMongoDB(string cityname)
         {
             var client = new MongoClient(mongoconnstring);
-            var database = client.GetDatabase("gutenberg");
+            var database = client.GetDatabase(mongodatabase);
 
             var collection = database.GetCollection<BsonDocument>("authors");
             var filter = Builders<BsonDocument>.Filter.Eq("books.cities.name", cityname);
@@ -117,7 +126,7 @@ namespace Gutenberg.Common
         public List<City> GetCitiesInTitleMysql(string title)
         {
             var cities = new List<City>();
-            using (var connection = new MySqlConnection(connstring))
+            using (var connection = new MySqlConnection(mysqlconnstring))
             {
                 connection.Open();
                 string query = @"SELECT DISTINCT city.city_id, city.city_asciiname, city.city_latitude, city.city_longitude FROM book
@@ -141,7 +150,7 @@ namespace Gutenberg.Common
         {
             List<City> cities = new List<City>();
             var client = new MongoClient(mongoconnstring);
-            var database = client.GetDatabase("gutenberg");
+            var database = client.GetDatabase(mongodatabase);
 
             var collection = database.GetCollection<BsonDocument>("authors");
             var filter = Builders<BsonDocument>.Filter.Eq("books.title", title);
@@ -166,10 +175,10 @@ namespace Gutenberg.Common
         public List<City> GetCitiesWithAuthorMysql(string author)
         {
             var cities = new List<City>();
-            using (var connection = new MySqlConnection(connstring))
+            using (var connection = new MySqlConnection(mysqlconnstring))
             {
                 connection.Open();
-                string query = @"SELECT city_id, city_asciiname, city_latitude, city_longitude FROM gutenberg.city where city_id in
+                string query = @"SELECT city_id, city_asciiname, city_latitude, city_longitude FROM city where city_id in
                                 (
 		                                SELECT min(city_id) FROM city 
 		                                INNER JOIN book_city ON city.city_id = fk_city_id
@@ -195,7 +204,7 @@ namespace Gutenberg.Common
         public List<Book> GetBooksMentionedInAreaMysql(double latitude, double longitude)
         {
             var books = new List<Book>();
-            using (var connection = new MySqlConnection(connstring))
+            using (var connection = new MySqlConnection(mysqlconnstring))
             {
                 double lat1, lat2, long1, long2;
 
@@ -265,7 +274,7 @@ namespace Gutenberg.Common
             long2 = longitude - 0.5;
 
             var client = new MongoClient(mongoconnstring);
-            var database = client.GetDatabase("gutenberg");
+            var database = client.GetDatabase(mongodatabase);
 
             var collection = database.GetCollection<BsonDocument>("authors");
             // USE GEOSPATIAL TUTORIAL AS REFERENCE

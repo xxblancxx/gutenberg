@@ -18,16 +18,18 @@ namespace BookExtractor
         public List<Book> ExtractedBooks { get; set; }
         public List<Author> ExtractedAuthors { get; set; }
         public List<City> AllCities { get; set; }
+        private bool _isTest;
 
         private string[] allBookFiles;
 
-        public Extractor()
+        public Extractor(bool isTest)
         {
             allBookFiles = Directory.GetFiles(filepath, "*.txt", SearchOption.AllDirectories);
             ExtractedAuthors = new List<Author>();
             ExtractedBooks = new List<Book>();
             AllCities = new List<City>();
             GetAllCities();
+            _isTest = isTest;
         }
 
         public void CheckBooks()
@@ -143,7 +145,7 @@ namespace BookExtractor
         public void InsertBooks()
         {
 
-            var dbcontext = new ConnectionHandler();
+            var dbcontext = new ConnectionHandler(_isTest);
             bool success = dbcontext.MysqlInsertBooksAndAuthors(ExtractedBooks, ExtractedAuthors);
             if (!success)
             {
@@ -180,7 +182,7 @@ namespace BookExtractor
             //AllCities.Add(new City { city_id = 1, Name = "Copenhagen", AlternativeNames = new List<string> { "København", "KBH", "Havnen", "CPH" } });
             //AllCities.Add(new City { city_id = 2, Name = "Amsterdam", AlternativeNames = new List<string> { "Amsterdammer", "A'dammer" } });
             //AllCities.Add(new City { city_id = 3, Name = "Berlin", AlternativeNames = new List<string> { "Berliner" } });
-            var dbcontext = new ConnectionHandler();
+            var dbcontext = new ConnectionHandler(_isTest);
             AllCities = dbcontext.GetAllCities();
         }
     }

@@ -12,8 +12,35 @@ namespace BookExtractor
 {
     class ConnectionHandler
     {
-        private readonly string mysqlconnstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life", "gutenberg");
+
+
+        // ----------------- Production Database  Setup ------------------------------
+        private readonly static string productionmongodatabase = "gutenberg";
+        private readonly static string productionmysqldatabase = "gutenberg";
+
+        // ---------------------- Test Database Setup -------------------------------------
+        private readonly static string testmongodatabase = "gutenbergtest";
+        private readonly static string testmysqldatabase = "gutenbergtest";
+
+        private static string mongodatabase;
+        private static string mysqldatabase;
+        private readonly string mysqlconnstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life", mysqldatabase);
         private readonly string mongoconnstring = "mongodb://root:sushi4life@159.203.164.55:27017/";
+
+
+        public ConnectionHandler(bool isTest)
+        {
+            if (isTest)
+            {
+                mongodatabase = testmongodatabase;
+                mysqldatabase = testmysqldatabase;
+            }
+            else
+            {
+                mongodatabase = productionmongodatabase;
+                mysqldatabase = productionmysqldatabase;
+            }
+        }
 
         public void CleanUpBeforeInsert()
         { // deletes all rows in book, author and junction table. all AutoIncrementals are reset
@@ -21,7 +48,7 @@ namespace BookExtractor
             using (var connection = new MySqlConnection(mysqlconnstring))
             {
                 connection.Open();
-                string query = "truncate gutenberg.author; truncate gutenberg.book; truncate gutenberg.book_author; truncate gutenberg.book_city;";
+                string query = "truncate author; truncate book; truncate book_author; truncate book_city;";
                 var cmd = new MySqlCommand(query, connection);
                 cmd.ExecuteNonQuery();
             }
@@ -64,7 +91,7 @@ namespace BookExtractor
                 string commandTxt = "";
                 for (int i = 0; i < books.Count(); i++)
                 {
-                    commandTxt += "INSERT INTO `gutenberg`.`book`(`book_id`,`book_title`)VALUES(?id" + i + ",?title" + i + "); ";
+                    commandTxt += "INSERT INTO `"+mysqldatabase+"`.`book`(`book_id`,`book_title`)VALUES(?id" + i + ",?title" + i + "); ";
                 }
                 comm.CommandText = commandTxt;
                 for (int i = 0; i < books.Count(); i++)
@@ -82,7 +109,7 @@ namespace BookExtractor
                 commandTxt = "";
                 for (int i = 0; i < authors.Count(); i++)
                 {
-                    commandTxt += "INSERT INTO `gutenberg`.`author`(`author_id`,`author_name`)VALUES(?id" + i + ",?name" + i + "); ";
+                    commandTxt += "INSERT INTO `"+mysqldatabase+"`.`author`(`author_id`,`author_name`)VALUES(?id" + i + ",?name" + i + "); ";
                 }
                 comm.CommandText = commandTxt;
                 for (int i = 0; i < authors.Count(); i++)
@@ -112,7 +139,7 @@ namespace BookExtractor
                         {
                             for (int i = 0; i < book.Authors.Count(); i++)
                             {
-                                commandTxt += "INSERT INTO `gutenberg`.`book_author`(`fk_book_id`,`fk_author_id`)VALUES(?book" + i + ",?author" + i + "); ";
+                                commandTxt += "INSERT INTO `"+mysqldatabase+"`.`book_author`(`fk_book_id`,`fk_author_id`)VALUES(?book" + i + ",?author" + i + "); ";
                             }
                             comm.CommandText = commandTxt;
                             for (int i = 0; i < book.Authors.Count(); i++)
@@ -148,7 +175,7 @@ namespace BookExtractor
                             //Console.Write("Book number: " + tmpNo + "                          ");
                             for (int i = 0; i < book.Cities.Count(); i++)
                             {
-                                commandTxt += "INSERT INTO `gutenberg`.`book_city`(`fk_book_id`,`fk_city_id`)VALUES(?book" + i + ",?city" + i + "); ";
+                                commandTxt += "INSERT INTO `"+mysqldatabase+"`.`book_city`(`fk_book_id`,`fk_city_id`)VALUES(?book" + i + ",?city" + i + "); ";
                             }
                             comm.CommandText = commandTxt;
                             for (int i = 0; i < book.Cities.Count(); i++)
@@ -171,10 +198,10 @@ namespace BookExtractor
 
         public void MongoDBInsertBooksAndAuthors(List<Book> books, List<Author> authors)
         {
-           // bool successflag = true;
+            // bool successflag = true;
             var mauthors = new List<MongoAuthor>();
             var client = new MongoClient(mongoconnstring);
-            var database = client.GetDatabase("gutenberg");
+            var database = client.GetDatabase(mongodatabase);
 
             //Reset collection. Our attempt at mongo'ing a truncate
             database.DropCollection("authors");
@@ -223,7 +250,7 @@ namespace BookExtractor
                 authorDocuments.Add(document);
             });
             var collection = database.GetCollection<BsonDocument>("authors");
-            collection.InsertMany(authorDocuments); 
+            collection.InsertMany(authorDocuments);
             //return successflag;
         }
     }

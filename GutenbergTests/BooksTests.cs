@@ -6,6 +6,7 @@ using Gutenberg;
 using System.Drawing;
 using System.Net;
 using System.IO;
+using System.Linq;
 
 namespace GutenbergTests
 {
@@ -35,25 +36,28 @@ namespace GutenbergTests
             //No longer mock data: but 700 book testing subset.
             var expectedBooks = new List<Gutenberg.Model.Book>();
             var book1 = new Gutenberg.Model.Book(638, "Modern India");
-            book1.Authors.Add(new Gutenberg.Model.Author(400, "William Eleroy Curtis"));
+            book1.Authors.Add(new Gutenberg.Model.Author(406, "William Eleroy Curtis"));
 
             var book2 = new Gutenberg.Model.Book(141, "Sketches of the East Africa Campaign");
             book2.Authors.Add(new Gutenberg.Model.Author(108, "Robert Valentine Dolbey"));
 
             var book3 = new Gutenberg.Model.Book(4, "The Warriors");
-            book3.Authors.Add(new Gutenberg.Model.Author(4, "Lindsay, Anna Robertson Brown"));
+            book3.Authors.Add(new Gutenberg.Model.Author(4, "Anna Robertson Brown Lindsay"));
 
             var book4 = new Gutenberg.Model.Book(457, "The World of Waters");
-            book4.Authors.Add(new Gutenberg.Model.Author(297, "Mrs. David Osborne"));
+            book4.Authors.Add(new Gutenberg.Model.Author(296, "Mrs. David Osborne"));
 
             var book5 = new Gutenberg.Model.Book(476, "Van Bibber and Others");
-            book5.Authors.Add(new Gutenberg.Model.Author(313, "Richard Harding Davis"));
+            book5.Authors.Add(new Gutenberg.Model.Author(312, "Richard Harding Davis"));
+            expectedBooks.AddRange(new List<Gutenberg.Model.Book>() { book1, book2, book3, book4, book5 });
 
             //Test
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             //Test Mysql through facade
             var books = facade.GetBooksWithCityMysql("Zanzibar");
-            Assert.AreNotEqual(0, books.Count);
+            books = books.OrderBy(x => x.Id).ToList();
+            expectedBooks = expectedBooks.OrderBy(x => x.Id).ToList();
+            Assert.AreEqual(expectedBooks.Count, books.Count);
             for (int i = 0; i < expectedBooks.Count; i++)
             {
                 Assert.AreEqual(expectedBooks[i].Id, books[i].Id);
@@ -90,27 +94,29 @@ namespace GutenbergTests
 
             var book2 = new Gutenberg.Model.Book(0, "Sketches of the East Africa Campaign");
             book2.Authors.Add(new Gutenberg.Model.Author(0, "Robert Valentine Dolbey"));
-            
+
             var book3 = new Gutenberg.Model.Book(0, "The Warriors");
-            book3.Authors.Add(new Gutenberg.Model.Author(0, "Lindsay, Anna Robertson Brown"));
+            book3.Authors.Add(new Gutenberg.Model.Author(0, "Anna Robertson Brown Lindsay"));
 
             var book4 = new Gutenberg.Model.Book(0, "The World of Waters");
             book4.Authors.Add(new Gutenberg.Model.Author(0, "Mrs. David Osborne"));
 
             var book5 = new Gutenberg.Model.Book(0, "Van Bibber and Others");
             book5.Authors.Add(new Gutenberg.Model.Author(0, "Richard Harding Davis"));
-
+            expectedBooks.AddRange(new List<Gutenberg.Model.Book>() { book1, book2, book3, book4, book5 });
             //Test
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             //Test MongoDB through facade
             var books = facade.GetBooksWithCityMongoDB("Zanzibar");
-            Assert.AreNotEqual(0, books.Count);
-            for (int i = 0; i < expectedBooks.Count; i++)
+            var sortedBooks = books.OrderBy(x => x.Title).ToList();
+            var sortedExpectedBooks = expectedBooks.OrderBy(x => x.Title).ToList();
+
+            Assert.AreEqual(sortedExpectedBooks.Count, sortedBooks.Count);
+            for (int i = 0; i < sortedExpectedBooks.Count; i++)
             {
-                Assert.AreEqual(expectedBooks[i].Id, books[i].Id);
-                Assert.AreEqual(expectedBooks[i].Title, books[i].Title);
-                Assert.AreEqual(expectedBooks[i].Authors[0].Id, books[i].Authors[0].Id);
-                Assert.AreEqual(expectedBooks[i].Authors[0].Name, books[i].Authors[0].Name);
+                Assert.AreEqual(sortedExpectedBooks[i].Title, sortedBooks[i].Title);
+                Assert.AreEqual(sortedExpectedBooks[i].Authors[0].Id, sortedBooks[i].Authors[0].Id);
+                Assert.AreEqual(sortedExpectedBooks[i].Authors[0].Name, sortedBooks[i].Authors[0].Name);
             }
         }
 
@@ -137,11 +143,16 @@ namespace GutenbergTests
             var expectedCities = new List<Gutenberg.Model.City>();
             var city1 = new Gutenberg.Model.City(5861897, "Fairbanks", 64.8377800, -147.7163900);
             var city2 = new Gutenberg.Model.City(5780993, "Salt Lake City", 40.7607800, -111.8910500);
+            expectedCities.Add(city1);
+            expectedCities.Add(city2);
 
             // Test
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             var cities = facade.GetCitiesInTitleMysql("Jingle Bells");
-            Assert.AreNotEqual(0, cities.Count);
+            cities = cities.OrderByDescending(c => c.Latitude).ThenByDescending(c=>c.Longitude).ToList();
+            expectedCities = expectedCities.OrderByDescending(c => c.Latitude).ThenByDescending(c => c.Longitude).ToList();
+
+            Assert.AreEqual(expectedCities.Count, cities.Count);
             for (int i = 0; i < expectedCities.Count; i++)
             {
                 Assert.AreEqual(expectedCities[i].Id, cities[i].Id);
@@ -173,11 +184,15 @@ namespace GutenbergTests
             var expectedCities = new List<Gutenberg.Model.City>();
             var city1 = new Gutenberg.Model.City(5861897, "Fairbanks", 64.8377800, -147.7163900);
             var city2 = new Gutenberg.Model.City(5780993, "Salt Lake City", 40.7607800, -111.8910500);
-
+            expectedCities.Add(city1);
+            expectedCities.Add(city2);
             // Test
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             var cities = facade.GetCitiesInTitleMongoDB("Jingle Bells");
-            Assert.AreNotEqual(0, cities.Count);
+            cities = cities.OrderByDescending(c => c.Latitude).ThenByDescending(c => c.Longitude).ToList();
+            expectedCities = expectedCities.OrderByDescending(c => c.Latitude).ThenByDescending(c => c.Longitude).ToList();
+
+            Assert.AreEqual(expectedCities.Count, cities.Count);
             for (int i = 0; i < expectedCities.Count; i++)
             {
                 Assert.AreEqual(expectedCities[i].Name, cities[i].Name);
@@ -208,11 +223,14 @@ namespace GutenbergTests
             var expectedCities = new List<Gutenberg.Model.City>();
             var city1 = new Gutenberg.Model.City(5861897, "Fairbanks", 64.8377800, -147.7163900);
             var city2 = new Gutenberg.Model.City(5780993, "Salt Lake City", 40.7607800, -111.8910500);
-
+            expectedCities.Add(city1);
+            expectedCities.Add(city2);
             // Test
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             var cities = facade.GetCitiesWithAuthorMysql("Helen Bannerman");
-            Assert.AreNotEqual(0, cities.Count);
+            cities = cities.OrderByDescending(c => c.Latitude).ThenByDescending(c => c.Longitude).ToList();
+            expectedCities = expectedCities.OrderByDescending(c => c.Latitude).ThenByDescending(c => c.Longitude).ToList();
+            Assert.AreEqual(expectedCities.Count, cities.Count);
             for (int i = 0; i < expectedCities.Count; i++)
             {
                 Assert.AreEqual(expectedCities[i].Name, cities[i].Name);
@@ -243,7 +261,12 @@ namespace GutenbergTests
             // Test
             ConnectionFacade facade = new ConnectionFacade();
             var cities = facade.GetCitiesWithAuthorMongoDB(mock.Object);
-            Assert.AreNotEqual(0, cities.Count);
+
+            cities = cities.OrderByDescending(c => c.Latitude).ThenByDescending(c => c.Longitude).ToList();
+            expectedCities = expectedCities.OrderByDescending(c => c.Latitude).ThenByDescending(c => c.Longitude).ToList();
+
+
+            Assert.AreEqual(expectedCities.Count, cities.Count);
             for (int i = 0; i < expectedCities.Count; i++)
             {
                 Assert.AreEqual(expectedCities[i].Name, cities[i].Name);
@@ -280,22 +303,26 @@ namespace GutenbergTests
             book2.Authors.Add(new Gutenberg.Model.Author(14, "Various"));
 
             var book3 = new Gutenberg.Model.Book(261, "A General History and Collection of Voyages and Travels, Vol. 1");
-            book3.Authors.Add(new Gutenberg.Model.Author(178, "Robert Kerr"));
+            book3.Authors.Add(new Gutenberg.Model.Author(177, "Robert Kerr"));
 
             var book4 = new Gutenberg.Model.Book(282, "Beacon Lights of History, Volume XIV");
-            book4.Authors.Add(new Gutenberg.Model.Author(147, "John Lord"));
+            book4.Authors.Add(new Gutenberg.Model.Author(146, "John Lord"));
 
             var book5 = new Gutenberg.Model.Book(390, "The Lands of the Saracen");
             book5.Authors.Add(new Gutenberg.Model.Author(257, "Bayard Taylor"));
 
             var book6 = new Gutenberg.Model.Book(491, "A Woman's Journey Round the World");
-            book6.Authors.Add(new Gutenberg.Model.Author(323, "Ida Pfeiffer"));
+            book6.Authors.Add(new Gutenberg.Model.Author(324, "Ida Pfeiffer"));
+            expectedBooks.AddRange(new List<Gutenberg.Model.Book>() { book1, book2, book3, book4, book5, book6 });
 
             // Test
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             //Test Mysql through facade
+
             var books = facade.GetBooksMentionedInAreaMysql(36, 43);
-            Assert.AreNotEqual(0, books.Count);
+            books = books.OrderBy(x => x.Id).ToList();
+            expectedBooks = expectedBooks.OrderBy(x => x.Id).ToList();
+            Assert.AreEqual(expectedBooks.Count, books.Count);
             for (int i = 0; i < expectedBooks.Count; i++)
             {
                 Assert.AreEqual(expectedBooks[i].Id, books[i].Id);
@@ -343,14 +370,20 @@ namespace GutenbergTests
 
             var book6 = new Gutenberg.Model.Book(491, "A Woman's Journey Round the World");
             book6.Authors.Add(new Gutenberg.Model.Author(323, "Ida Pfeiffer"));
+            expectedBooks.AddRange(new List<Gutenberg.Model.Book>() { book1, book2, book3, book4, book5, book6 });
 
             //Test
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             //Test Mysql through facade
             var books = facade.GetBooksMentionedInAreaMongoDB(36, 43);
-            Assert.AreNotEqual(0,books.Count);
+
+            books = books.OrderBy(x => x.Id).ToList();
+            expectedBooks = expectedBooks.OrderBy(x => x.Id).ToList();
+
+            Assert.AreEqual(expectedBooks, books.Count);
             for (int i = 0; i < expectedBooks.Count; i++)
             {
+                Assert.AreEqual(expectedBooks[i].Id, books[i].Id);
                 Assert.AreEqual(expectedBooks[i].Title, books[i].Title);
             }
         }
@@ -374,12 +407,12 @@ namespace GutenbergTests
             // Test
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             var imageByteArray = facade.GetStaticMap(expectedCities);
-            Assert.AreEqual(typeof(byte[]),imageByteArray.GetType());
-            if (imageByteArray==null || imageByteArray.Length<=1)
+            Assert.AreEqual(typeof(byte[]), imageByteArray.GetType());
+            if (imageByteArray == null || imageByteArray.Length <= 1)
             {
                 Assert.Fail();
             }
-            
+
         }
     }
 

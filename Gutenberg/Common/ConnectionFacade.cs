@@ -82,16 +82,19 @@ namespace Gutenberg.Common
             {
                 foreach (var book in author["books"].AsBsonArray)
                 {
-                    // Only add book if it isn't already in book list.
-                    if (!books.Any(b => b.Title == book["title"].AsString))
+                    if (book["cities"].AsBsonArray.Any(cd => cd["name"].AsString == cityname))
                     {
-                        Book newBook = new Book(0, book["title"].AsString);
-                        foreach (var city in book["cities"].AsBsonArray)
+                        // Only add book if it isn't already in book list.
+                        if (!books.Any(b => b.Title == book["title"].AsString))
                         {
-                            City newCity = new City(0, city["name"].AsString, city["latitude"].AsDouble, city["longitude"].AsDouble);
-                            newBook.Cities.Add(newCity);
+                            Book newBook = new Book(0, book["title"].AsString);
+                            foreach (var city in book["cities"].AsBsonArray)
+                            {
+                                City newCity = new City(0, city["name"].AsString, city["latitude"].AsDouble, city["longitude"].AsDouble);
+                                newBook.Cities.Add(newCity);
+                            }
+                            books.Add(newBook);
                         }
-                        books.Add(newBook);
                     }
                 }
             }

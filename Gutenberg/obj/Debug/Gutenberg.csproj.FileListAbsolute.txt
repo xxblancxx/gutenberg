@@ -199,4 +199,3 @@ D:\Projects\Gutenberg\gutenberg\Gutenberg\bin\System.Runtime.InteropServices.Run
 D:\Projects\Gutenberg\gutenberg\Gutenberg\bin\MongoDB.Bson.xml
 D:\Projects\Gutenberg\gutenberg\Gutenberg\bin\MongoDB.Driver.xml
 D:\Projects\Gutenberg\gutenberg\Gutenberg\bin\MongoDB.Driver.Core.xml
-D:\Projects\Gutenberg\gutenberg\Gutenberg\obj\Debug\Gutenberg.csprojResolveAssemblyReference.cache

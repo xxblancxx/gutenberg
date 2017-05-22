@@ -17,19 +17,33 @@ namespace BookExtractor
         static void Main(string[] args)
         {
             Stopwatch timer = new Stopwatch();
-            var ex = new Extractor();
-            timer.Start();
-            ex.CheckBooks();
-            ex.InsertBooks();
+            string input = "";
+            while (input != "test" && input != "prod" && input != "exit")
+            {
+                Console.WriteLine("type 'test' for test db, 'prod' for production db or 'exit' to cancel!");
+                input = Console.ReadLine();
+            }
+            if (input != "exit")
+            {
+                bool isTest = true;
+                if (input == "prod")
+                {
+                    isTest = false;
+                }
+                var ex = new Extractor(isTest);
+                timer.Start();
+                ex.CheckBooks();
+                ex.InsertBooks();
 
-            timer.Stop();
-            Console.WriteLine();
-            Console.WriteLine("Done!");
-            Console.WriteLine("Finished after " + timer.Elapsed.Minutes + " Min. " + timer.Elapsed.Seconds + " Sec.");
-            Console.Read();
+                timer.Stop();
+                Console.WriteLine();
+                Console.WriteLine("Done!");
+                Console.WriteLine("Finished after " + timer.Elapsed.Minutes + " Min. " + timer.Elapsed.Seconds + " Sec.");
+                Console.Read();
+            }
 
 
         }
-       
+
     }
 }

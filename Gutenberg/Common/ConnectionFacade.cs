@@ -277,12 +277,13 @@ namespace Gutenberg.Common
         }
 
 
-        private string marker = "";
-        private string space = "%7C";
-
-
-        public byte[] GetStaticMap(List<City> cityList)
+        public string GetStaticMap(List<City> cityList)
         {
+            // latitude,longitude - bredde, længde
+            // 0  < 20 =  zoom 5
+            // 20 < 34 =  zoom 4
+            // 34 < 50 =  Zoom 3
+            // 50 < 180 = zoom 2
             cityList.Add(new City(123123, "casper", 4.7358300, 45.2036100));
             cityList.Add(new City(123123, "casper", 1.0833300, 42.5833300));
             cityList.Add(new City(123123, "casper", 33.4205600, 43.3077800));
@@ -300,13 +301,13 @@ namespace Gutenberg.Common
             string linkEnd = "&key=AIzaSyAkjegOKY4oRKzYi7N9hI5nwrtTpz8hRRg";
 
             string imageLink = linkStart + citieslist + linkEnd;
+            return imageLink;
+            //using (WebClient wc = new WebClient())
+            //{
 
-            using (WebClient wc = new WebClient())
-            {
-
-                var byteArray = wc.DownloadData(imageLink);
-                return byteArray;
-            }
+            //    var byteArray = wc.DownloadData(imageLink);
+            //    return byteArray;
+            //}
         }
 
     }

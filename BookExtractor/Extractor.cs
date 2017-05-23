@@ -84,7 +84,10 @@ namespace BookExtractor
                         string[] authorSeparator = new string[] { "Author:" };
                         if (!separator.Any(line.Contains) && line.Split(',').Length <= 2)
                         {
-
+                            if (line.Split(authorSeparator, StringSplitOptions.RemoveEmptyEntries).Length == 0)
+                            {
+                                return;
+                            }
                             string name = line.Split(authorSeparator, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
                             book.Authors.Add(CreateAuthor(name));
 

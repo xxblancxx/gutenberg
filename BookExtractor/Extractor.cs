@@ -161,6 +161,7 @@ namespace BookExtractor
         }
         public Author CreateAuthor(string name)
         {
+            name = name.Trim();
             List<Author> existingAuthor = ExtractedAuthors.Where(a => a.author_name == name).ToList();
             if (existingAuthor.Count() == 0)
             { // Author isn't used 

@@ -124,7 +124,11 @@ namespace BookExtractor
 
                 if (book.book_title == "ERROR IN TITLE")
                 {
-                    throw new NullReferenceException("Book wasn't initialized with title");
+                    var filenameSplit = pathToFIle.Split('\\');
+                    var filename = filenameSplit[filenameSplit.Length - 1];
+                    // throw new NullReferenceException("Book wasn't initialized with title");
+                    Console.WriteLine("Error: "+ filename +" couldn't find title");
+                    Console.WriteLine();
                 }
                 else
                 {

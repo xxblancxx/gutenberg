@@ -38,7 +38,7 @@ namespace BookExtractor
                 timer.Stop();
                 Console.WriteLine();
                 Console.WriteLine("Done!");
-                Console.WriteLine("Finished after " + timer.Elapsed.Minutes + " Min. " + timer.Elapsed.Seconds + " Sec.");
+                Console.WriteLine("Finished after " + timer.Elapsed);
                 Console.Read();
             }
 

@@ -56,8 +56,10 @@ namespace BookExtractor
             Console.Write("\r" + (int)(((double)_bookNo / (double)allBookFiles.Count()) * 100) + "% done    ");
             Console.Write("Book number: " + _bookNo + "                          ");
 
-            //try
-            //{   // Open the text file using a stream reader.
+            try
+            {
+
+            
             using (StreamReader sr = new StreamReader(pathToFIle))
             {
                 Book book = new Book("ERROR IN TITLE");
@@ -139,14 +141,14 @@ namespace BookExtractor
                 }
             }
 
-
-
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.Write("The file could not be read:");
-            //    Console.Write(e.Message);
-            //}
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception caught for book");
+                Console.WriteLine("book: " + filepath);
+                Console.WriteLine(e.Message);
+                Console.WriteLine();
+            }
         }
 
         public void InsertBooks()

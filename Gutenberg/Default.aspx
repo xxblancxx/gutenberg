@@ -42,8 +42,8 @@
         <!-- Plot cities mentioned in books in vicinity of the given geolocation  -->
         <div class="NewMethod">
             <a><b>Plot cities in neighborhood:</b></a><br/>
-            <asp:TextBox CssClass="Coordinate" ID="mentionedInAreaLatitudeBox" runat="server" placeholder="Longitude"></asp:TextBox>
-            <asp:TextBox CssClass="Coordinate" ID="mentionedInAreaLongitudeBox" runat="server" placeholder="Latitude"></asp:TextBox>
+            <asp:TextBox CssClass="Coordinate" ID="mentionedInAreaLatitudeBox" runat="server" placeholder="Latitude"></asp:TextBox>
+            <asp:TextBox CssClass="Coordinate" ID="mentionedInAreaLongitudeBox" runat="server" placeholder="Longitude"></asp:TextBox>
             <asp:Button runat="server" OnClick="GetBooksMentionedInAreaMysql" Text="Mysql"></asp:Button>
             <asp:Button runat="server" OnClick="GetBooksMentionedInAreaMongoDB" Text="MongoDB"></asp:Button>
         </div>

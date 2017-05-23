@@ -22,6 +22,15 @@ namespace Gutenberg {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// titleAuthorWithCityTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox titleAuthorWithCityTextBox;
+        
+        /// <summary>
         /// BookTable control.
         /// </summary>
         /// <remarks>
@@ -31,6 +40,33 @@ namespace Gutenberg {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl BookTable;
         
         /// <summary>
+        /// myTable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Table myTable;
+        
+        /// <summary>
+        /// headerCellTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TableHeaderCell headerCellTitle;
+        
+        /// <summary>
+        /// headerCellAuthor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TableHeaderCell headerCellAuthor;
+        
+        /// <summary>
         /// mentionedInBookTextbox control.
         /// </summary>
         /// <remarks>
@@ -38,6 +74,33 @@ namespace Gutenberg {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox mentionedInBookTextbox;
+        
+        /// <summary>
+        /// citiesWithAuthorTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox citiesWithAuthorTextBox;
+        
+        /// <summary>
+        /// mentionedInAreaLatitudeBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox mentionedInAreaLatitudeBox;
+        
+        /// <summary>
+        /// mentionedInAreaLongitudeBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox mentionedInAreaLongitudeBox;
         
         /// <summary>
         /// MapContainer control.

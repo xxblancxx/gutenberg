@@ -49,32 +49,78 @@ namespace Gutenberg
             }
         }
 
-        protected void ListBooks(object sender, EventArgs e)
+        protected void ListBooks(List<Book> books, bool showAuthor)
         {
-            //using (var connection = new MySqlConnection(connstring))
-            //{
-            //    //connection.Open();
-            //    //string query = "truncate gutenberg.author; truncate gutenberg.book; truncate gutenberg.book_author;";
-            //    //var cmd = new MySqlCommand(query, connection);
-            //    //cmd.ExecuteNonQuery();
-            //}
+            bookList.Style.Add("display", "inline-block");
+
+            headerCellAuthor.Style.Add("display", showAuthor == false ? "none" : "table-cell");
+
+            foreach (Book t in books)
+            {
+                TableRow tRow = new TableRow();
+                myTable.Rows.Add(tRow);
+                TableCell tCell = new TableCell();
+                tCell.Text = t.Title;
+                tRow.Cells.Add(tCell);
+
+                if (showAuthor)
+                {
+                    TableCell tCell2 = new TableCell();
+                    foreach (var author in t.Authors)
+                    {
+                        tCell2.Text += author.Name + ", ";
+                    }
+                    tRow.Cells.Add(tCell2);
+                }
+            }
         }
 
-        protected void CitiesInBookMysql(object sender, EventArgs e)
+        protected void GetBooksWithCityMysql(object sender, EventArgs e)
+        {
+            var books = connection.GetBooksWithCityMysql(titleAuthorWithCityTextBox.Text);
+            ListBooks(books, true);
+        }
+
+        protected void GetBooksWithCityMongoDB(object sender, EventArgs e)
+        {
+            var books = connection.GetBooksWithCityMongoDB(titleAuthorWithCityTextBox.Text);
+            ListBooks(books, true);
+        }
+
+        protected void GetCitiesInTitleMysql(object sender, EventArgs e)
         {
             var cities = connection.GetCitiesInTitleMysql(mentionedInBookTextbox.Text);
             SetMapImage(cities);
         }
 
-        protected void CitiesByAuthor(object sender, EventArgs e)
+        protected void GetCitiesInTitleMongoDB(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
-        }
-        protected void CitiesByGeolocation(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
+            var cities = connection.GetCitiesInTitleMongoDB(mentionedInBookTextbox.Text);
+            SetMapImage(cities);
         }
 
+        protected void GetCitiesWithAuthorMysql(object sender, EventArgs e)
+        {
+            var cities = connection.GetCitiesWithAuthorMysql(citiesWithAuthorTextBox.Text);
+            SetMapImage(cities);
+        }
 
+        protected void GetCitiesWithAuthorMongoDB(object sender, EventArgs e)
+        {
+            var cities = connection.GetCitiesWithAuthorMongoDB(citiesWithAuthorTextBox.Text);
+            SetMapImage(cities);
+        }
+
+        protected void GetBooksMentionedInAreaMysql(object sender, EventArgs e)
+        {
+            var books = connection.GetBooksMentionedInAreaMysql(Convert.ToDouble(mentionedInAreaLatitudeBox.Text), Convert.ToDouble(mentionedInAreaLongitudeBox.Text));
+            ListBooks(books, false);
+        }
+
+        protected void GetBooksMentionedInAreaMongoDB(object sender, EventArgs e)
+        {
+            var books = connection.GetBooksMentionedInAreaMongoDB(Convert.ToDouble(mentionedInAreaLatitudeBox.Text), Convert.ToDouble(mentionedInAreaLongitudeBox.Text));
+            ListBooks(books, false);
+        }
     }
 }

@@ -55,15 +55,22 @@ namespace GutenbergTests
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             //Test Mysql through facade
             var books = facade.GetBooksWithCityMysql("Zanzibar");
-            books = books.OrderBy(x => x.Id).ToList();
-            expectedBooks = expectedBooks.OrderBy(x => x.Id).ToList();
+            books = books.OrderByDescending(x => x.Title).ToList();
+            expectedBooks = expectedBooks.OrderByDescending(x => x.Title).ToList();
             Assert.AreEqual(expectedBooks.Count, books.Count);
             for (int i = 0; i < expectedBooks.Count; i++)
             {
                 //Assert.AreEqual(expectedBooks[i].Id, books[i].Id);
                 Assert.AreEqual(expectedBooks[i].Title, books[i].Title);
                 //Assert.AreEqual(expectedBooks[i].Authors[0].Id, books[i].Authors[0].Id);
-                Assert.AreEqual(expectedBooks[i].Authors[0].Name, books[i].Authors[0].Name);
+
+                Assert.AreEqual(expectedBooks[i].Authors.Count, books[i].Authors.Count);
+                expectedBooks[i].Authors = expectedBooks[i].Authors.OrderByDescending(a => a.Name).ToList();
+                books[i].Authors = books[i].Authors.OrderByDescending(a => a.Name).ToList();
+                for (int l = 0; l < books[i].Authors.Count; l++)
+                {
+                    Assert.AreEqual(expectedBooks[i].Authors[l].Name, books[i].Authors[l].Name);
+                }
             }
         }
 
@@ -108,15 +115,22 @@ namespace GutenbergTests
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             //Test MongoDB through facade
             var books = facade.GetBooksWithCityMongoDB("Zanzibar");
-            var sortedBooks = books.OrderBy(x => x.Title).ToList();
-            var sortedExpectedBooks = expectedBooks.OrderBy(x => x.Title).ToList();
+            books = books.OrderByDescending(x => x.Title).ToList();
+            expectedBooks = expectedBooks.OrderByDescending(x => x.Title).ToList();
 
-            Assert.AreEqual(sortedExpectedBooks.Count, sortedBooks.Count);
-            for (int i = 0; i < sortedExpectedBooks.Count; i++)
+            Assert.AreEqual(expectedBooks.Count, books.Count);
+            for (int i = 0; i < expectedBooks.Count; i++)
             {
-                Assert.AreEqual(sortedExpectedBooks[i].Title, sortedBooks[i].Title);
-                Assert.AreEqual(sortedExpectedBooks[i].Authors[0].Id, sortedBooks[i].Authors[0].Id);
-                Assert.AreEqual(sortedExpectedBooks[i].Authors[0].Name, sortedBooks[i].Authors[0].Name);
+                Assert.AreEqual(expectedBooks[i].Title, books[i].Title);
+                //Assert.AreEqual(sortedExpectedBooks[i].Authors[0].Id, sortedBooks[i].Authors[0].Id);
+                Assert.AreEqual(expectedBooks[i].Authors.Count, books[i].Authors.Count);
+
+                expectedBooks[i].Authors = expectedBooks[i].Authors.OrderByDescending(a => a.Name).ToList();
+                books[i].Authors = books[i].Authors.OrderByDescending(a => a.Name).ToList();
+                for (int l = 0; l < books[i].Authors.Count; l++)
+                {
+                    Assert.AreEqual(expectedBooks[i].Authors[l].Name, books[i].Authors[l].Name);
+                }
             }
         }
 
@@ -149,7 +163,7 @@ namespace GutenbergTests
             // Test
             Gutenberg.Common.ConnectionFacade facade = new Gutenberg.Common.ConnectionFacade();
             var cities = facade.GetCitiesInTitleMysql("Jingle Bells");
-            cities = cities.OrderByDescending(c => c.Latitude).ThenByDescending(c=>c.Longitude).ToList();
+            cities = cities.OrderByDescending(c => c.Latitude).ThenByDescending(c => c.Longitude).ToList();
             expectedCities = expectedCities.OrderByDescending(c => c.Latitude).ThenByDescending(c => c.Longitude).ToList();
 
             Assert.AreEqual(expectedCities.Count, cities.Count);
@@ -326,15 +340,21 @@ namespace GutenbergTests
             //Test Mysql through facade
 
             var books = facade.GetBooksMentionedInAreaMysql(36, 43);
-            books = books.OrderBy(x => x.Id).ToList();
-            expectedBooks = expectedBooks.OrderBy(x => x.Id).ToList();
+            books = books.OrderByDescending(x => x.Title).ToList();
+            expectedBooks = expectedBooks.OrderByDescending(x => x.Title).ToList();
             Assert.AreEqual(expectedBooks.Count, books.Count);
             for (int i = 0; i < expectedBooks.Count; i++)
             {
                 //Assert.AreEqual(expectedBooks[i].Id, books[i].Id);
                 Assert.AreEqual(expectedBooks[i].Title, books[i].Title);
-               // Assert.AreEqual(expectedBooks[i].Authors[0].Id, books[i].Authors[0].Id);
-                Assert.AreEqual(expectedBooks[i].Authors[0].Name, books[i].Authors[0].Name);
+                // Assert.AreEqual(expectedBooks[i].Authors[0].Id, books[i].Authors[0].Id);
+                Assert.AreEqual(expectedBooks[i].Authors.Count, books[i].Authors.Count);
+                expectedBooks[i].Authors = expectedBooks[i].Authors.OrderByDescending(a => a.Name).ToList();
+                books[i].Authors = books[i].Authors.OrderByDescending(a => a.Name).ToList();
+                for (int l = 0; l < books[i].Authors.Count; l++)
+                {
+                    Assert.AreEqual(expectedBooks[i].Authors[l].Name, books[i].Authors[l].Name);
+                }
             }
         }
 
@@ -383,14 +403,15 @@ namespace GutenbergTests
             //Test Mysql through facade
             var books = facade.GetBooksMentionedInAreaMongoDB(36, 43);
 
-            books = books.OrderBy(x => x.Id).ToList();
-            expectedBooks = expectedBooks.OrderBy(x => x.Id).ToList();
+            books = books.OrderByDescending(x => x.Title).ToList();
+            expectedBooks = expectedBooks.OrderByDescending(x => x.Title).ToList();
 
-            Assert.AreEqual(expectedBooks, books.Count);
+            Assert.AreEqual(expectedBooks.Count, books.Count);
             for (int i = 0; i < expectedBooks.Count; i++)
             {
-                Assert.AreEqual(expectedBooks[i].Id, books[i].Id);
+                // Assert.AreEqual(expectedBooks[i].Id, books[i].Id);
                 Assert.AreEqual(expectedBooks[i].Title, books[i].Title);
+
             }
         }
 

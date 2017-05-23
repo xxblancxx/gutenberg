@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.GeoJsonObjectModel;
 
 namespace Gutenberg.Common
 {
@@ -309,9 +310,27 @@ namespace Gutenberg.Common
             // USE GEOSPATIAL TUTORIAL AS REFERENCE
             //https://docs.mongodb.com/manual/tutorial/geospatial-tutorial/
 
+            //var filter = Builders<BsonDocument>.Filter.NearSphere("books.cities.location", longitude, latitude, 50000);
+            string originalCommand = "{ \"books.cities.location\": { $nearSphere: {  type: \"Point\", coordinates: [ " + longitude + ", " + latitude + " ] }, $maxDistance:  50000 } }";
+            BsonDocument query = MongoDB.Bson.Serialization.BsonSerializer.Deserialize<BsonDocument>(originalCommand);
+
+            var res = collection.Find(query).ToList();
             List<Book> books = new List<Book>();
 
-            return null;
+            foreach (var author in res)
+            {
+                foreach (var book in author["books"].AsBsonArray)
+                {
+                    if (book["cities"].AsBsonArray.Any(c => c["longitude"].AsDouble <= (longitude+0.5) && c["longitude"].AsDouble >= (longitude - 0.5) && c["latitude"].AsDouble <= (latitude + 0.5) && c["latitude"].AsDouble >= (latitude - 0.5)))
+                    {
+                        if (!(books.Any(b => b.Title == book["title"].AsString)))
+                        {
+                            books.Add(new Book(0,book["title"].AsString));
+                        }
+                    }
+                }
+            }
+            return books;
         }
 
 

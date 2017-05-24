@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gutenberg", "Gutenberg\Gutenberg.csproj", "{6F7C3C83-8C5B-443D-A581-96F1BBB6BBE7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GutenbergTests", "GutenbergTests\GutenbergTests.csproj", "{218888D5-894A-43CD-9041-53FBBE395849}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookExtractor", "BookExtractor\BookExtractor.csproj", "{2D3D9A95-92E1-4597-BD97-4AF06B63ECAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GutenbergMeasurer", "GutenbergMeasurer\GutenbergMeasurer.csproj", "{4A411EB3-5B8B-42AF-97C1-738B5C6F3ECD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{2D3D9A95-92E1-4597-BD97-4AF06B63ECAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D3D9A95-92E1-4597-BD97-4AF06B63ECAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D3D9A95-92E1-4597-BD97-4AF06B63ECAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A411EB3-5B8B-42AF-97C1-738B5C6F3ECD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A411EB3-5B8B-42AF-97C1-738B5C6F3ECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A411EB3-5B8B-42AF-97C1-738B5C6F3ECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A411EB3-5B8B-42AF-97C1-738B5C6F3ECD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

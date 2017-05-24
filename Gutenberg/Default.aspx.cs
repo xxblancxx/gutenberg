@@ -33,7 +33,6 @@ namespace Gutenberg
 
        
 
-        ConnectionFacade a = new ConnectionFacade();
         public void SetMapImage(List<City> cities)
         {
             if (cities.Count>0)

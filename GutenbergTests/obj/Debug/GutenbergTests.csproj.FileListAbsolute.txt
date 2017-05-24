@@ -107,3 +107,10 @@ C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\b
 C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\obj\Debug\GutenbergTests.csprojResolveAssemblyReference.cache
 C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\obj\Debug\GutenbergTests.dll
 C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\GutenbergTests\obj\Debug\GutenbergTests.pdb
+C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\GutenbergTests\bin\Debug\MongoDB.Driver.dll
+C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\GutenbergTests\bin\Debug\MongoDB.Bson.dll
+C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\GutenbergTests\bin\Debug\MongoDB.Driver.Core.dll
+C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\GutenbergTests\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\GutenbergTests\bin\Debug\MongoDB.Driver.xml
+C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\GutenbergTests\bin\Debug\MongoDB.Bson.xml
+C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\GutenbergTests\bin\Debug\MongoDB.Driver.Core.xml

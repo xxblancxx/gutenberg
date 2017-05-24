@@ -14,15 +14,17 @@ namespace Gutenberg.Common
     public class ConnectionFacade
     {
         // ----------------- Production Database  Setup ------------------------------
-        //private readonly static string mongodatabase = "gutenberg";
-        //private readonly static string mysqldatabase = "gutenberg";
+        private readonly static string mongodatabase = "gutenberg";
+        private readonly static string mysqldatabase = "gutenberg";
 
         // ---------------------- Test Database Setup -------------------------------------
-        private readonly static string mongodatabase = "gutenbergtest";
-        private readonly static string mysqldatabase = "gutenbergtest";
+        //private readonly static string mongodatabase = "gutenbergtest";
+        //private readonly static string mysqldatabase = "gutenbergtest";
 
 
-        private readonly string mysqlconnstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life", mysqldatabase);
+        // private readonly string mysqlconnstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life", mysqldatabase);
+        //default command timeout=20;
+        private readonly string mysqlconnstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life;default command timeout=3600;", mysqldatabase);
         private readonly string mongoconnstring = "mongodb://root:sushi4life@159.203.164.55:27017/";
 
         public List<Book> GetBooksWithCityMysql(string city)

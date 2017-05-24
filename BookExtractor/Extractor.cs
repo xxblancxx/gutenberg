@@ -36,7 +36,7 @@ namespace BookExtractor
         {
             Console.WriteLine(" Reading books");
             _bookNo = 1;
-            for (int i = 0; i < allBookFiles.Length; i++)
+            for (int i = 0; i < /*allBookFiles.Length*/6000; i++)
             {
                 ExtractBookAuthorAndCitiesFromFile(allBookFiles[i]);
                 _bookNo++;

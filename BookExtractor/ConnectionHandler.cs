@@ -199,13 +199,7 @@ namespace BookExtractor
 
         public void MongoDBInsertBooksAndAuthors(List<Book> books, List<Author> authors)
         {
-            // bool successflag = true;
             var mauthors = new List<MongoAuthor>();
-            var client = new MongoClient(mongoconnstring);
-            var database = client.GetDatabase(mongodatabase);
-
-            //Reset collection. Our attempt at mongo'ing a truncate
-            database.DropCollection("authors");
             foreach (var author in authors)
             {
                 var mauthor = new MongoAuthor(author.author_name);
@@ -251,10 +245,28 @@ namespace BookExtractor
                 };
                 authorDocuments.Add(document);
             });
+
+            // bool successflag = true;
+
+            var client = new MongoClient(mongoconnstring);
+            var database = client.GetDatabase(mongodatabase);
+
+            var splitAuthorInserts = ListExtensions.ChunkBy<BsonDocument>(authorDocuments.ToList(), 2000);
+
+            //Reset collection. Our attempt at mongo'ing a truncate
+            database.DropCollection("authors");
             var collection = database.GetCollection<BsonDocument>("authors");
-            collection.InsertMany(authorDocuments);
+            foreach (var splitInsert in splitAuthorInserts)
+            {
+                collection.InsertMany(splitInsert);
+            }
             collection.Indexes.CreateOne(new BsonDocument { { "books.cities.location", "2dsphere" } });
             //return successflag;
         }
+
+
+
     }
+
+  
 }

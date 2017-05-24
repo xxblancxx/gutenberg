@@ -70,6 +70,7 @@
     <Compile Include="City.cs" />
     <Compile Include="ConnectionHandler.cs" />
     <Compile Include="Extractor.cs" />
+    <Compile Include="ListExtensions.cs" />
     <Compile Include="MongoAuthor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

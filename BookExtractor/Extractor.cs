@@ -19,10 +19,10 @@ namespace BookExtractor
         public List<Author> ExtractedAuthors { get; set; }
         public List<City> AllCities { get; set; }
         private bool _isTest;
-
+        private string _whichdatabase;
         private string[] allBookFiles;
 
-        public Extractor(bool isTest)
+        public Extractor(bool isTest, string whichdatabases)
         {
             allBookFiles = Directory.GetFiles(filepath, "*.txt", SearchOption.AllDirectories);
             ExtractedAuthors = new List<Author>();
@@ -30,13 +30,14 @@ namespace BookExtractor
             AllCities = new List<City>();
             GetAllCities();
             _isTest = isTest;
+            _whichdatabase = whichdatabases;
         }
 
         public void CheckBooks()
         {
             Console.WriteLine(" Reading books");
             _bookNo = 1;
-            for (int i = 0; i < /*allBookFiles.Length*/6000; i++)
+            for (int i = 0; i < allBookFiles.Length; i++)
             {
                 ExtractBookAuthorAndCitiesFromFile(allBookFiles[i]);
                 _bookNo++;
@@ -59,87 +60,87 @@ namespace BookExtractor
             try
             {
 
-            
-            using (StreamReader sr = new StreamReader(pathToFIle))
-            {
-                Book book = new Book("ERROR IN TITLE");
-                string line = "";
-                // Read the stream to a string, and write the string to the console.
-                while (!sr.EndOfStream)
+
+                using (StreamReader sr = new StreamReader(pathToFIle))
                 {
-                    line = sr.ReadLine();
-                    // Stuff goes in here
-                    if (line.Contains("Title:"))
+                    Book book = new Book("ERROR IN TITLE");
+                    string line = "";
+                    // Read the stream to a string, and write the string to the console.
+                    while (!sr.EndOfStream)
                     {
-                        string[] separator = new string[] { "Title:" };
-                        string title = line.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
-                        book = new Book(title);
-                        //ExtractedBooks.Add(book);
-                        //Console.Write("Title is: " + book.book_title);
-                    }
-                    else if (line.Contains("Author:"))
-                    {
-
-
-
-                        string[] separator = new string[] { " and ", " And ", "&" };
-                        string[] authorSeparator = new string[] { "Author:" };
-                        if (!separator.Any(line.Contains) && line.Split(',').Length <= 2)
+                        line = sr.ReadLine();
+                        // Stuff goes in here
+                        if (line.Contains("Title:"))
                         {
-                            if (line.Split(authorSeparator, StringSplitOptions.RemoveEmptyEntries).Length == 0)
-                            {
-                                return;
-                            }
-                            string name = line.Split(authorSeparator, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
-                            book.Authors.Add(CreateAuthor(name));
-
+                            string[] separator = new string[] { "Title:" };
+                            string title = line.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
+                            book = new Book(title);
+                            //ExtractedBooks.Add(book);
+                            //Console.Write("Title is: " + book.book_title);
                         }
-                        else
+                        else if (line.Contains("Author:"))
                         {
-                            separator = new string[] { " and ", " And ", "&","," };
-                            string[] names = line.Split(authorSeparator, StringSplitOptions.RemoveEmptyEntries)[0].Split(separator, StringSplitOptions.RemoveEmptyEntries);
 
-                            foreach (var name in names)
+
+
+                            string[] separator = new string[] { " and ", " And ", "&" };
+                            string[] authorSeparator = new string[] { "Author:" };
+                            if (!separator.Any(line.Contains) && line.Split(',').Length <= 2)
                             {
-                                Author author = new Author(name.Trim());
+                                if (line.Split(authorSeparator, StringSplitOptions.RemoveEmptyEntries).Length == 0)
+                                {
+                                    return;
+                                }
+                                string name = line.Split(authorSeparator, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
                                 book.Authors.Add(CreateAuthor(name));
+
                             }
+                            else
+                            {
+                                separator = new string[] { " and ", " And ", "&", "," };
+                                string[] names = line.Split(authorSeparator, StringSplitOptions.RemoveEmptyEntries)[0].Split(separator, StringSplitOptions.RemoveEmptyEntries);
+
+                                foreach (var name in names)
+                                {
+                                    Author author = new Author(name.Trim());
+                                    book.Authors.Add(CreateAuthor(name));
+                                }
+                            }
+                            line = sr.ReadToEnd();
                         }
-                        line = sr.ReadToEnd();
+
                     }
-
-                }
-                //Cities
-                List<string> capWords = Regex.Matches(line, "((?:[A-Z][a-z]+ ?)+)").Cast<Match>().Select(match => match.Value).Distinct().ToList();
+                    //Cities
+                    List<string> capWords = Regex.Matches(line, "((?:[A-Z][a-z]+ ?)+)").Cast<Match>().Select(match => match.Value).Distinct().ToList();
 
 
-                Parallel.ForEach(capWords, (word) =>
-                     {
-                         var matches = AllCities.Where(c => c.Name == word).Distinct();
-                         if (matches.Count() > 0)
+                    Parallel.ForEach(capWords, (word) =>
                          {
-                             foreach (var city in matches)
+                             var matches = AllCities.Where(c => c.Name == word).Distinct();
+                             if (matches.Count() > 0)
                              {
-                                 book.Cities.Add(city);
+                                 foreach (var city in matches)
+                                 {
+                                     book.Cities.Add(city);
+                                 }
                              }
-                         }
-                     });
+                         });
 
 
 
-                if (book.book_title == "ERROR IN TITLE")
-                {
-                    var filenameSplit = pathToFIle.Split('\\');
-                    var filename = filenameSplit[filenameSplit.Length - 1];
-                    // throw new NullReferenceException("Book wasn't initialized with title");
-                    Console.WriteLine("Error: "+ filename +" couldn't find title");
-                    Console.WriteLine();
+                    if (book.book_title == "ERROR IN TITLE")
+                    {
+                        var filenameSplit = pathToFIle.Split('\\');
+                        var filename = filenameSplit[filenameSplit.Length - 1];
+                        // throw new NullReferenceException("Book wasn't initialized with title");
+                        Console.WriteLine("Error: " + filename + " couldn't find title");
+                        Console.WriteLine();
+                    }
+                    else
+                    {
+                        ExtractedBooks.Add(book);
+                    }
                 }
-                else
-                {
-                    ExtractedBooks.Add(book);
-                }
-            }
 
             }
             catch (Exception e)
@@ -155,13 +156,18 @@ namespace BookExtractor
         {
 
             var dbcontext = new ConnectionHandler(_isTest);
-            bool success = dbcontext.MysqlInsertBooksAndAuthors(ExtractedBooks, ExtractedAuthors);
-            if (!success)
+            if (_whichdatabase == "both" || _whichdatabase == "mysql")
             {
-                Console.WriteLine("Mysql: ERROR!!! Some of the inserts affected 0 rows!!?");
+                bool success = dbcontext.MysqlInsertBooksAndAuthors(ExtractedBooks, ExtractedAuthors);
+                if (!success)
+                {
+                    Console.WriteLine("Mysql: ERROR!!! Some of the inserts affected 0 rows!!?");
+                }
             }
-            dbcontext.MongoDBInsertBooksAndAuthors(ExtractedBooks, ExtractedAuthors);
-
+            if (_whichdatabase == "both" || _whichdatabase == "mongo")
+            {
+                dbcontext.MongoDBInsertBooksAndAuthors(ExtractedBooks, ExtractedAuthors);
+            }
 
         }
         public Author CreateAuthor(string name)

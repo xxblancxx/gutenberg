@@ -30,7 +30,12 @@ namespace BookExtractor
                 {
                     isTest = false;
                 }
-                var ex = new Extractor(isTest);
+                Console.WriteLine("mysql, mongo or both?");
+                while (input != "mongo" && input != "mysql" && input != "both")
+                {
+                    input = Console.ReadLine();
+                }
+                var ex = new Extractor(isTest,input);
                 timer.Start();
                 ex.CheckBooks();
                 ex.InsertBooks();

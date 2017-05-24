@@ -32,3 +32,4 @@ C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\bi
 C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\bin\Debug\MongoDB.Driver.xml
 C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\bin\Debug\MongoDB.Driver.Core.xml
 C:\Users\Casper\Documents\Visual Studio 2015\Projects\gutenberg\BookExtractor\obj\Debug\BookExtractor.csprojResolveAssemblyReference.cache
+D:\Projects\Gutenberg\gutenberg\BookExtractor\obj\Debug\BookExtractor.csprojResolveAssemblyReference.cache

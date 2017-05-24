@@ -14,12 +14,12 @@ namespace Gutenberg.Common
     public class ConnectionFacade
     {
         // ----------------- Production Database  Setup ------------------------------
-        private readonly static string mongodatabase = "gutenberg";
-        private readonly static string mysqldatabase = "gutenberg";
+        //private readonly static string mongodatabase = "gutenberg";
+        //private readonly static string mysqldatabase = "gutenberg";
 
         // ---------------------- Test Database Setup -------------------------------------
-        //private readonly static string mongodatabase = "gutenbergtest";
-        //private readonly static string mysqldatabase = "gutenbergtest";
+        private readonly static string mongodatabase = "gutenbergtest";
+        private readonly static string mysqldatabase = "gutenbergtest";
 
 
         // private readonly string mysqlconnstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life", mysqldatabase);

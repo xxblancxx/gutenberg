@@ -206,3 +206,4 @@ C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\
 C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\Gutenberg\bin\MongoDB.Bson.xml
 C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\Gutenberg\bin\MongoDB.Driver.xml
 C:\Users\Manse\Documents\Visual Studio 2013\Projects\GutenbergProject\gutenberg\Gutenberg\bin\MongoDB.Driver.Core.xml
+D:\Projects\Gutenberg\gutenberg\Gutenberg\obj\Debug\Gutenberg.csprojResolveAssemblyReference.cache

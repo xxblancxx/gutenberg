@@ -34,13 +34,15 @@ namespace BookExtractor
             {
                 mongodatabase = testmongodatabase;
                 mysqldatabase = testmysqldatabase;
+                mysqlconnstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life", "gutenbergtest");
             }
             else
             {
                 mongodatabase = productionmongodatabase;
                 mysqldatabase = productionmysqldatabase;
+                mysqlconnstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life", "gutenberg");
             }
-            mysqlconnstring = string.Format("Server=159.203.164.55; database={0}; UID=root; password=sushi4life", mysqldatabase);
+            
         }
 
         public void CleanUpBeforeInsert()

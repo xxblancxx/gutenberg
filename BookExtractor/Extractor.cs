@@ -25,12 +25,16 @@ namespace BookExtractor
         public Extractor(bool isTest, string whichdatabases)
         {
             allBookFiles = Directory.GetFiles(filepath, "*.txt", SearchOption.AllDirectories);
+            // Limit til 10.000 books because if stuff
+            allBookFiles = allBookFiles.Take(10000).ToArray();
             ExtractedAuthors = new List<Author>();
             ExtractedBooks = new List<Book>();
             AllCities = new List<City>();
-            GetAllCities();
             _isTest = isTest;
             _whichdatabase = whichdatabases;
+            GetAllCities();
+
+           
         }
 
         public void CheckBooks()

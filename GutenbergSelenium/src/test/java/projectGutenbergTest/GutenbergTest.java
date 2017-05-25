@@ -5,9 +5,16 @@
  */
 package projectGutenbergTest;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -21,8 +28,13 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.text.IsEmptyString.isEmptyString;
 import org.junit.FixMethodOrder;
+import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.chrome.ChromeDriver;
 import static projectGutenbergSelenium.Gutenberg.Compare;
@@ -30,20 +42,43 @@ import static projectGutenbergSelenium.Gutenberg.Compare;
  *
  * @author Manse
  */
+//@RunWith(Parameterized.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GutenbergTest {
     static WebDriver driver;
     int maxTimer = 5;
+    static File image;
     List<ExpectedOutput> expectedBooks = null;
     List<ExpectedOutput> foundBooks = null;
     
     @BeforeClass
     public static void start() {
-        System.setProperty("webdriver.gecko.driver", "C:\\Program Files\\SeleniumDrivers\\geckodriver.exe");
-        System.setProperty("webdriver.chrome.driver","C:\\Program Files\\SeleniumDrivers\\chromedriver.exe");
+        System.setProperty("webdriver.gecko.driver", "src\\geckodriver.exe");
+        System.setProperty("webdriver.chrome.driver","src\\chromedriver.exe");
         
         driver = new ChromeDriver();
         driver.get("http://localhost:49944");
+    }
+    
+    @Parameters
+    public static Collection<Object[]> generateData() throws FileNotFoundException, IOException {
+//        String imagePath = "src/test/resources/snapshots";
+//        String resultsPath = "src/test/resources/results.properties";
+//        InputStream resultsStream = new FileInputStream(new File(resultsPath));
+//
+//        Properties properties = new Properties();
+//        properties.load(resultsStream);
+//        resultsStream.close();
+//
+//        File snapshotDir = new File(imagePath);
+//        File[] snapshots = snapshotDir.listFiles();
+//        Collection<Object[]> imageData = new ArrayList<>();
+//        for (File snap : snapshots) {
+//            String name = snap.getName();
+//            String plateExpected = properties.getProperty(name);
+//            imageData.add(new Object[]{snap, plateExpected});
+//        }
+        return new ArrayList<>();
     }
     
     @AfterClass
@@ -135,6 +170,8 @@ public class GutenbergTest {
         element.sendKeys("Jingle Bells");
         WebElement element2 = driver.findElement(By.name("ctl04"));
         element2.click();
+        String imgSource = driver.findElement(By.id("img")).getAttribute("src");
+        assertThat(imgSource, not(isEmptyString()));
         
         for(int i = 1; i < 13; i++){
             driver.findElement(By.id("mentionedInBookTextbox")).sendKeys(Keys.BACK_SPACE);
@@ -148,6 +185,8 @@ public class GutenbergTest {
         element.sendKeys("Jingle Bells");
         WebElement element2 = driver.findElement(By.name("ctl04"));
         element2.click();
+        String imgSource = driver.findElement(By.id("img")).getAttribute("src");
+        assertThat(imgSource, not(isEmptyString()));
     }
     
     //Test GetCitiesWithAuthorMysql - NEEDS WAIT
@@ -157,6 +196,8 @@ public class GutenbergTest {
         element.sendKeys("Helen Bannerman");
         WebElement element2 = driver.findElement(By.name("ctl06"));
         element2.click();
+        String imgSource = driver.findElement(By.id("img")).getAttribute("src");
+        assertThat(imgSource, not(isEmptyString()));
         
         for(int i = 1; i < 16; i++){
             driver.findElement(By.id("citiesWithAuthorTextBox")).sendKeys(Keys.BACK_SPACE);
@@ -170,6 +211,8 @@ public class GutenbergTest {
         element.sendKeys("Helen Bannerman");
         WebElement element2 = driver.findElement(By.name("ctl07"));
         element2.click();
+        String imgSource = driver.findElement(By.id("img")).getAttribute("src");
+        assertThat(imgSource, not(isEmptyString()));
     }
     
     //Test GetBooksMentionedInAreaMysql

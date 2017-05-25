@@ -24,6 +24,7 @@ import static org.hamcrest.Matchers.greaterThan;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.chrome.ChromeDriver;
 import static projectGutenbergSelenium.Gutenberg.Compare;
 /**
  *
@@ -41,7 +42,7 @@ public class GutenbergTest {
         System.setProperty("webdriver.gecko.driver", "C:\\Program Files\\SeleniumDrivers\\geckodriver.exe");
         System.setProperty("webdriver.chrome.driver","C:\\Program Files\\SeleniumDrivers\\chromedriver.exe");
         
-        driver = new FirefoxDriver();
+        driver = new ChromeDriver();
         driver.get("http://localhost:49944");
     }
     
@@ -135,7 +136,7 @@ public class GutenbergTest {
         WebElement element2 = driver.findElement(By.name("ctl04"));
         element2.click();
         
-        for(int i = 1; i < 8; i++){
+        for(int i = 1; i < 13; i++){
             driver.findElement(By.id("mentionedInBookTextbox")).sendKeys(Keys.BACK_SPACE);
         }
     }
@@ -157,8 +158,8 @@ public class GutenbergTest {
         WebElement element2 = driver.findElement(By.name("ctl06"));
         element2.click();
         
-         for(int i = 1; i < 8; i++){
-            driver.findElement(By.id("mentionedInBookTextbox")).sendKeys(Keys.BACK_SPACE);
+        for(int i = 1; i < 16; i++){
+            driver.findElement(By.id("citiesWithAuthorTextBox")).sendKeys(Keys.BACK_SPACE);
         }
     }
     
@@ -196,10 +197,46 @@ public class GutenbergTest {
         Books.add("The 1990 CIA World Factbook");
         Books.add("The 1998 CIA World Factbook");
         
-        Books.get(0).equals(Compare(driver, 2).title);
-        Books.get(1).equals(Compare(driver, 3).title);
-        Books.get(2).equals(Compare(driver, 4).title);
-        Books.get(3).equals(Compare(driver, 5).title);
+        Books.get(0).equals(driver.findElement(By.xpath("//tbody/tr[2]/td[1]")).getText());
+        Books.get(1).equals(driver.findElement(By.xpath("//tbody/tr[3]/td[1]")).getText());
+        Books.get(2).equals(driver.findElement(By.xpath("//tbody/tr[4]/td[1]")).getText());
+        Books.get(3).equals(driver.findElement(By.xpath("//tbody/tr[5]/td[1]")).getText());
+        
+        for(int i = 1; i < 3; i++){
+            driver.findElement(By.id("mentionedInAreaLatitudeBox")).sendKeys(Keys.BACK_SPACE);
+            driver.findElement(By.id("mentionedInAreaLongitudeBox")).sendKeys(Keys.BACK_SPACE);
+        }
+    }
+    
+    //Test GetBooksMentionedInAreaMysql
+    @Test
+    public void Test9() {
+        WebElement element = driver.findElement(By.id("mentionedInAreaLatitudeBox"));
+        element.sendKeys("15");
+        WebElement element2 = driver.findElement(By.id("mentionedInAreaLongitudeBox"));
+        element2.sendKeys("43");
+        WebElement element3 = driver.findElement(By.name("ctl09"));
+        element3.click();
+        
+        (new WebDriverWait(driver, maxTimer)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                int amount = d.findElements(By.xpath("//tbody/tr")).size();
+                System.out.println("List amount is: " + amount);
+                return amount == 5;
+            }
+        });
+        
+        //Get from file later
+        List<String> Books = new ArrayList<String>();
+        Books.add("The 1994 CIA World Factbook");
+        Books.add("The 1990 CIA World Factbook");
+        Books.add("The 1997 CIA World Factbook");
+        Books.add("The 1998 CIA World Factbook");
+        
+        Books.get(0).equals(driver.findElement(By.xpath("//tbody/tr[2]/td[1]")).getText());
+        Books.get(1).equals(driver.findElement(By.xpath("//tbody/tr[3]/td[1]")).getText());
+        Books.get(2).equals(driver.findElement(By.xpath("//tbody/tr[4]/td[1]")).getText());
+        Books.get(3).equals(driver.findElement(By.xpath("//tbody/tr[5]/td[1]")).getText());
     }
     
     public ExpectedOutput Compare(WebDriver driver,int index){

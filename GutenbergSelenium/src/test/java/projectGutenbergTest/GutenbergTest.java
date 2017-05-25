@@ -59,9 +59,9 @@ public class GutenbergTest {
         driver = new ChromeDriver();
         driver.get("http://localhost:49944");
     }
-    
-    @Parameters
-    public static Collection<Object[]> generateData() throws FileNotFoundException, IOException {
+//    
+//    @Parameters
+//    public static Collection<Object[]> generateData() throws FileNotFoundException, IOException {
 //        String imagePath = "src/test/resources/snapshots";
 //        String resultsPath = "src/test/resources/results.properties";
 //        InputStream resultsStream = new FileInputStream(new File(resultsPath));
@@ -78,8 +78,8 @@ public class GutenbergTest {
 //            String plateExpected = properties.getProperty(name);
 //            imageData.add(new Object[]{snap, plateExpected});
 //        }
-        return new ArrayList<>();
-    }
+//        return new ArrayList<>();
+//    }
     
     @AfterClass
     public static void end(){

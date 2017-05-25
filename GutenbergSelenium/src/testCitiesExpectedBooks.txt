@@ -1,0 +1,95 @@
+## Input cities and expected resulting books+authors
+## Structure:
+## start indicates the beginning of the dataset. It will include input city as well as expected output
+## first line after start is the city name
+## Next line is first book title, followed by a line containing its authors (commaseparated if multiple)
+## This pattern continues until the end tag which indicates the end of that piece of test data.
+
+## NOTE: none of this is necissarily sorted, this must be done in test program.
+
+start
+Esbjerg
+Denmark
+M. Pearson Thomson,
+The 1990 CIA World Factbook
+United States. Central Intelligence Agency,
+The 1994 CIA World Factbook
+United States Central Intelligence Agency,
+The 1997 CIA World Factbook
+United States. Central Intelligence Agency.,
+The 1998 CIA World Factbook
+United States. Central Intelligence Agency.,
+end
+
+start
+Al Hudaydah
+The 1990 CIA World Factbook
+United States. Central Intelligence Agency,
+The 1994 CIA World Factbook
+United States Central Intelligence Agency,
+The 1997 CIA World Factbook
+United States. Central Intelligence Agency.,
+The 1998 CIA World Factbook
+United States. Central Intelligence Agency.,
+end
+
+start
+Wellington
+!Tention
+George Manville Fenn, Emerson Hough,
+A Bibliographical, Antiquarian and Picturesque Tour in France and Germany, Volume Two
+Thomas Frognall Dibdin, George M. Wrong,
+A Cathedral Courtship
+Kate Douglas Wiggin, James D. Richardson,
+A Compilation of the Messages and Papers of the Presidents
+Grover Cleveland, Charles Pye,
+A Diversity of Creatures
+Rudyard Kipling, Henry A. Beers,
+A History of Science, Volume 3(of 5)
+Henry Smith Williams, William Sleeman,
+A Journey to Katmandu
+Laurence Oliphant, A.V. Dicey,
+A Legend of Montrose
+Sir Walter Scott, Charles Dickens,
+A Midsummer Drive Through The Pyrenees
+Edwin Asa Dix, Harry Lauder,
+A Narrative of a Nine Months' Residence in New Zealand in 1827
+Augustus Earle, A. Woodward, John W. Cousin, G. K. Chesterton,
+A Short History of France
+Mary Platt Parmele, Eugene A. Hecker, Harold MacGrath, Richard Boyle Bernard,
+A Trip Abroad
+Don Carlos Janes, Annie Allnut Brassey, Sara Jeannette Duncan, James Holman, E. V. Lucas, Natalie Harris Hammond, Lord Charnwood,
+end
+
+start
+Rosenheim
+The Collectors
+Frank Jewett Mather,
+The Story of Baden-Powell
+Harold Begbie,
+The Nuernberg Stove
+Louisa de la Rame (AKA Ouida),
+The Confessions of Artemas Quibble
+Arthur Train,
+end
+
+start
+Bozeman
+Clovers and How to Grow Them
+Thomas Shaw,
+Final Report of the Louisiana Purchase Exposition Commission
+Louisiana Purchase Exposition Commission,
+History of Kershaw's Brigade
+D. Augustus Dickert,
+Minnesota; Its Character and Climate
+Ledyard Bill,
+People's Handy Atlas of the World
+Unknown,
+The Burglar's Fate And The Detectives
+Allan Pinkerton,
+The Desire of the Moth; and The Come On	Eugene Manlove Rhodes,
+The Discovery of Yellowstone Park
+Nathaniel Pitt Langford,
+The Story of The American Legion
+George Seay Wheat,
+end

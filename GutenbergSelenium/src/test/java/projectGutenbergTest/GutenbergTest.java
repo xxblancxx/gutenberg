@@ -27,7 +27,7 @@ import org.openqa.selenium.Keys;
 import static projectGutenbergSelenium.Gutenberg.Compare;
 /**
  *
- * @author Casper A. Jørgensen, Martin B. Rasmussen, Søren B. Sørensen
+ * @author Manse
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GutenbergTest {

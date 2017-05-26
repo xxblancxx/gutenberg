@@ -34,49 +34,29 @@ United States. Central Intelligence Agency.,
 end
 
 start
-Anklam
-Encyclopaedia Britannica, 11th Edition, Volume 4, Part 3
-Various,
-History of Friedrich II. of Prussia, Vol. XVIII. (of XXI.)
-Thomas Carlyle,
-The Great Events by Famous Historians, Volume VI.
-Various,
+Khost
+Forty-one years in India
+Frederick Sleigh Roberts,
+The Story of the Guides
+G. J. Younghusband,
 end
 
 start
-Rosenheim
-Famous Stories Every Child Should Know
-Various,
-The Collectors
-Frank Jewett Mather,
-The Story of Baden-Powell
-Harold Begbie,
-The Nuernberg Stove
-Louisa de la Rame (AKA Ouida),
-The Confessions of Artemas Quibble
-Arthur Train,
+Farah
+The 1990 CIA World Factbook
+United States. Central Intelligence Agency,
+The 1994 CIA World Factbook
+United States Central Intelligence Agency,
+The 1997 CIA World Factbook
+United States. Central Intelligence Agency.,
+The 1998 CIA World Factbook
+United States. Central Intelligence Agency.,
 end
 
 start
-Bozeman
-American Big Game in Its Haunts
-Various,
-Clovers and How to Grow Them
-Thomas Shaw,
-Final Report of the Louisiana Purchase Exposition Commission
-Louisiana Purchase Exposition Commission,
-History of Kershaw's Brigade
-D. Augustus Dickert,
-Minnesota; Its Character and Climate
-Ledyard Bill,
-People's Handy Atlas of the World
-Unknown,
-The Burglar's Fate And The Detectives
-Allan Pinkerton,
-The Desire of the Moth; and The Come On
-Eugene Manlove Rhodes,
-The Discovery of Yellowstone Park
-Nathaniel Pitt Langford,
-The Story of The American Legion
-George Seay Wheat,
+East Kilbride
+The Nuttall Encyclopaedia
+Edited by Rev. James Wood,
+The Personal Life Of David Livingstone
+William Garden Blaikie,
 end

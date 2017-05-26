@@ -76,6 +76,7 @@ namespace Gutenberg.Common
             {
                 books.Remove(delete);
             }
+
             return books;
         }
 
@@ -120,7 +121,6 @@ namespace Gutenberg.Common
                     }
                 }
             }
-
 
             return books;
         }

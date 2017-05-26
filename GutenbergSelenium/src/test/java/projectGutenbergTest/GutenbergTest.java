@@ -12,8 +12,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isA;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -127,36 +134,33 @@ public class GutenbergTest {
         for(int i = 0; i < parameters.size(); i++){
             
             //ADD 1 because of header
-            int expectedOutputSize = parameters.get(i).output.size() + 1;
+            int expectedOutputSize = parameters.get(i).output.size();
             WebElement element = driver.findElement(By.id("titleAuthorWithCityTextBox"));
             element.sendKeys(parameters.get(i).country);
             WebElement element2 = driver.findElement(By.name("ctl02"));
             element2.click();
 
+            //Check if tbody size is the same as expectedBook amount
             (new WebDriverWait(driver, maxTimer)).until(new ExpectedCondition<Boolean>() {
                 public Boolean apply(WebDriver d) {
                     int amount = d.findElements(By.xpath("//tbody/tr")).size();
-                    return amount == expectedOutputSize;
+                    return amount == expectedOutputSize + 1;
                 }
             });
 
-            //Compare with paramters from file
-            expectedBooks = new ArrayList<ExpectedOutput>();
-            expectedBooks.add(new ExpectedOutput("Denmark", "M. Pearson Thomson,"));
-            expectedBooks.add(new ExpectedOutput("The 1990 CIA World Factbook", "M. United States. Central Intelligence Agency,"));
-            expectedBooks.add(new ExpectedOutput("The 1994 CIA World Factbook", "United States Central Intelligence Agency,"));
-            expectedBooks.add(new ExpectedOutput("The 1997 CIA World Factbook", "United States. Central Intelligence Agency.,"));
-            expectedBooks.add(new ExpectedOutput("The 1998 CIA World Factbook", "United States. Central Intelligence Agency.,"));
-
-            assertThat("", is(""));
-
-            expectedBooks.get(0).title.equals(Compare(driver, 2).title);
-            expectedBooks.get(1).title.equals(Compare(driver, 3).title);
-            expectedBooks.get(2).title.equals(Compare(driver, 4).title);
-            expectedBooks.get(3).title.equals(Compare(driver, 5).title);
-            expectedBooks.get(4).title.equals(Compare(driver, 6).title);
-
-            int a = parameters.get(i).country.length();
+            //Iterate through and check if a book exists and the author fits
+            for(int i2 = 0; i2 < expectedOutputSize; i2++){
+                ExpectedOutput file  = parameters.get(i).output.get(i2);
+                for(int i3 = 1; i3 < driver.findElements(By.xpath("//tbody/tr")).size(); i3++){
+                    String title = driver.findElement(By.xpath("//tbody/tr["+(i3+1)+"]/td[1]")).getText();
+                    if(file.title == null ? title == null : file.title.equals(title)){
+                        String author = driver.findElement(By.xpath("//tbody/tr["+(i3+1)+"]/td[2]")).getText();
+                        assertTrue((file.author == null ? author == null : file.author.equals(author)));
+                    }
+                }
+            }
+            
+            //Remove text from textbox
             for(int n = 1; n <= parameters.get(i).country.length(); n++){
                 driver.findElement(By.id("titleAuthorWithCityTextBox")).sendKeys(Keys.BACK_SPACE);
             }
@@ -166,32 +170,40 @@ public class GutenbergTest {
     //TEST GetBooksContainingCityMongoDB
     @Test
     public void Test3() {
-        WebElement element = driver.findElement(By.id("titleAuthorWithCityTextBox"));
-        element.sendKeys("Esbjerg");
-        WebElement element2 = driver.findElement(By.name("ctl03"));
-        element2.click();
-        
-        (new WebDriverWait(driver, maxTimer)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                int amount = d.findElements(By.xpath("//tbody/tr")).size();
-                System.out.println("List amount is: " + amount);
-                return amount == 6;
+        for(int i = 0; i < parameters.size(); i++){
+            
+            //ADD 1 because of header
+            int expectedOutputSize = parameters.get(i).output.size();
+            WebElement element = driver.findElement(By.id("titleAuthorWithCityTextBox"));
+            element.sendKeys(parameters.get(i).country);
+            WebElement element2 = driver.findElement(By.name("ctl03"));
+            element2.click();
+
+            //Check if tbody size is the same as expectedBook amount
+            (new WebDriverWait(driver, maxTimer)).until(new ExpectedCondition<Boolean>() {
+                public Boolean apply(WebDriver d) {
+                    int amount = d.findElements(By.xpath("//tbody/tr")).size();
+                    return amount == expectedOutputSize + 1;
+                }
+            });
+
+            //Iterate through and check if a book exists and the author fits
+            for(int i2 = 0; i2 < expectedOutputSize; i2++){
+                ExpectedOutput file  = parameters.get(i).output.get(i2);
+                for(int i3 = 1; i3 < driver.findElements(By.xpath("//tbody/tr")).size(); i3++){
+                    String title = driver.findElement(By.xpath("//tbody/tr["+(i3+1)+"]/td[1]")).getText();
+                    if(file.title == null ? title == null : file.title.equals(title)){
+                        String author = driver.findElement(By.xpath("//tbody/tr["+(i3+1)+"]/td[2]")).getText();
+                        assertTrue((file.author == null ? author == null : file.author.equals(author)));
+                    }
+                }
             }
-        });
-        
-        //Get from file later
-        expectedBooks = new ArrayList<ExpectedOutput>();
-        expectedBooks.add(new ExpectedOutput("The 1994 CIA World Factbook", "United States Central Intelligence Agency,"));
-        expectedBooks.add(new ExpectedOutput("The 1997 CIA World Factbook", "United States. Central Intelligence Agency.,"));
-        expectedBooks.add(new ExpectedOutput("Denmark", "M. Pearson Thomson,"));
-        expectedBooks.add(new ExpectedOutput("The 1990 CIA World Factbook", "M. United States. Central Intelligence Agency,"));
-        expectedBooks.add(new ExpectedOutput("The 1998 CIA World Factbook", "United States. Central Intelligence Agency.,"));
-        
-        expectedBooks.get(0).title.equals(Compare(driver, 2).title);
-        expectedBooks.get(1).title.equals(Compare(driver, 3).title);
-        expectedBooks.get(2).title.equals(Compare(driver, 4).title);
-        expectedBooks.get(3).title.equals(Compare(driver, 5).title);
-        expectedBooks.get(4).title.equals(Compare(driver, 6).title);
+            
+            //Remove text from textbox
+            for(int n = 1; n <= parameters.get(i).country.length(); n++){
+                driver.findElement(By.id("titleAuthorWithCityTextBox")).sendKeys(Keys.BACK_SPACE);
+            }
+        }
     }
     
     //Test GetCitiesInTitleMysql - NEEDS WAIT
@@ -314,6 +326,7 @@ public class GutenbergTest {
     }
     
     public ExpectedOutput Compare(WebDriver driver,int index){
+        index += 2;
         String title = driver.findElement(By.xpath("//tbody/tr["+index+"]/td[1]")).getText();
         String author = driver.findElement(By.xpath("//tbody/tr["+index+"]/td[2]")).getText();
         return new ExpectedOutput(title, author);

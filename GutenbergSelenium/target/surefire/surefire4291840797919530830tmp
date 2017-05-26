@@ -1,0 +1,12 @@
+#surefire
+#Fri May 26 10:35:22 CEST 2017
+jpda.address=29037
+maven.ext.class.path=C\:\\Program Files\\NetBeans 8.2\\java\\maven-nblib\\netbeans-eventspy.jar
+file.encoding=UTF-8
+jpda.listen=true
+forkMode=once
+user.dir=C\:\\Users\\Manse\\Documents\\Visual Studio 2013\\Projects\\GutenbergProject\\gutenberg\\GutenbergSelenium
+localRepository=C\:\\Users\\Manse\\.m2\\repository
+test=projectGutenbergTest.GutenbergTest
+basedir=C\:\\Users\\Manse\\Documents\\Visual Studio 2013\\Projects\\GutenbergProject\\gutenberg\\GutenbergSelenium
+maven.surefire.debug=-Xdebug -Xrunjdwp\:transport\=dt_socket,server\=n,address\=29037

@@ -5,16 +5,14 @@
  */
 package projectGutenbergTest;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,23 +24,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.text.IsEmptyString.isEmptyString;
 import org.junit.FixMethodOrder;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.chrome.ChromeDriver;
-import static projectGutenbergSelenium.Gutenberg.Compare;
+//import static projectGutenbergSelenium.Gutenberg.Compare;
 /**
  *
  * @author Manse
  */
-//@RunWith(Parameterized.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GutenbergTest {
     static WebDriver driver;
@@ -51,35 +43,58 @@ public class GutenbergTest {
     List<ExpectedOutput> expectedBooks = null;
     List<ExpectedOutput> foundBooks = null;
     
+    //Parameterized input
+    String input; 
+    ArrayList<String> output;
+    public static Collection<Object[]> parameters;
+    
     @BeforeClass
-    public static void start() {
+    public static void start() throws IOException {
         System.setProperty("webdriver.gecko.driver", "src\\geckodriver.exe");
         System.setProperty("webdriver.chrome.driver","src\\chromedriver.exe");
         
         driver = new ChromeDriver();
         driver.get("http://localhost:49944");
+        parameters = generateData("testCitiesExpectedBooks.txt");
     }
-//    
-//    @Parameters
-//    public static Collection<Object[]> generateData() throws FileNotFoundException, IOException {
-//        String imagePath = "src/test/resources/snapshots";
-//        String resultsPath = "src/test/resources/results.properties";
-//        InputStream resultsStream = new FileInputStream(new File(resultsPath));
-//
-//        Properties properties = new Properties();
-//        properties.load(resultsStream);
-//        resultsStream.close();
-//
-//        File snapshotDir = new File(imagePath);
-//        File[] snapshots = snapshotDir.listFiles();
-//        Collection<Object[]> imageData = new ArrayList<>();
-//        for (File snap : snapshots) {
-//            String name = snap.getName();
-//            String plateExpected = properties.getProperty(name);
-//            imageData.add(new Object[]{snap, plateExpected});
-//        }
-//        return new ArrayList<>();
-//    }
+    
+    public static Collection<Object[]> generateData(String filename) throws FileNotFoundException, IOException {
+        Collection<Object[]> param = new ArrayList<>();
+        String input = "";
+        ArrayList<String> output = new ArrayList<>();
+        boolean isInput = false;
+        Object[] obj;
+        
+        BufferedReader br = new BufferedReader(new FileReader("src/" + filename));
+        try {
+            StringBuilder sb = new StringBuilder();
+            String line;
+
+            //Read lines, checks if input, afterwards takes values as output, on end it closes and resets for next values
+            while ((line = br.readLine() ) != null ) {
+                if(!line.contains("##") && !"".equals(line)){
+                    if(isInput == true){
+                        input = line;
+                        isInput = false;
+                    }
+                    else if("start".equals(line)){
+                        isInput = true;
+                    }
+                    else if("end".equals(line)){
+                        obj = new Object[] { input, output};
+                        param.add(obj);
+                        input = "";
+                        output = new ArrayList<>();
+                    }else{
+                        output.add(line);
+                    }
+                }
+            }
+        }finally {
+            br.close();
+        }
+        return param;
+    }
     
     @AfterClass
     public static void end(){

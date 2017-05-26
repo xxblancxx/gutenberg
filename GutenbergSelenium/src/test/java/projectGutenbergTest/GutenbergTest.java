@@ -46,15 +46,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GutenbergTest {
     static WebDriver driver;
-    int maxTimer = 5;
+    int maxTimer = 10;
     static File image;
-    List<ExpectedOutput> expectedBooks = null;
-    List<ExpectedOutput> foundBooks = null;
+    List<ExpectedBook> expectedBooks = null;
+    List<ExpectedBook> foundBooks = null;
     
     //Parameterized input
     String input; 
     ArrayList<String> output;
-    public static ArrayList<ExpectedOutputList> parameters;
+    public static ArrayList<ExpectedBookList> cityParameters;
+    public static ArrayList<ExpectedBookList> coordinateParameters;
     
     @BeforeClass
     public static void start() throws IOException {
@@ -63,14 +64,15 @@ public class GutenbergTest {
         
         driver = new ChromeDriver();
         driver.get("http://localhost:49944");
-        parameters = generateData("testCitiesExpectedBooks.txt");
+        cityParameters = generateDataCity("testCitiesExpectedBooks.txt");
+        coordinateParameters = generateDataCoordinates("testCitiesExpectedWithParametersBooks.txt");
     }
     
-    public static ArrayList<ExpectedOutputList> generateData(String filename) throws FileNotFoundException, IOException {
-        ArrayList<ExpectedOutputList> param = new ArrayList<>();
-        ExpectedOutputList expectedList = new ExpectedOutputList("", null);
-        ArrayList<ExpectedOutput> output = new ArrayList<>();
-        ExpectedOutput expOutput = new ExpectedOutput("","");
+    public static ArrayList<ExpectedBookList> generateDataCity(String filename) throws FileNotFoundException, IOException {
+        ArrayList<ExpectedBookList> param = new ArrayList<>();
+        ExpectedBookList expectedList = new ExpectedBookList("", null);
+        ArrayList<ExpectedBook> output = new ArrayList<>();
+        ExpectedBook expOutput = new ExpectedBook("","");
         boolean isInput = false;
         boolean isTitle = true;
         
@@ -83,7 +85,7 @@ public class GutenbergTest {
             while ((line = br.readLine() ) != null ) {
                 if(!line.contains("##") && !"".equals(line)){
                     if(isInput == true){
-                        expectedList = new ExpectedOutputList(line, null);
+                        expectedList = new ExpectedBookList(line, null);
                         isInput = false;
                     }
                     else if("start".equals(line)){
@@ -95,13 +97,50 @@ public class GutenbergTest {
                         output = new ArrayList<>();
                     }else{
                         if(isTitle){
-                            expOutput = new ExpectedOutput(line, "");
+                            expOutput = new ExpectedBook(line, "");
                             isTitle = false;
                         }else{
                             expOutput.author = line;
                             output.add(expOutput);
                             isTitle = true;
                         }
+                    }
+                }
+            }
+        }finally {
+            br.close();
+        }
+        return param;
+    }
+    public static ArrayList<ExpectedBookList> generateDataCoordinates(String filename) throws FileNotFoundException, IOException {
+        ArrayList<ExpectedBookList> param = new ArrayList<>();
+        ExpectedBookList expectedList = new ExpectedBookList("", null);
+        ArrayList<ExpectedBook> output = new ArrayList<>();
+        ExpectedBook expOutput = new ExpectedBook("","");
+        boolean isInput = false;
+        
+        BufferedReader br = new BufferedReader(new FileReader("src/" + filename));
+        try {
+            StringBuilder sb = new StringBuilder();
+            String line;
+
+            //Read lines, checks if input, afterwards takes values as output, on end it closes and resets for next values
+            while ((line = br.readLine() ) != null ) {
+                if(!line.contains("##") && !"".equals(line)){
+                    if(isInput == true){
+                        expectedList = new ExpectedBookList(line, null);
+                        isInput = false;
+                    }
+                    else if("start".equals(line)){
+                        isInput = true;
+                    }
+                    else if("end".equals(line)){
+                        expectedList.output = output;
+                        param.add(expectedList);
+                        output = new ArrayList<>();
+                    }else{
+                        expOutput = new ExpectedBook(line, "");
+                        output.add(expOutput);
                     }
                 }
             }
@@ -119,6 +158,7 @@ public class GutenbergTest {
     //VERIFY DATA IS LOADED
     @Test
     public void Test1() {
+        
         (new WebDriverWait(driver, maxTimer)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 String title = d.findElement(By.xpath("//body//h1")).getText();
@@ -128,15 +168,15 @@ public class GutenbergTest {
         });
     }
     
-    //TEST GetBooksContainingCityMysql
+//    TEST GetBooksContainingCityMysql
     @Test
     public void Test2() {
-        for(int i = 0; i < parameters.size(); i++){
+        for(int i = 0; i < cityParameters.size(); i++){
             
             //ADD 1 because of header
-            int expectedOutputSize = parameters.get(i).output.size();
+            int expectedOutputSize = cityParameters.get(i).output.size();
             WebElement element = driver.findElement(By.id("titleAuthorWithCityTextBox"));
-            element.sendKeys(parameters.get(i).country);
+            element.sendKeys(cityParameters.get(i).input);
             WebElement element2 = driver.findElement(By.name("ctl02"));
             element2.click();
 
@@ -150,7 +190,7 @@ public class GutenbergTest {
 
             //Iterate through and check if a book exists and the author fits
             for(int i2 = 0; i2 < expectedOutputSize; i2++){
-                ExpectedOutput file  = parameters.get(i).output.get(i2);
+                ExpectedBook file  = cityParameters.get(i).output.get(i2);
                 for(int i3 = 1; i3 < driver.findElements(By.xpath("//tbody/tr")).size(); i3++){
                     String title = driver.findElement(By.xpath("//tbody/tr["+(i3+1)+"]/td[1]")).getText();
                     if(file.title == null ? title == null : file.title.equals(title)){
@@ -161,21 +201,21 @@ public class GutenbergTest {
             }
             
             //Remove text from textbox
-            for(int n = 1; n <= parameters.get(i).country.length(); n++){
+            for(int n = 1; n <= cityParameters.get(i).input.length(); n++){
                 driver.findElement(By.id("titleAuthorWithCityTextBox")).sendKeys(Keys.BACK_SPACE);
             }
         }
     }
     
-    //TEST GetBooksContainingCityMongoDB
+//    TEST GetBooksContainingCityMongoDB
     @Test
     public void Test3() {
-        for(int i = 0; i < parameters.size(); i++){
+        for(int i = 0; i < cityParameters.size(); i++){
             
             //ADD 1 because of header
-            int expectedOutputSize = parameters.get(i).output.size();
+            int expectedOutputSize = cityParameters.get(i).output.size();
             WebElement element = driver.findElement(By.id("titleAuthorWithCityTextBox"));
-            element.sendKeys(parameters.get(i).country);
+            element.sendKeys(cityParameters.get(i).input);
             WebElement element2 = driver.findElement(By.name("ctl03"));
             element2.click();
 
@@ -189,7 +229,7 @@ public class GutenbergTest {
 
             //Iterate through and check if a book exists and the author fits
             for(int i2 = 0; i2 < expectedOutputSize; i2++){
-                ExpectedOutput file  = parameters.get(i).output.get(i2);
+                ExpectedBook file  = cityParameters.get(i).output.get(i2);
                 for(int i3 = 1; i3 < driver.findElements(By.xpath("//tbody/tr")).size(); i3++){
                     String title = driver.findElement(By.xpath("//tbody/tr["+(i3+1)+"]/td[1]")).getText();
                     if(file.title == null ? title == null : file.title.equals(title)){
@@ -200,7 +240,7 @@ public class GutenbergTest {
             }
             
             //Remove text from textbox
-            for(int n = 1; n <= parameters.get(i).country.length(); n++){
+            for(int n = 1; n <= cityParameters.get(i).input.length(); n++){
                 driver.findElement(By.id("titleAuthorWithCityTextBox")).sendKeys(Keys.BACK_SPACE);
             }
         }
@@ -261,74 +301,97 @@ public class GutenbergTest {
     //Test GetBooksMentionedInAreaMysql
     @Test
     public void Test8() {
-        WebElement element = driver.findElement(By.id("mentionedInAreaLatitudeBox"));
-        element.sendKeys("15");
-        WebElement element2 = driver.findElement(By.id("mentionedInAreaLongitudeBox"));
-        element2.sendKeys("43");
-        WebElement element3 = driver.findElement(By.name("ctl08"));
-        element3.click();
-        
-        (new WebDriverWait(driver, maxTimer)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                int amount = d.findElements(By.xpath("//tbody/tr")).size();
-                System.out.println("List amount is: " + amount);
-                return amount == 5;
+        for(int i = 0; i < coordinateParameters.size(); i++){
+            String[] coordinate = coordinateParameters.get(i).input.split(",");
+            String latitude = coordinate[0];
+            String longitude = coordinate[1];
+            
+            //ADD 1 because of header
+            int expectedOutputSize = coordinateParameters.get(i).output.size();
+            WebElement element = driver.findElement(By.id("mentionedInAreaLatitudeBox"));
+            element.sendKeys(latitude);
+            WebElement element2 = driver.findElement(By.id("mentionedInAreaLongitudeBox"));
+            element2.sendKeys(longitude);
+            WebElement element3 = driver.findElement(By.name("ctl08"));
+            element3.click();
+
+            //Check if tbody size is the same as expectedBook amount
+            (new WebDriverWait(driver, maxTimer)).until(new ExpectedCondition<Boolean>() {
+                public Boolean apply(WebDriver d) {
+                    int amount = d.findElements(By.xpath("//tbody/tr")).size();
+                    return amount == expectedOutputSize + 1;
+                }
+            });
+
+            //Iterate through and check if a book exists and the author fits
+            for(int i2 = 0; i2 < expectedOutputSize; i2++){
+                ExpectedBook file  = coordinateParameters.get(i).output.get(i2);
+                for(int i3 = 1; i3 < driver.findElements(By.xpath("//tbody/tr")).size(); i3++){
+                    String title = driver.findElement(By.xpath("//tbody/tr["+(i3+1)+"]/td[1]")).getText();
+                    if(title == null ? file.title == null : title.equals(file.title)){
+                        assertTrue((file.title == null ? title == null : file.title.equals(title)));
+                        break;
+                    }
+                }
             }
-        });
-        
-        //Get from file later
-        List<String> Books = new ArrayList<String>();
-        Books.add("The 1994 CIA World Factbook");
-        Books.add("The 1997 CIA World Factbook");
-        Books.add("The 1990 CIA World Factbook");
-        Books.add("The 1998 CIA World Factbook");
-        
-        Books.get(0).equals(driver.findElement(By.xpath("//tbody/tr[2]/td[1]")).getText());
-        Books.get(1).equals(driver.findElement(By.xpath("//tbody/tr[3]/td[1]")).getText());
-        Books.get(2).equals(driver.findElement(By.xpath("//tbody/tr[4]/td[1]")).getText());
-        Books.get(3).equals(driver.findElement(By.xpath("//tbody/tr[5]/td[1]")).getText());
-        
-        for(int i = 1; i < 3; i++){
-            driver.findElement(By.id("mentionedInAreaLatitudeBox")).sendKeys(Keys.BACK_SPACE);
-            driver.findElement(By.id("mentionedInAreaLongitudeBox")).sendKeys(Keys.BACK_SPACE);
+            
+            //Remove text from textbox
+            for(int n = 1; n <= coordinateParameters.get(i).input.length(); n++){
+                driver.findElement(By.id("mentionedInAreaLatitudeBox")).sendKeys(Keys.BACK_SPACE);
+                driver.findElement(By.id("mentionedInAreaLongitudeBox")).sendKeys(Keys.BACK_SPACE);
+            }
         }
     }
     
     //Test GetBooksMentionedInAreaMysql
     @Test
     public void Test9() {
-        WebElement element = driver.findElement(By.id("mentionedInAreaLatitudeBox"));
-        element.sendKeys("15");
-        WebElement element2 = driver.findElement(By.id("mentionedInAreaLongitudeBox"));
-        element2.sendKeys("43");
-        WebElement element3 = driver.findElement(By.name("ctl09"));
-        element3.click();
-        
-        (new WebDriverWait(driver, maxTimer)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                int amount = d.findElements(By.xpath("//tbody/tr")).size();
-                System.out.println("List amount is: " + amount);
-                return amount == 5;
+        for(int i = 0; i < coordinateParameters.size(); i++){
+            String[] coordinate = coordinateParameters.get(i).input.split(",");
+            String latitude = coordinate[0];
+            String longitude = coordinate[1];
+
+            //ADD 1 because of header
+            int expectedOutputSize = coordinateParameters.get(i).output.size();
+            WebElement element = driver.findElement(By.id("mentionedInAreaLatitudeBox"));
+            element.sendKeys(latitude);
+            WebElement element2 = driver.findElement(By.id("mentionedInAreaLongitudeBox"));
+            element2.sendKeys(longitude);
+            WebElement element3 = driver.findElement(By.name("ctl09"));
+            element3.click();
+
+            //Check if tbody size is the same as expectedBook amount
+            (new WebDriverWait(driver, maxTimer)).until(new ExpectedCondition<Boolean>() {
+                public Boolean apply(WebDriver d) {
+                    int amount = d.findElements(By.xpath("//tbody/tr")).size();
+                    return amount == expectedOutputSize + 1;
+                }
+            });
+
+            //Iterate through and check if a book exists and the author fits
+            for(int i2 = 0; i2 < expectedOutputSize; i2++){
+                ExpectedBook file  = coordinateParameters.get(i).output.get(i2);
+                for(int i3 = 1; i3 < driver.findElements(By.xpath("//tbody/tr")).size(); i3++){
+                    String title = driver.findElement(By.xpath("//tbody/tr["+(i3+1)+"]/td[1]")).getText();
+                    if(title == null ? file.title == null : title.equals(file.title)){
+                        assertTrue((file.title == null ? title == null : file.title.equals(title)));
+                        break;
+                    }
+                }
             }
-        });
-        
-        //Get from file later
-        List<String> Books = new ArrayList<String>();
-        Books.add("The 1994 CIA World Factbook");
-        Books.add("The 1990 CIA World Factbook");
-        Books.add("The 1997 CIA World Factbook");
-        Books.add("The 1998 CIA World Factbook");
-        
-        Books.get(0).equals(driver.findElement(By.xpath("//tbody/tr[2]/td[1]")).getText());
-        Books.get(1).equals(driver.findElement(By.xpath("//tbody/tr[3]/td[1]")).getText());
-        Books.get(2).equals(driver.findElement(By.xpath("//tbody/tr[4]/td[1]")).getText());
-        Books.get(3).equals(driver.findElement(By.xpath("//tbody/tr[5]/td[1]")).getText());
+            
+            //Remove text from textbox
+            for(int n = 1; n <= coordinateParameters.get(i).input.length(); n++){
+                driver.findElement(By.id("mentionedInAreaLatitudeBox")).sendKeys(Keys.BACK_SPACE);
+                driver.findElement(By.id("mentionedInAreaLongitudeBox")).sendKeys(Keys.BACK_SPACE);
+            }
+        }
     }
     
-    public ExpectedOutput Compare(WebDriver driver,int index){
+    public ExpectedBook Compare(WebDriver driver,int index){
         index += 2;
         String title = driver.findElement(By.xpath("//tbody/tr["+index+"]/td[1]")).getText();
         String author = driver.findElement(By.xpath("//tbody/tr["+index+"]/td[2]")).getText();
-        return new ExpectedOutput(title, author);
+        return new ExpectedBook(title, author);
     }
 }

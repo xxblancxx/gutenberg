@@ -5,15 +5,17 @@
  */
 package projectGutenbergTest;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Manse
  */
-public class ExpectedOutput {
-    String title;
-    String author;
-    public ExpectedOutput(String Title, String Author){
-        title = Title;
-        author = Author;
+public class ExpectedBookList {
+    String input;
+    ArrayList<ExpectedBook> output;
+    public ExpectedBookList(String Input, ArrayList<ExpectedBook> Output){
+        this.input = Input;
+        output = Output;
     }
 }

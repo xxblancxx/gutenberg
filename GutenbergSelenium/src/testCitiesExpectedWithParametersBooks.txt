@@ -1,0 +1,32 @@
+## Input cities and expected resulting books+authors
+## Structure:
+## start indicates the beginning of the dataset. It will include input city as well as expected output
+## first line after start is the city name
+## Next line is first book title, followed by a line containing its authors (commaseparated if multiple)
+## This pattern continues until the end tag which indicates the end of that piece of test data.
+
+## NOTE: none of this is necissarily sorted, this must be done in test program.
+
+start
+55,22
+The Religion of the Ancient Celts
+Servia, Youngest Member of the European Family
+The Crisis in Russia
+The Witch and Other Stories
+end
+
+start
+36,55
+The Adventures of Hajji Baba of Ispahan
+end
+
+start
+25,65
+A Ride to India across Persia and Baluchistan
+end
+
+start
+33,70
+Forty-one years in India
+The Story of the Guides
+end

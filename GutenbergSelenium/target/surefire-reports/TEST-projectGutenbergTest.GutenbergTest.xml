@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="9" failures="0" name="projectGutenbergTest.GutenbergTest" time="46.236" errors="0" skipped="0">
+<testsuite tests="9" failures="0" name="projectGutenbergTest.GutenbergTest" time="65.702" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_121\jre\bin"/>
@@ -37,7 +37,7 @@
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="os.version" value="6.3"/>
     <property name="jpda.listen" value="true"/>
-    <property name="jpda.address" value="47165"/>
+    <property name="jpda.address" value="59605"/>
     <property name="user.home" value="C:\Users\Manse"/>
     <property name="user.timezone" value="Europe/Paris"/>
     <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
@@ -45,11 +45,11 @@
     <property name="file.encoding" value="UTF-8"/>
     <property name="user.name" value="Manse"/>
     <property name="java.class.path" value="C:\Program Files\NetBeans 8.2\java\maven\boot\plexus-classworlds-2.4.jar"/>
-    <property name="maven.surefire.debug" value="-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=47165"/>
+    <property name="maven.surefire.debug" value="-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=59605"/>
     <property name="java.vm.specification.version" value="1.8"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="C:\Program Files\Java\jdk1.8.0_121\jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Dtest=projectGutenbergTest.GutenbergTest -DforkMode=once -Dmaven.surefire.debug=-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=47165 -Djpda.listen=true -Djpda.address=47165 -Dmaven.ext.class.path=C:\Program Files\NetBeans 8.2\java\maven-nblib\netbeans-eventspy.jar -Dfile.encoding=UTF-8 surefire:test"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Dtest=projectGutenbergTest.GutenbergTest -DforkMode=once -Dmaven.surefire.debug=-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=59605 -Djpda.listen=true -Djpda.address=59605 -Dmaven.ext.class.path=C:\Program Files\NetBeans 8.2\java\maven-nblib\netbeans-eventspy.jar -Dfile.encoding=UTF-8 surefire:test"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="en"/>
     <property name="user.language.format" value="da"/>
@@ -68,13 +68,13 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test1" time="0.067"/>
-  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test2" time="7.582"/>
-  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test3" time="20.363"/>
-  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test4" time="1.488"/>
-  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test5" time="1.233"/>
-  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test6" time="1.564"/>
-  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test7" time="0.792"/>
-  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test8" time="1.253"/>
-  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test9" time="5.951"/>
+  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test1" time="0.073"/>
+  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test2" time="10.603"/>
+  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test3" time="22.697"/>
+  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test4" time="2.311"/>
+  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test5" time="1.15"/>
+  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test6" time="2.343"/>
+  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test7" time="1.142"/>
+  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test8" time="6.291"/>
+  <testcase classname="projectGutenbergTest.GutenbergTest" name="Test9" time="6.102"/>
 </testsuite>

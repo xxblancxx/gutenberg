@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import static org.hamcrest.Matchers.is;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,7 +47,7 @@ public class GutenbergTest {
     //Parameterized input
     String input; 
     ArrayList<String> output;
-    public static Collection<Object[]> parameters;
+    public static ArrayList<ExpectedOutputList> parameters;
     
     @BeforeClass
     public static void start() throws IOException {
@@ -58,12 +59,13 @@ public class GutenbergTest {
         parameters = generateData("testCitiesExpectedBooks.txt");
     }
     
-    public static Collection<Object[]> generateData(String filename) throws FileNotFoundException, IOException {
-        Collection<Object[]> param = new ArrayList<>();
-        String input = "";
-        ArrayList<String> output = new ArrayList<>();
+    public static ArrayList<ExpectedOutputList> generateData(String filename) throws FileNotFoundException, IOException {
+        ArrayList<ExpectedOutputList> param = new ArrayList<>();
+        ExpectedOutputList expectedList = new ExpectedOutputList("", null);
+        ArrayList<ExpectedOutput> output = new ArrayList<>();
+        ExpectedOutput expOutput = new ExpectedOutput("","");
         boolean isInput = false;
-        Object[] obj;
+        boolean isTitle = true;
         
         BufferedReader br = new BufferedReader(new FileReader("src/" + filename));
         try {
@@ -74,19 +76,25 @@ public class GutenbergTest {
             while ((line = br.readLine() ) != null ) {
                 if(!line.contains("##") && !"".equals(line)){
                     if(isInput == true){
-                        input = line;
+                        expectedList = new ExpectedOutputList(line, null);
                         isInput = false;
                     }
                     else if("start".equals(line)){
                         isInput = true;
                     }
                     else if("end".equals(line)){
-                        obj = new Object[] { input, output};
-                        param.add(obj);
-                        input = "";
+                        expectedList.output = output;
+                        param.add(expectedList);
                         output = new ArrayList<>();
                     }else{
-                        output.add(line);
+                        if(isTitle){
+                            expOutput = new ExpectedOutput(line, "");
+                            isTitle = false;
+                        }else{
+                            expOutput.author = line;
+                            output.add(expOutput);
+                            isTitle = true;
+                        }
                     }
                 }
             }
@@ -116,34 +124,42 @@ public class GutenbergTest {
     //TEST GetBooksContainingCityMysql
     @Test
     public void Test2() {
-        WebElement element = driver.findElement(By.id("titleAuthorWithCityTextBox"));
-        element.sendKeys("Esbjerg");
-        WebElement element2 = driver.findElement(By.name("ctl02"));
-        element2.click();
-        
-        (new WebDriverWait(driver, maxTimer)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                int amount = d.findElements(By.xpath("//tbody/tr")).size();
-                return amount == 6;
+        for(int i = 0; i < parameters.size(); i++){
+            
+            //ADD 1 because of header
+            int expectedOutputSize = parameters.get(i).output.size() + 1;
+            WebElement element = driver.findElement(By.id("titleAuthorWithCityTextBox"));
+            element.sendKeys(parameters.get(i).country);
+            WebElement element2 = driver.findElement(By.name("ctl02"));
+            element2.click();
+
+            (new WebDriverWait(driver, maxTimer)).until(new ExpectedCondition<Boolean>() {
+                public Boolean apply(WebDriver d) {
+                    int amount = d.findElements(By.xpath("//tbody/tr")).size();
+                    return amount == expectedOutputSize;
+                }
+            });
+
+            //Compare with paramters from file
+            expectedBooks = new ArrayList<ExpectedOutput>();
+            expectedBooks.add(new ExpectedOutput("Denmark", "M. Pearson Thomson,"));
+            expectedBooks.add(new ExpectedOutput("The 1990 CIA World Factbook", "M. United States. Central Intelligence Agency,"));
+            expectedBooks.add(new ExpectedOutput("The 1994 CIA World Factbook", "United States Central Intelligence Agency,"));
+            expectedBooks.add(new ExpectedOutput("The 1997 CIA World Factbook", "United States. Central Intelligence Agency.,"));
+            expectedBooks.add(new ExpectedOutput("The 1998 CIA World Factbook", "United States. Central Intelligence Agency.,"));
+
+            assertThat("", is(""));
+
+            expectedBooks.get(0).title.equals(Compare(driver, 2).title);
+            expectedBooks.get(1).title.equals(Compare(driver, 3).title);
+            expectedBooks.get(2).title.equals(Compare(driver, 4).title);
+            expectedBooks.get(3).title.equals(Compare(driver, 5).title);
+            expectedBooks.get(4).title.equals(Compare(driver, 6).title);
+
+            int a = parameters.get(i).country.length();
+            for(int n = 1; n <= parameters.get(i).country.length(); n++){
+                driver.findElement(By.id("titleAuthorWithCityTextBox")).sendKeys(Keys.BACK_SPACE);
             }
-        });
-        
-        //Get from file later
-        expectedBooks = new ArrayList<ExpectedOutput>();
-        expectedBooks.add(new ExpectedOutput("Denmark", "M. Pearson Thomson,"));
-        expectedBooks.add(new ExpectedOutput("The 1990 CIA World Factbook", "M. United States. Central Intelligence Agency,"));
-        expectedBooks.add(new ExpectedOutput("The 1994 CIA World Factbook", "United States Central Intelligence Agency,"));
-        expectedBooks.add(new ExpectedOutput("The 1997 CIA World Factbook", "United States. Central Intelligence Agency.,"));
-        expectedBooks.add(new ExpectedOutput("The 1998 CIA World Factbook", "United States. Central Intelligence Agency.,"));
-        
-        expectedBooks.get(0).title.equals(Compare(driver, 2).title);
-        expectedBooks.get(1).title.equals(Compare(driver, 3).title);
-        expectedBooks.get(2).title.equals(Compare(driver, 4).title);
-        expectedBooks.get(3).title.equals(Compare(driver, 5).title);
-        expectedBooks.get(4).title.equals(Compare(driver, 6).title);
-        
-        for(int i = 1; i < 8; i++){
-            driver.findElement(By.id("titleAuthorWithCityTextBox")).sendKeys(Keys.BACK_SPACE);
         }
     }
     
